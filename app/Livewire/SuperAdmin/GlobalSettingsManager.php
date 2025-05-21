@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\SuperAdmin;
 
-use App\Tenant\Models\Setting;
+use App\Models\Setting;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 use Livewire\Attributes\Layout;

@@ -10,12 +10,7 @@ return new class () extends Migration {
     /** Run the migration. */
     public function up(): void
     {
-        Schema::dropIfExists('settings');
-    }
 
-    /** Reverse the migration. */
-    public function down(): void
-    {
         if ( ! Schema::hasTable('settings')) {
             // Recreate the settings table if it doesn't exist
             Schema::create('settings', function (Blueprint $table) {
@@ -35,5 +30,11 @@ return new class () extends Migration {
                     ->onDelete('cascade');
             });
         }
+    }
+
+    /** Reverse the migration. */
+    public function down(): void
+    {
+        Schema::dropIfExists('settings');
     }
 };
