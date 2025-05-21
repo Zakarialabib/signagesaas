@@ -62,14 +62,14 @@
             <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                 <div class="bg-white dark:bg-gray-800 p-6 rounded shadow-xl w-full max-w-md">
                     <h2 class="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">Register New Device</h2>
-                    <form wire:submit.prevent="registerDevice">
+                    <form wire:submit="registerDevice">
                         <div class="mb-4">
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Device Name</label>
-                            <input type="text" wire:model.defer="newDeviceName" class="w-full rounded-md border-gray-300 dark:bg-gray-700 dark:text-gray-100">
+                            <input type="text" wire:model="newDeviceName" class="w-full rounded-md border-gray-300 dark:bg-gray-700 dark:text-gray-100">
                         </div>
                         <div class="mb-4">
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Device Type</label>
-                            <select wire:model.defer="newDeviceType" class="w-full rounded-md border-gray-300 dark:bg-gray-700 dark:text-gray-100">
+                            <select wire:model="newDeviceType" class="w-full rounded-md border-gray-300 dark:bg-gray-700 dark:text-gray-100">
                                 @foreach ($platforms as $platform)
                                     <option value="{{ $platform['key'] }}">{{ $platform['name'] }}</option>
                                 @endforeach

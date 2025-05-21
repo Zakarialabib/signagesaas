@@ -14,7 +14,7 @@ class TemplateSeeder extends Seeder
     public function run(): void
     {
         $templates = [
-            [
+            [ 
                 'name'        => 'Retail Promotion Display',
                 'description' => 'A dynamic template for showcasing product promotions and sales with eye-catching visuals.',
                 'category'    => TemplateCategory::RETAIL,
@@ -58,36 +58,111 @@ class TemplateSeeder extends Seeder
                 'description' => 'Digital menu board template with sections for daily specials, main menu, and pricing.',
                 'category'    => TemplateCategory::RESTAURANT,
                 'status'      => TemplateStatus::PUBLISHED,
+                'is_system'   => true,
                 'layout'      => [
-                    'type'    => 'grid',
-                    'columns' => 3,
-                    'rows'    => 2,
-                    'gap'     => '1.5rem',
-                    'areas'   => [
-                        'header header header',
-                        'menu specials pricing',
-                    ],
+                    'type'  => 'fixed', // Using fixed type for percentage based zones
+                    'zones' => [
+                        [
+                            'id'             => 'header',
+                            'name'           => 'Header Area',
+                            'type'           => 'content',
+                            'x_percentage'   => 0, 'y_percentage' => 0, 'width_percentage' => 100, 'height_percentage' => 15,
+                            'content_type_suggestion' => 'image',
+                            'settings'       => ['background_color' => '#2d3748', 'padding' => '1rem']
+                        ],
+                        [
+                            'id'             => 'menu_left',
+                            'name'           => 'Menu (Left Column)',
+                            'type'           => 'widget',
+                            'widget_type'    => 'MenuWidget',
+                            'x_percentage'   => 5, 'y_percentage' => 18, 'width_percentage' => 43, 'height_percentage' => 70,
+                            'settings'       => ['background_color' => '#ffffff', 'padding' => '1rem', 'border-radius' => '0.5rem']
+                        ],
+                        [
+                            'id'             => 'menu_right',
+                            'name'           => 'Menu (Right Column)',
+                            'type'           => 'widget',
+                            'widget_type'    => 'MenuWidget',
+                            'x_percentage'   => 52, 'y_percentage' => 18, 'width_percentage' => 43, 'height_percentage' => 70,
+                            'settings'       => ['background_color' => '#ffffff', 'padding' => '1rem', 'border-radius' => '0.5rem']
+                        ],
+                        [
+                            'id'             => 'footer',
+                            'name'           => 'Footer Area',
+                            'type'           => 'content',
+                            'x_percentage'   => 0, 'y_percentage' => 90, 'width_percentage' => 100, 'height_percentage' => 10,
+                            'content_type_suggestion' => 'text',
+                            'settings'       => ['background_color' => '#2d3748', 'text_align' => 'center', 'padding' => '0.5rem']
+                        ]
+                    ]
                 ],
                 'styles' => [
                     'font-family'      => 'Poppins, sans-serif',
-                    'background-color' => '#1a1a1a',
-                    'color'            => '#ffffff',
-                    'header'           => [
-                        'background-color' => '#2d3748',
-                        'padding'          => '2rem',
-                        'text-align'       => 'center',
-                    ],
-                    'menu' => [
-                        'background-color' => '#2d3748',
-                        'padding'          => '1.5rem',
-                        'border-radius'    => '0.5rem',
-                    ],
+                    'background-color' => '#1a1a1a', // Dark background for the overall page
+                    'color'            => '#ffffff', // White text for overall page
+                    // Specific zone styles can be handled within layout.zones[n].settings or here if needed globally
                 ],
                 'default_duration' => 45,
                 'settings'         => [
                     'transition'          => 'fade',
                     'transition_duration' => 500,
                     'refresh_interval'    => 600,
+                ],
+            ],
+            [
+                'name'        => 'Retail Product Showcase',
+                'description' => 'A versatile template for showcasing products, promotions, and sales in a retail setting.',
+                'category'    => TemplateCategory::RETAIL,
+                'status'      => TemplateStatus::PUBLISHED,
+                'is_system'   => true,
+                'layout'      => [
+                    'type'  => 'fixed',
+                    'zones' => [
+                        [
+                            'id'             => 'promo_header',
+                            'name'           => 'Promotion Header',
+                            'type'           => 'content',
+                            'x_percentage'   => 0, 'y_percentage' => 0, 'width_percentage' => 100, 'height_percentage' => 20,
+                            'content_type_suggestion' => 'image',
+                            'settings'       => ['background_color' => '#e0e0e0', 'padding' => '1rem']
+                        ],
+                        [
+                            'id'             => 'product_grid_main',
+                            'name'           => 'Main Product Grid',
+                            'type'           => 'widget',
+                            'widget_type'    => 'ProductGridWidget',
+                            'x_percentage'   => 5, 'y_percentage' => 22, 'width_percentage' => 65, 'height_percentage' => 73,
+                            'settings'       => ['background_color' => '#ffffff', 'padding' => '1rem']
+                        ],
+                        [
+                            'id'             => 'sidebar_featured_item',
+                            'name'           => 'Featured Item Sidebar',
+                            'type'           => 'widget',
+                            'widget_type'    => 'FeaturedProductWidget',
+                            'x_percentage'   => 75, 'y_percentage' => 22, 'width_percentage' => 20, 'height_percentage' => 73,
+                            'content_type_suggestion' => 'image',
+                            'settings'       => ['background_color' => '#f0f0f0', 'padding' => '1rem']
+                        ],
+                        [
+                            'id'             => 'footer_banner',
+                            'name'           => 'Footer Banner',
+                            'type'           => 'content',
+                            'x_percentage'   => 0, 'y_percentage' => 95, 'width_percentage' => 100, 'height_percentage' => 5,
+                            'content_type_suggestion' => 'text',
+                            'settings'       => ['background_color' => '#333333', 'color' => '#ffffff', 'text_align' => 'center', 'padding' => '0.5rem']
+                        ]
+                    ]
+                ],
+                'styles' => [
+                    'font-family'      => 'Roboto, sans-serif',
+                    'background-color' => '#f7f7f7',
+                    'color'            => '#333333',
+                ],
+                'default_duration' => 60,
+                'settings'         => [
+                    'transition'          => 'slide',
+                    'transition_duration' => 700,
+                    'refresh_interval'    => 300,
                 ],
             ],
             [

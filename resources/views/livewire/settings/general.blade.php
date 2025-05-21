@@ -29,7 +29,7 @@
             </div>
 
             <div class="px-6 py-5">
-                <form wire:submit.prevent="saveSettings">
+                <form wire:submit="saveSettings">
                     <div class="mb-8">
                         <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">{{ __('General Settings') }}</h3>
                         <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 mb-5">

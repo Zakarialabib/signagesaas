@@ -22,6 +22,7 @@ return new class () extends Migration {
             $table->json('metadata')->nullable();
             $table->json('settings')->nullable();
             $table->string('preview_image')->nullable();
+            $table->boolean('is_system')->default(false);
             $table->timestamps();
 
             $table->foreign('tenant_id')

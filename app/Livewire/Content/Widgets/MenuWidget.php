@@ -6,141 +6,150 @@ namespace App\Livewire\Content\Widgets;
 
 use Livewire\Attributes\Locked;
 
+use App\Tenant\Models\Content;
+
 final class MenuWidget extends BaseWidget
 {
     #[Locked]
-    public array $menu = [];
+    public array $menu = []; // This will hold the categories and items
 
     #[Locked]
-    public string $lastUpdated;
+    public string $lastUpdated = ''; // Initialize to empty string
 
+    #[Locked]
+    public string $widgetTitle = 'Menu'; // Default title
+
+    public ?string $contentId = null;
+
+    // Configurable settings from template zone or screen settings
     public int $refreshInterval = 300; // 5 minutes
-    public string $menuType = 'restaurant'; // restaurant, cafeteria, etc.
+    public string $menuType = 'restaurant'; // Default, can be overridden by settings
     public bool $showPrices = true;
-    public bool $showCalories = true;
-    public bool $showAllergens = true;
+    public bool $showCalories = false; // Default to false for cleaner display
+    public bool $showAllergens = false; // Default to false
     public string $currency = '$';
 
+    /**
+     * Mount the component.
+     *
+     * @param array $settings Widget settings from the template zone or screen.
+     * @param array $initialData Fallback data if contentId is not provided (original behavior).
+     * @param string|null $contentId The ID of the Content model to load data from.
+     * @param string $title Title for the widget from BaseWidget.
+     * @param string $category Category for the widget from BaseWidget.
+     * @param string $icon Icon for the widget from BaseWidget.
+     */
+    public function mount(
+        array $settings = [],
+        string $title = 'Menu Widget', // Default BaseWidget title
+        string $category = 'MENU',    // Default BaseWidget category
+        string $icon = 'heroicon-o-list-bullet', // Default BaseWidget icon
+        array $initialData = [],      // Fallback data
+        ?string $contentId = null
+    ): void {
+        parent::mount($settings, $title, $category, $icon); // Call BaseWidget's mount
+
+        $this->contentId = $contentId;
+
+        if ($this->contentId) {
+            $contentModel = Content::find($this->contentId);
+            if ($contentModel && isset($contentModel->content_data['widget_type']) && $contentModel->content_data['widget_type'] === 'MenuWidget') {
+                $widgetDataSource = $contentModel->content_data['data'] ?? []; // Data is under 'data' key
+                $this->menu = $widgetDataSource['categories'] ?? []; // Assuming 'categories' is the key for menu structure
+                $this->widgetTitle = $widgetDataSource['title'] ?? $contentModel->name; // Use widget's specific title or content name
+                $this->lastUpdated = $contentModel->updated_at?->diffForHumans() ?? now()->diffForHumans();
+            } else {
+                // Content not found or not a MenuWidget, load placeholder/default
+                $this->loadPlaceholderData();
+                $this->error = $this->error ?? "Content ID {$this->contentId} not found or not a MenuWidget.";
+            }
+        } elseif (!empty($initialData)) {
+            // Fallback to initialData if contentId is not provided (e.g., preview during configuration)
+            $this->menu = $initialData['categories'] ?? [];
+            $this->widgetTitle = $initialData['title'] ?? 'Menu Preview';
+            $this->lastUpdated = now()->diffForHumans();
+        } else {
+            $this->loadPlaceholderData(); // Load placeholder if no data source
+        }
+
+        // Apply settings from template zone or screen settings
+        $this->applySettings($settings);
+    }
+    
+    protected function applySettings(array $settings): void
+    {
+        $this->menuType = $settings['menu_type'] ?? $this->menuType;
+        $this->showPrices = $settings['show_prices'] ?? $this->showPrices;
+        $this->showCalories = $settings['show_calories'] ?? $this->showCalories;
+        $this->showAllergens = $settings['show_allergens'] ?? $this->showAllergens;
+        $this->currency = $settings['currency'] ?? $this->currency;
+        $this->refreshInterval = $settings['refresh_interval'] ?? $this->refreshInterval;
+        // If BaseWidget's title wasn't overridden by content, use setting title
+        if ($this->title === 'Menu Widget' && isset($settings['title'])) {
+             $this->title = $settings['title']; // This is BaseWidget's title
+        }
+        // If widgetTitle (specific to this class) wasn't set by content, use setting title
+        if ($this->widgetTitle === 'Menu' && isset($settings['widget_title'])) {
+            $this->widgetTitle = $settings['widget_title'];
+        }
+    }
+
+    /**
+     * Load data for the widget.
+     * This is called by BaseWidget's initialize method.
+     * If contentId is set, data is already loaded in mount. This can be used for refresh logic.
+     */
     protected function loadData(): void
     {
-        // Replace with your actual menu data source
-        // Example: fetch from database, API, etc.
-        /*
-        try {
-            $this->menu = Menu::where('type', $this->menuType)
-                ->where('active', true)
-                ->where('start_date', '<=', now())
-                ->where('end_date', '>=', now())
-                ->with(['categories.items'])
-                ->get()
-                ->map(function ($category) {
-                    return [
-                        'name' => $category->name,
-                        'description' => $category->description,
-                        'items' => $category->items->map(function ($item) {
-                            return [
-                                'name' => $item->name,
-                                'description' => $item->description,
-                                'price' => $item->price,
-                                'calories' => $item->calories,
-                                'allergens' => $item->allergens,
-                                'image' => $item->image_url,
-                                'special' => $item->is_special,
-                            ];
-                        })->toArray(),
-                    ];
-                })
-                ->toArray();
-        } catch (\Exception $e) {
-            throw new \Exception('Error fetching menu data: ' . $e->getMessage());
+        if ($this->contentId) {
+            $contentModel = Content::find($this->contentId);
+            if ($contentModel && isset($contentModel->content_data['widget_type']) && $contentModel->content_data['widget_type'] === 'MenuWidget') {
+                $widgetDataSource = $contentModel->content_data['data'] ?? [];
+                $this->menu = $widgetDataSource['categories'] ?? [];
+                $this->widgetTitle = $widgetDataSource['title'] ?? $contentModel->name;
+                $this->lastUpdated = $contentModel->updated_at?->diffForHumans() ?? now()->diffForHumans();
+            } else {
+                // Handle error or set to empty state if content disappeared
+                $this->menu = [];
+                $this->widgetTitle = 'Menu Data Unavailable';
+                $this->lastUpdated = now()->diffForHumans();
+                $this->error = "Failed to refresh menu data for content ID {$this->contentId}.";
+            }
+        } else {
+            // If no contentId, this implies it's either using initialData (already set in mount)
+            // or should use its placeholder/demo data logic if it were defined for non-contentId scenarios.
+            // For now, if no contentId, we assume data was passed via initialData or it's a placeholder state.
+            // If we want refresh to work for placeholder data, we'd call loadPlaceholderData here.
+             $this->loadPlaceholderData(); // Or decide if this should be an error state
         }
-        */
-
-        // Placeholder / Demo data
-        $this->menu = [
+    }
+    
+    protected function loadPlaceholderData(): void
+    {
+        $this->menu = [ /* Placeholder structure from original loadData */ 
             [
                 'name' => 'Appetizers',
                 'description' => 'Start your meal with these delicious options',
                 'items' => [
-                    [
-                        'name' => 'Bruschetta',
-                        'description' => 'Grilled bread rubbed with garlic and topped with diced tomatoes, fresh basil, and olive oil',
-                        'price' => 8.99,
-                        'calories' => 320,
-                        'allergens' => ['gluten'],
-                        'image' => 'bruschetta.jpg',
-                        'special' => false
-                    ],
-                    [
-                        'name' => 'Calamari',
-                        'description' => 'Crispy fried squid served with marinara sauce',
-                        'price' => 12.99,
-                        'calories' => 450,
-                        'allergens' => ['shellfish', 'gluten'],
-                        'image' => 'calamari.jpg',
-                        'special' => true
-                    ]
+                    [ 'name' => 'Bruschetta', 'description' => 'Toasted bread with tomatoes', 'price' => 8.99, 'calories' => 320, 'allergens' => ['gluten'], 'image' => '', 'special' => false ],
+                    [ 'name' => 'Calamari', 'description' => 'Fried squid rings', 'price' => 12.99, 'calories' => 450, 'allergens' => ['shellfish', 'gluten'], 'image' => '', 'special' => true ]
                 ]
             ],
-            [
-                'name' => 'Main Courses',
-                'description' => 'Hearty entrees for every taste',
-                'items' => [
-                    [
-                        'name' => 'Grilled Salmon',
-                        'description' => 'Fresh Atlantic salmon with lemon butter sauce',
-                        'price' => 24.99,
-                        'calories' => 620,
-                        'allergens' => ['fish'],
-                        'image' => 'salmon.jpg',
-                        'special' => false
-                    ],
-                    [
-                        'name' => 'Beef Tenderloin',
-                        'description' => 'Prime cut beef served with roasted vegetables',
-                        'price' => 34.99,
-                        'calories' => 850,
-                        'allergens' => [],
-                        'image' => 'beef.jpg',
-                        'special' => true
-                    ]
-                ]
-            ],
-            [
-                'name' => 'Desserts',
-                'description' => 'Sweet endings to your perfect meal',
-                'items' => [
-                    [
-                        'name' => 'Tiramisu',
-                        'description' => 'Classic Italian dessert with coffee-soaked ladyfingers',
-                        'price' => 8.99,
-                        'calories' => 420,
-                        'allergens' => ['dairy', 'eggs', 'gluten'],
-                        'image' => 'tiramisu.jpg',
-                        'special' => false
-                    ],
-                    [
-                        'name' => 'Chocolate Lava Cake',
-                        'description' => 'Warm chocolate cake with a molten center',
-                        'price' => 9.99,
-                        'calories' => 550,
-                        'allergens' => ['dairy', 'eggs', 'gluten'],
-                        'image' => 'lava-cake.jpg',
-                        'special' => true
-                    ]
-                ]
-            ]
         ];
-
+        $this->widgetTitle = 'Sample Menu';
         $this->lastUpdated = now()->diffForHumans();
     }
+
 
     public function render(): \Illuminate\View\View
     {
         return view('livewire.content.widgets.menu-widget', [
-            'title' => 'Menu',
-            'category' => 'MENU',
-            'icon' => '<svg class="h-5 w-5 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>',
+            // BaseWidget properties that might be used by placeholder or view
+            'title' => $this->title, // This is BaseWidget's title
+            'category' => $this->category,
+            'icon' => $this->icon,
+            // MenuWidget specific properties
+            'widgetTitle' => $this->widgetTitle, // This is MenuWidget's own title for display
             'menu' => $this->menu,
             'lastUpdated' => $this->lastUpdated,
             'error' => $this->error,
@@ -151,4 +160,4 @@ final class MenuWidget extends BaseWidget
             'currency' => $this->currency,
         ]);
     }
-} 
+}

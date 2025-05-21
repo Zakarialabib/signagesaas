@@ -53,11 +53,11 @@
                                     const container = $el.parentElement;
                                     const x = ((startLeft + dx) / container.offsetWidth) * 100;
                                     const y = ((startTop + dy) / container.offsetHeight) * 100;
-                                    $wire.updateZonePosition('{{ $zoneId }}', x, y, {{ $zone['width'] }}, {{ $zone['height'] }});
+                                    $wire.updateZonePosition('{{ $zoneId }}', x, y, {{ $zone['width_percentage'] ?? 30 }}, {{ $zone['height_percentage'] ?? 20 }});
                                 }
                             "
                             x-on:mouseup.window="isDragging = false"
-                            style="left: {{ $zone['x'] }}%; top: {{ $zone['y'] }}%; width: {{ $zone['width'] }}%; height: {{ $zone['height'] }}%;"
+                            style="left: {{ $zone['x_percentage'] ?? 0 }}%; top: {{ $zone['y_percentage'] ?? 0 }}%; width: {{ $zone['width_percentage'] ?? 30 }}%; height: {{ $zone['height_percentage'] ?? 20 }}%;"
                         >
                             <div class="p-2">
                                 <div class="text-xs font-medium text-gray-900 dark:text-gray-100">{{ $zone['name'] }}</div>
@@ -126,6 +126,13 @@
                                         :zone-id="$zoneId" 
                                         :allowed-types="$this->getZoneContentTypes($zoneId)" />
                                 </div>
+                                <div class="mt-4">
+                                    <button wire:click="initiateContentSelection('{{ $zoneId }}')"
+                                        class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white {{ isset($zoneContent[$zoneId]) ? 'bg-blue-600 hover:bg-blue-700' : 'bg-green-600 hover:bg-green-700' }} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                        <x-heroicon-o-pencil-square class="h-5 w-5 mr-2" />
+                                        {{ isset($zoneContent[$zoneId]) ? 'Change Content' : 'Assign Content' }}
+                                    </button>
+                                </div>
                             </div>
 
                             <!-- Zone Settings -->
@@ -139,7 +146,7 @@
                                         </label>
                                         <input type="number" wire:model.blur="zoneSettings.{{ $zoneId }}.duration"
                                             min="1" max="3600"
-                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-800 dark:border-gray-700">
+                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100">
                                     </div>
 
                                     <!-- Background Color -->
@@ -157,8 +164,8 @@
                                             Padding
                                         </label>
                                         <input type="text" wire:model.blur="zoneSettings.{{ $zoneId }}.padding"
-                                            placeholder="0px or 0px 0px 0px 0px"
-                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-800 dark:border-gray-700">
+                                            placeholder="e.g., 10px or 1rem"
+                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100">
                                     </div>
 
                                     <!-- Border Radius -->
@@ -167,55 +174,46 @@
                                             Border Radius
                                         </label>
                                         <input type="text" wire:model.blur="zoneSettings.{{ $zoneId }}.border-radius"
-                                            placeholder="0px or 0px 0px 0px 0px"
-                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-800 dark:border-gray-700">
+                                            placeholder="e.g., 5px or 0.5rem"
+                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100">
                                     </div>
 
-                                    {{-- Widget Specific Settings --}}
-                                    @php
-                                        // Determine if this zone is a weather-type zone.
-                                        // This logic might need refinement based on how zone types are precisely defined.
-                                        // For now, we check if its 'type' in layout is 'weather' or if its assigned content's category is weather.
-                                        $isWeatherZone = false;
-                                        if (isset($zone['type']) && $zone['type'] === \App\Enums\ContentType::WEATHER->value) {
-                                            $isWeatherZone = true;
-                                        } elseif (isset($zoneContent[$zoneId]) && $zoneContent[$zoneId]->template_category === \App\Enums\TemplateCategory::WEATHER) {
-                                            // This check might be more for content driven widgets rather than zone type itself.
-                                            // $isWeatherZone = true; // Decide if this is also a valid condition
-                                        }
-                                        // A more direct way could be to check the zone's intended purpose if stored in $zone['settings']['widget_type']
-                                        if (isset($zone['settings']['widget_type']) && $zone['settings']['widget_type'] === \App\Enums\TemplateCategory::WEATHER->value) {
-                                           $isWeatherZone = true;
-                                        }
-                                    @endphp
-
-                                    @if ($isWeatherZone)
-                                        <div>
-                                            <label for="zone_settings_{{ $zoneId }}_weather_api_key" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                                Weather API Key
-                                            </label>
-                                            <input type="text"
-                                                   wire:model.defer="zoneSettings.{{ $zoneId }}.weather_api_key"
-                                                   id="zone_settings_{{ $zoneId }}_weather_api_key"
-                                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
-                                                   placeholder="Enter Weather API Key">
-                                        </div>
-                                        <div>
-                                            <label for="zone_settings_{{ $zoneId }}_weather_location" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                                Weather Location
-                                            </label>
-                                            <input type="text"
-                                                   wire:model.defer="zoneSettings.{{ $zoneId }}.weather_location"
-                                                   id="zone_settings_{{ $zoneId }}_weather_location"
-                                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
-                                                   placeholder="e.g., London or New York">
-                                        </div>
+                                    {{-- Widget Specific Settings from Template Definition --}}
+                                    @if(isset($zone['widget_type']) && !empty($zone['widget_type']))
+                                        {{-- Example for a 'WeatherWidget' --}}
+                                        @if($zone['widget_type'] === 'WeatherWidget')
+                                            <div>
+                                                <label for="zone_settings_{{ $zoneId }}_weather_location" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                                    Location (for Weather)
+                                                </label>
+                                                <input type="text"
+                                                       wire:model="zoneSettings.{{ $zoneId }}.weather_location"
+                                                       id="zone_settings_{{ $zoneId }}_weather_location"
+                                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
+                                                       placeholder="e.g., London, UK">
+                                            </div>
+                                        @endif
+                                        {{-- Example for a 'MenuWidget' (using settings from TemplateSeeder) --}}
+                                        @if($zone['widget_type'] === 'MenuWidget')
+                                            <div>
+                                                <label for="zone_settings_{{ $zoneId }}_menu_style" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                                    Menu Style
+                                                </label>
+                                                <select wire:model="zoneSettings.{{ $zoneId }}.menu_style"
+                                                        id="zone_settings_{{ $zoneId }}_menu_style"
+                                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100">
+                                                    <option value="classic">Classic</option>
+                                                    <option value="modern">Modern</option>
+                                                    <option value="compact">Compact</option>
+                                                </select>
+                                            </div>
+                                        @endif
+                                        {{-- Add more widget-specific settings here based on $zone['widget_type'] --}}
                                     @endif
-                                    {{-- End Widget Specific Settings --}}
                                 </div>
 
                                 <!-- Update Settings Button -->
-                                <div class="mt-4 flex justify-between">
+                                <div class="mt-6 flex justify-between">
                                     <button wire:click="updateZoneSettings('{{ $zoneId }}')"
                                         class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                         Update Settings
@@ -233,12 +231,74 @@
         </div>
 
         <!-- Add Zone Button -->
-        <div class="mt-6">
+        <div class="mt-8">
             <button wire:click="addZone"
-                class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                <x-heroicon-s-plus class="h-5 w-5 mr-2" />
-                Add Zone
+                class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                <x-heroicon-s-plus-circle class="h-5 w-5 mr-2" />
+                Add New Zone
             </button>
         </div>
     </div>
+
+    <!-- Widget Data Info Modal -->
+    <x-modal wire:model="showWidgetDataInfoModal" maxWidth="lg">
+        <x-slot name="title">
+            Widget Zone Information
+        </x-slot>
+
+        <x-slot name="content">
+            @if($currentZoneIdForWidgetInfo && $currentWidgetTypeForInfo)
+                <p class="text-sm text-gray-700 dark:text-gray-300">
+                    The zone <strong class="font-semibold text-gray-900 dark:text-gray-100">{{ $zones[$currentZoneIdForWidgetInfo]['name'] ?? $currentZoneIdForWidgetInfo }}</strong> 
+                    is configured as a <strong class="font-semibold text-gray-900 dark:text-gray-100">{{ $currentWidgetTypeForInfo }}</strong> widget.
+                </p>
+                <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                    A specialized form for inputting or selecting data for this widget type will be implemented in a future update. 
+                    For now, if this widget requires specific data, you would typically create a "Content" item of type "Custom" or "JSON", 
+                    and manually structure its 'content_data' field according to the widget's requirements. This Content item would then be assigned to this zone.
+                </p>
+                 <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                    No generic content can be assigned to this zone directly through the configurator at this moment as it expects widget-specific data.
+                </p>
+            @else
+                <p>Loading widget information...</p>
+            @endif
+        </x-slot>
+
+        <x-slot name="footer">
+            <button wire:click="closeWidgetDataInfoModal" type="button"
+                class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                Got it
+            </button>
+        </x-slot>
+    </x-modal>
+
+    <!-- Generic Content Selector Modal -->
+    <x-modal wire:model="showGenericContentSelectorModal" maxWidth="3xl">
+        <x-slot name="title">
+            Select Content for Zone
+        </x-slot>
+
+        <x-slot name="content">
+            @if($currentZoneIdForGenericSelector)
+                <p class="mb-4 text-sm text-gray-700 dark:text-gray-300">
+                    Assigning content to zone: <strong class="font-semibold text-gray-900 dark:text-gray-100">{{ $zones[$currentZoneIdForGenericSelector]['name'] ?? $currentZoneIdForGenericSelector }}</strong>
+                </p>
+                <livewire:content.templates.components.zone-content-selector 
+                    :key="'generic-content-selector-'.$currentZoneIdForGenericSelector"
+                    :zone-id="$currentZoneIdForGenericSelector" 
+                    :allowed-types="$this->getZoneContentTypes($currentZoneIdForGenericSelector)" 
+                />
+            @else
+                <p>Loading content selector...</p>
+            @endif
+        </x-slot>
+
+        <x-slot name="footer">
+            <button wire:click="closeGenericContentSelectorModal" type="button"
+                class="inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600 dark:hover:bg-gray-600">
+                Cancel
+            </button>
+        </x-slot>
+    </x-modal>
 </div>

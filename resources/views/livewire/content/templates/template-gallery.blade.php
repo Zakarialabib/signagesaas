@@ -81,6 +81,12 @@
                             <div class="aspect-h-9 aspect-w-16 relative overflow-hidden rounded-t-lg bg-gray-100 dark:bg-gray-900">
                                 <img src="{{ $template->getPreviewImageUrl() }}" alt="{{ $template->name }}"
                                     class="object-cover transition-transform duration-300 group-hover:scale-105">
+                                
+                                @if($template->is_system)
+                                    <span class="absolute top-2 right-2 bg-blue-500 text-white text-xs font-semibold px-2.5 py-1 rounded-full z-10">
+                                        System Template
+                                    </span>
+                                @endif
 
                                 <!-- Action Buttons Overlay -->
                                 <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-4">
@@ -108,7 +114,7 @@
                                     <a
                                         href="{{ url('/tv/' . (auth()->user()->tenant->slug ?? 'tenant') . '/widget/' . $template->category->value) }}"
                                         target="_blank"
-                                        class="inline-flex items-center rounded-md bg-green-600 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+                                        class="inline-flex items-center rounded-md bg-green-600 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
                                         title="Preview on TV"
                                     >
                                         <x-heroicon-s-tv class="h-4 w-4 mr-1" />

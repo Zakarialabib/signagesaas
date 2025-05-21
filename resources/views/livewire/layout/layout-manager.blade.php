@@ -11,7 +11,7 @@
     </div>
 
     <!-- Layout Form -->
-    <form wire:submit.prevent="{{ $editing ? 'update' : 'store' }}" class="space-y-4 bg-white p-6 rounded-lg shadow">
+    <form wire:submit="{{ $editing ? 'update' : 'store' }}" class="space-y-4 bg-white p-6 rounded-lg shadow">
         <div>
             <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
             <input

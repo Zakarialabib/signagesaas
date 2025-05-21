@@ -48,7 +48,7 @@
 
         <!-- Tab Content -->
         <div class="p-6">
-            <form wire:submit.prevent="saveSettings">
+            <form wire:submit="saveSettings">
                 <!-- Success Alert -->
                 <div x-data="{ show: @entangle('showSuccessAlert') }"
                     x-show="show"

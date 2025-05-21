@@ -69,7 +69,7 @@
         <div class="p-6">
             <!-- General Settings Tab -->
             @if($activeTab === 'general')
-                <form wire:submit.prevent="saveGeneralSettings">
+                <form wire:submit="saveGeneralSettings">
                     <div class="space-y-6">
                         <div>
                             <h3 class="text-lg font-medium leading-6 text-gray-900 dark:text-gray-100">General Settings</h3>
@@ -134,7 +134,7 @@
             
             <!-- Tenant Settings Tab -->
             @if($activeTab === 'tenant')
-                <form wire:submit.prevent="saveTenantSettings">
+                <form wire:submit="saveTenantSettings">
                     <div class="space-y-6">
                         <div>
                             <h3 class="text-lg font-medium leading-6 text-gray-900 dark:text-gray-100">Tenant Settings</h3>
@@ -205,7 +205,7 @@
             
             <!-- Email Settings Tab -->
             @if($activeTab === 'email')
-                <form wire:submit.prevent="saveEmailSettings">
+                <form wire:submit="saveEmailSettings">
                     <div class="space-y-6">
                         <div>
                             <h3 class="text-lg font-medium leading-6 text-gray-900 dark:text-gray-100">Email Settings</h3>
@@ -265,7 +265,7 @@
             
             <!-- API Settings Tab -->
             @if($activeTab === 'api')
-                <form wire:submit.prevent="saveApiSettings">
+                <form wire:submit="saveApiSettings">
                     <div class="space-y-6">
                         <div>
                             <h3 class="text-lg font-medium leading-6 text-gray-900 dark:text-gray-100">API Settings</h3>
@@ -324,7 +324,7 @@
             
             <!-- Integration Settings Tab -->
             @if($activeTab === 'integration')
-                <form wire:submit.prevent="saveIntegrationSettings">
+                <form wire:submit="saveIntegrationSettings">
                     <div class="space-y-6">
                         <div>
                             <h3 class="text-lg font-medium leading-6 text-gray-900 dark:text-gray-100">Integration Settings</h3>
