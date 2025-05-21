@@ -1,0 +1,91 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Customer-Facing TV Template Rules
+
+## Overview
+
+This project supports customer-facing TV pages for tenants, built as a web app using Livewire v3. Each page can display a full dashboard of widgets or individual widgets, with content and layout determined by the `TemplateCategory` enum ([TemplateCategory.php](mdc:app/Enums/TemplateCategory.php)). The system is designed for easy integration with the admin/tenant panel, content gallery, and template management.
+
+---
+
+## 1. Template Categories
+
+- All TV templates and widgets must be categorized using the `TemplateCategory` enum.
+- Use the `label()`, `getDescription()`, and `getIcon()` methods from [TemplateCategory.php](mdc:app/Enums/TemplateCategory.php) to display category information in both the admin and TV UIs.
+- When creating new templates or widgets, always assign a category from the enum for consistency and filtering.
+
+---
+
+## 2. Livewire v3 Component Structure
+
+- **Widget Components**: Each widget (e.g., weather, news, social media) should be a dedicated Livewire v3 component, placed in `app/Livewire/Content/Widgets/`.
+- **Page Components**: 
+  - Full dashboard pages (showing multiple widgets) should be Livewire components in `app/Livewire/Content/Pages/`.
+  - Single-widget pages should also be Livewire components, one per widget, in the same directory.
+- Use the `#[Layout]` attribute to ensure all TV pages use a consistent, minimal layout suitable for TV screens.
+- All components must support both light and dark mode using Tailwind's `dark:` variant.
+
+---
+
+## 3. Content & Data Integration
+
+- Widget components should fetch their data from tenant-specific sources (e.g., content gallery, seeded templates, or admin-uploaded content).
+- Use Eloquent models and repositories to ensure all content is tenant-scoped.
+- When displaying seeded templates or gallery content, ensure only content belonging to the current tenant is shown.
+
+---
+
+## 4. Routing
+
+- Define all customer-facing TV routes in a dedicated route file, e.g., `routes/tenant/tv.php`.
+- Use route model binding for templates and widgets, referencing the `TemplateCategory` where appropriate.
+- Example routes:
+  - `/tv/{tenant}/dashboard` – full widget dashboard
+  - `/tv/{tenant}/widget/{category}` – single widget page by category
+- Protect routes with tenant middleware to ensure isolation.
+
+---
+
+## 5. Admin Integration
+
+- The admin/tenant panel must provide:
+  - A gallery of available templates, grouped by `TemplateCategory`.
+  - CRUD interfaces for managing content and templates.
+  - Preview links that open the TV view for a given template or widget.
+- When a new template or widget is created in the admin, ensure it is immediately available for display on the TV side.
+
+---
+
+## 6. UI & Accessibility
+
+- All TV templates must use Tailwind CSS for styling, following the [UI Standards & Tailwind Implementation](mdc:02-ui-standards-tailwind).
+- Ensure all widgets and pages are responsive and accessible (WCAG 2.1 AA).
+- Use semantic HTML and ARIA attributes as needed.
+
+---
+
+## 7. Extensibility
+
+- When adding new widget types or template categories:
+  - Update [TemplateCategory.php](mdc:app/Enums/TemplateCategory.php) with the new category, label, description, and icon.
+  - Create a new Livewire widget component and register its route.
+  - Ensure admin panel supports CRUD for the new type.
+
+---
+
+## 8. Testing
+
+- Write Livewire feature tests for each widget and page component.
+- Test tenant isolation, content visibility, and route protection.
+- Ensure all templates render correctly in both light and dark mode.
+
+---
+
+## References
+
+- [TemplateCategory.php](mdc:app/Enums/TemplateCategory.php)
+- [UI Standards & Tailwind Implementation](mdc:02-ui-standards-tailwind)
+- [Livewire Component Patterns](mdc:03-livewire-component-patterns)

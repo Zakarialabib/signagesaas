@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Retail Digital Signage</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: 'Arial', sans-serif;
+            }
+            body {
+                background-color: #f8f9fa;
+                color: #333;
+                overflow: hidden;
+            }
+            .signage-container {
+                width: 100vw;
+                height: 100vh;
+                display: grid;
+                grid-template-rows: auto 1fr auto;
+            }
+            .header {
+                background-color: #e63946;
+                color: white;
+                padding: 20px;
+                text-align: center;
+                font-size: 3rem;
+                font-weight: bold;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .logo {
+                font-size: 3.5rem;
+            }
+            .date-time {
+                font-size: 2rem;
+                text-align: right;
+            }
+            .main-content {
+                display: grid;
+                grid-template-columns: 2fr 1fr;
+                gap: 20px;
+                padding: 20px;
+                height: 100%;
+            }
+            .promotion-section {
+                background-color: white;
+                border-radius: 10px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                overflow: hidden;
+                position: relative;
+            }
+            .promotion {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 20px;
+                opacity: 0;
+                transition: opacity 1s ease-in-out;
+                text-align: center;
+            }
+            .promotion.active {
+                opacity: 1;
+            }
+            .promotion-title {
+                font-size: 4rem;
+                font-weight: bold;
+                margin-bottom: 20px;
+                color: #e63946;
+            }
+            .promotion-description {
+                font-size: 2.5rem;
+                margin-bottom: 30px;
+            }
+            .promotion-cta {
+                font-size: 3rem;
+                font-weight: bold;
+                color: #e63946;
+            }
+            .side-panel {
+                display: grid;
+                grid-template-rows: repeat(3, 1fr);
+                gap: 20px;
+            }
+            .info-box {
+                background-color: white;
+                border-radius: 10px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                padding: 20px;
+                display: flex;
+                flex-direction: column;
+            }
+            .info-title {
+                font-size: 2rem;
+                font-weight: bold;
+                margin-bottom: 15px;
+                color: #e63946;
+            }
+            .store-hours {
+                font-size: 1.5rem;
+                line-height: 1.6;
+            }
+            .featured-products {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            .product {
+                text-align: center;
+            }
+            .product-name {
+                font-size: 1.2rem;
+                margin-top: 5px;
+            }
+            .product-price {
+                font-size: 1.5rem;
+                font-weight: bold;
+                color: #e63946;
+            }
+            .weather {
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+                font-size: 1.8rem;
+            }
+            .weather-icon {
+                font-size: 4rem;
+            }
+            .temperature {
+                font-size: 3rem;
+                font-weight: bold;
+            }
+            .footer {
+                background-color: #1d3557;
+                color: white;
+                padding: 15px;
+                text-align: center;
+                font-size: 2rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .qr-code {
+                background-color: white;
+                padding: 10px;
+                border-radius: 5px;
+                width: 120px;
+                height: 120px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .social-media {
+                font-size: 2.5rem;
+            }
+            .social-icon {
+                margin: 0 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="signage-container">
+            <header class="header">
+                <div class="logo">FASHION OUTLET</div>
+                <div class="date-time" id="datetime">Loading...</div>
+            </header>
+
+            <main class="main-content">
+                <section class="promotion-section">
+                    <div class="promotion active" id="promo1">
+                        <div class="promotion-title">SUMMER SALE</div>
+                        <div class="promotion-description">
+                            Up to 50% off on all summer collections!
+                        </div>
+                        <div class="promotion-cta">
+                            Shop Now - Limited Time Only!
+                        </div>
+                    </div>
+                    <div class="promotion" id="promo2">
+                        <div class="promotion-title">NEW ARRIVALS</div>
+                        <div class="promotion-description">
+                            Check out our latest fall collection
+                        </div>
+                        <div class="promotion-cta">
+                            Fresh Styles Just Landed!
+                        </div>
+                    </div>
+                    <div class="promotion" id="promo3">
+                        <div class="promotion-title">LOYALTY PROGRAM</div>
+                        <div class="promotion-description">
+                            Join our rewards program and earn points with every
+                            purchase
+                        </div>
+                        <div class="promotion-cta">
+                            Sign Up at Customer Service!
+                        </div>
+                    </div>
+                </section>
+
+                <div class="side-panel">
+                    <div class="info-box">
+                        <div class="info-title">STORE HOURS</div>
+                        <div class="store-hours">
+                            <div>Monday - Friday: 10:00 AM - 9:00 PM</div>
+                            <div>Saturday: 9:00 AM - 10:00 PM</div>
+                            <div>Sunday: 11:00 AM - 7:00 PM</div>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="info-title">FEATURED PRODUCTS</div>
+                        <div class="featured-products">
+                            <div class="product">
+                                <div
+                                    style="
+                                        background-color: #ddd;
+                                        height: 100px;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        font-size: 2rem;
+                                    "
+                                >
+                                    👕
+                                </div>
+                                <div class="product-name">Premium T-Shirt</div>
+                                <div class="product-price">$29.99</div>
+                            </div>
+                            <div class="product">
+                                <div
+                                    style="
+                                        background-color: #ddd;
+                                        height: 100px;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        font-size: 2rem;
+                                    "
+                                >
+                                    👖
+                                </div>
+                                <div class="product-name">Designer Jeans</div>
+                                <div class="product-price">$59.99</div>
+                            </div>
+                            <div class="product">
+                                <div
+                                    style="
+                                        background-color: #ddd;
+                                        height: 100px;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        font-size: 2rem;
+                                    "
+                                >
+                                    👟
+                                </div>
+                                <div class="product-name">Sport Shoes</div>
+                                <div class="product-price">$89.99</div>
+                            </div>
+                            <div class="product">
+                                <div
+                                    style="
+                                        background-color: #ddd;
+                                        height: 100px;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        font-size: 2rem;
+                                    "
+                                >
+                                    👜
+                                </div>
+                                <div class="product-name">Luxury Bag</div>
+                                <div class="product-price">$129.99</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="info-title">TODAY'S WEATHER</div>
+                        <div class="weather">
+                            <div class="weather-icon">☀️</div>
+                            <div>
+                                <div class="temperature">75°F</div>
+                                <div>Sunny</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <footer class="footer">
+                <div>SCAN FOR EXCLUSIVE DEALS</div>
+                <div class="qr-code">
+                    <!-- Simple QR code representation -->
+                    <div
+                        style="
+                            font-size: 0.5rem;
+                            line-height: 0.5rem;
+                            letter-spacing: -0.1rem;
+                        "
+                    >
+                        ██████████████<br />
+                        ██ ██<br />
+                        ██ ██████ ██<br />
+                        ██ ██████ ██<br />
+                        ██ ██████ ██<br />
+                        ██ ██<br />
+                        ██████████████<br />
+                        ██ ██ ████ <br />
+                        ████ ██ ████<br />
+                        ██ ██ ██ ██<br />
+                        ██████████████<br />
+                        ██ ██<br />
+                        ██ ██████ ██<br />
+                        ██ ██████ ██<br />
+                        ██ ██████ ██<br />
+                        ██ ██<br />
+                        ██████████████<br />
+                    </div>
+                </div>
+                <div class="social-media">
+                    <span class="social-icon">📱</span>
+                    <span class="social-icon">📷</span>
+                    <span class="social-icon">📘</span>
+                </div>
+            </footer>
+        </div>
+
+        <script>
+            // Update date and time
+            function updateDateTime() {
+                const now = new Date()
+                const options = {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                }
+                document.getElementById('datetime').textContent =
+                    now.toLocaleDateString('en-US', options)
+            }
+
+            // Rotate promotions
+            function rotatePromotions() {
+                const promotions = document.querySelectorAll('.promotion')
+                let currentIndex = 0
+
+                setInterval(() => {
+                    // Hide all promotions
+                    promotions.forEach((promo) => {
+                        promo.classList.remove('active')
+                    })
+
+                    // Show next promotion
+                    currentIndex = (currentIndex + 1) % promotions.length
+                    promotions[currentIndex].classList.add('active')
+                }, 8000) // Change every 8 seconds
+            }
+
+            // Initialize
+            updateDateTime()
+            setInterval(updateDateTime, 60000) // Update time every minute
+            rotatePromotions()
+        </script>
+    </body>
+</html>

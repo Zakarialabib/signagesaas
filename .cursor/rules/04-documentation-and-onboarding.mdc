@@ -1,0 +1,40 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Documentation & Onboarding
+
+This rule documents the standards and best practices for project documentation and onboarding new contributors.
+
+## Main Documentation
+
+- [README.md](mdc:README.md): The primary entry point for project documentation
+  - Overview of the project, architecture, and setup instructions
+  - How to run the application locally (Docker, Composer, npm, etc.)
+  - How to run tests and check code quality
+  - Links to key Cursor rules for architecture, UI, and domain patterns
+
+## Code Documentation
+
+- All classes, methods, and properties should include PHPDoc blocks
+- Use descriptive comments for complex logic and business rules
+- Reference related Cursor rules in code comments where appropriate
+
+## Onboarding Checklist
+
+- Read the [README.md](mdc:README.md) for setup and architecture overview
+- Review Cursor rules in `.cursor/rules` for standards and patterns
+- Set up local environment using Docker and Composer
+- Run the test suite to verify setup
+- Review example Livewire components and tests
+
+## Rule Referencing
+
+- Reference files using `[filename.ext](mdc:filename.ext)` format in rules
+- Update rules as new features or standards are introduced
+
+---
+
+**Note:** This rule is designed to ensure clear, up-to-date documentation and a smooth onboarding experience for all contributors.
+

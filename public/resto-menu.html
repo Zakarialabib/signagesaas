@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Restaurant Menu</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: 'Georgia', serif;
+            }
+            body {
+                background-color: #f9f5f0;
+                color: #3a3a3a;
+                min-height: 100vh;
+            }
+            .menu-container {
+                max-width: 1800px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+            .restaurant-header {
+                text-align: center;
+                padding: 30px 0;
+                border-bottom: 2px solid #d4af37;
+                margin-bottom: 40px;
+            }
+            .restaurant-name {
+                font-size: 5rem;
+                color: #8b4513;
+                margin-bottom: 15px;
+                font-weight: bold;
+            }
+            .restaurant-tagline {
+                font-size: 2rem;
+                color: #5e5e5e;
+                font-style: italic;
+            }
+            .menu-section {
+                margin-bottom: 50px;
+            }
+            .section-title {
+                font-size: 3.5rem;
+                color: #8b4513;
+                margin-bottom: 25px;
+                text-align: center;
+                position: relative;
+            }
+            .section-title::after {
+                content: '';
+                display: block;
+                width: 100px;
+                height: 3px;
+                background-color: #d4af37;
+                margin: 10px auto;
+            }
+            .menu-items {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 30px;
+            }
+            .menu-item {
+                background-color: #fff;
+                border-radius: 8px;
+                padding: 20px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+            .item-header {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 10px;
+                border-bottom: 1px dotted #d4af37;
+                padding-bottom: 8px;
+            }
+            .item-name {
+                font-size: 2.2rem;
+                color: #8b4513;
+                font-weight: bold;
+            }
+            .item-price {
+                font-size: 2.2rem;
+                color: #8b4513;
+                font-weight: bold;
+            }
+            .item-description {
+                font-size: 1.6rem;
+                color: #5e5e5e;
+                line-height: 1.4;
+            }
+            .dietary-info {
+                margin-top: 10px;
+                font-size: 1.4rem;
+                color: #777;
+                font-style: italic;
+            }
+            .footer {
+                text-align: center;
+                padding: 30px 0;
+                border-top: 2px solid #d4af37;
+                margin-top: 40px;
+                font-size: 1.8rem;
+                color: #5e5e5e;
+            }
+            .chef-special {
+                position: relative;
+            }
+            .chef-special::before {
+                content: "★ Chef's Special";
+                position: absolute;
+                top: -15px;
+                right: 20px;
+                background-color: #d4af37;
+                color: white;
+                padding: 5px 15px;
+                border-radius: 20px;
+                font-size: 1.4rem;
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="menu-container">
+            <header class="restaurant-header">
+                <div class="restaurant-name">BELLA CUCINA</div>
+                <div class="restaurant-tagline">Authentic Italian Cuisine</div>
+            </header>
+
+            <section class="menu-section">
+                <h2 class="section-title">Appetizers</h2>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Bruschetta</div>
+                            <div class="item-price">$9.95</div>
+                        </div>
+                        <div class="item-description">
+                            Grilled bread rubbed with garlic and topped with
+                            diced tomatoes, fresh basil, and extra virgin olive
+                            oil
+                        </div>
+                    </div>
+
+                    <div class="menu-item chef-special">
+                        <div class="item-header">
+                            <div class="item-name">Calamari Fritti</div>
+                            <div class="item-price">$14.95</div>
+                        </div>
+                        <div class="item-description">
+                            Crispy fried calamari served with marinara sauce and
+                            lemon wedges
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Caprese Salad</div>
+                            <div class="item-price">$12.95</div>
+                        </div>
+                        <div class="item-description">
+                            Fresh mozzarella, tomatoes, and basil drizzled with
+                            balsamic glaze
+                        </div>
+                        <div class="dietary-info">Vegetarian</div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Antipasto Platter</div>
+                            <div class="item-price">$18.95</div>
+                        </div>
+                        <div class="item-description">
+                            Selection of Italian cured meats, cheeses, marinated
+                            vegetables, and olives
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="menu-section">
+                <h2 class="section-title">Pasta & Risotto</h2>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Spaghetti Carbonara</div>
+                            <div class="item-price">$18.95</div>
+                        </div>
+                        <div class="item-description">
+                            Classic Roman pasta with pancetta, egg, black
+                            pepper, and Pecorino Romano cheese
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Fettuccine Alfredo</div>
+                            <div class="item-price">$17.95</div>
+                        </div>
+                        <div class="item-description">
+                            Fettuccine pasta in a rich and creamy Parmesan
+                            cheese sauce
+                        </div>
+                        <div class="dietary-info">Vegetarian</div>
+                    </div>
+
+                    <div class="menu-item chef-special">
+                        <div class="item-header">
+                            <div class="item-name">Risotto ai Funghi</div>
+                            <div class="item-price">$21.95</div>
+                        </div>
+                        <div class="item-description">
+                            Creamy Arborio rice with wild mushrooms, white wine,
+                            and Parmigiano-Reggiano
+                        </div>
+                        <div class="dietary-info">Vegetarian, Gluten-Free</div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Lasagna alla Bolognese</div>
+                            <div class="item-price">$19.95</div>
+                        </div>
+                        <div class="item-description">
+                            Layers of pasta, rich meat sauce, béchamel, and
+                            three cheeses
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="menu-section">
+                <h2 class="section-title">Main Courses</h2>
+                <div class="menu-items">
+                    <div class="menu-item chef-special">
+                        <div class="item-header">
+                            <div class="item-name">Osso Buco</div>
+                            <div class="item-price">$32.95</div>
+                        </div>
+                        <div class="item-description">
+                            Braised veal shanks with vegetables, white wine, and
+                            gremolata, served with saffron risotto
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Chicken Marsala</div>
+                            <div class="item-price">$24.95</div>
+                        </div>
+                        <div class="item-description">
+                            Pan-seared chicken breast with Marsala wine and
+                            mushroom sauce, served with roasted potatoes
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Grilled Salmon</div>
+                            <div class="item-price">$27.95</div>
+                        </div>
+                        <div class="item-description">
+                            Atlantic salmon fillet with lemon-herb butter,
+                            served with seasonal vegetables
+                        </div>
+                        <div class="dietary-info">Gluten-Free</div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Eggplant Parmigiana</div>
+                            <div class="item-price">$19.95</div>
+                        </div>
+                        <div class="item-description">
+                            Layers of breaded eggplant, tomato sauce,
+                            mozzarella, and Parmesan cheese
+                        </div>
+                        <div class="dietary-info">Vegetarian</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="menu-section">
+                <h2 class="section-title">Desserts</h2>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Tiramisu</div>
+                            <div class="item-price">$9.95</div>
+                        </div>
+                        <div class="item-description">
+                            Classic Italian dessert with layers of coffee-soaked
+                            ladyfingers and mascarpone cream
+                        </div>
+                    </div>
+
+                    <div class="menu-item chef-special">
+                        <div class="item-header">
+                            <div class="item-name">Panna Cotta</div>
+                            <div class="item-price">$8.95</div>
+                        </div>
+                        <div class="item-description">
+                            Silky vanilla cream with fresh berries and berry
+                            coulis
+                        </div>
+                        <div class="dietary-info">Gluten-Free</div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Cannoli</div>
+                            <div class="item-price">$7.95</div>
+                        </div>
+                        <div class="item-description">
+                            Crispy pastry shells filled with sweet ricotta cream
+                            and chocolate chips
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Gelato Selection</div>
+                            <div class="item-price">$6.95</div>
+                        </div>
+                        <div class="item-description">
+                            Choice of three scoops: vanilla, chocolate,
+                            pistachio, or strawberry
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <footer class="footer">
+                Please inform your server of any allergies or dietary
+                restrictions.<br />
+                A 18% gratuity will be added to parties of 6 or more.
+            </footer>
+        </div>
+    </body>
+</html>

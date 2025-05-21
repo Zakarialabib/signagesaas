@@ -1,0 +1,106 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# AI Integration Layer
+
+## Directory Structure
+
+```
+app/AI/
+├── Agents/             # AI agent implementations
+├── Prompts/            # LLM prompt templates
+├── Services/           # AI service classes
+├── Pipelines/          # AI processing pipelines
+└── DTOs/              # Data transfer objects for AI
+```
+
+## Implementation Patterns
+
+1. **AI Service Classes**
+```php
+declare(strict_types=1);
+
+namespace App\AI\Services;
+
+use App\AI\DTOs\ContentGenerationRequest;
+use App\AI\DTOs\ContentGenerationResponse;
+use App\Contracts\AI\ContentGeneratorInterface;
+
+final readonly class ContentGenerationService implements ContentGeneratorInterface
+{
+    public function __construct(
+        private LLMClientInterface $llmClient,
+        private PromptTemplateService $promptService
+    ) {}
+
+    public function generate(ContentGenerationRequest $request): ContentGenerationResponse
+    {
+        // Implementation
+    }
+}
+```
+
+2. **Prompt Templates**
+```php
+namespace App\AI\Prompts;
+
+final readonly class MarketingPrompts
+{
+    public const BANNER_GENERATION = <<<'PROMPT'
+        Generate a marketing banner for:
+        - Product: {product}
+        - Target audience: {audience}
+        - Key message: {message}
+        - Tone: {tone}
+        - Language: {language}
+    PROMPT;
+}
+```
+
+## Best Practices
+
+1. **AI Request Handling**
+   - Use DTOs for request/response
+   - Implement request validation
+   - Handle rate limiting
+   - Cache responses when possible
+
+2. **Error Handling**
+   - Graceful fallbacks for AI failures
+   - Retry mechanisms for transient errors
+   - Logging for debugging
+   - User-friendly error messages
+
+3. **Performance**
+   - Async processing for long-running tasks
+   - Queue AI jobs with Laravel Horizon
+   - Implement caching strategies
+   - Monitor token usage
+
+4. **Security**
+   - Validate all AI inputs
+   - Sanitize AI outputs
+   - Implement tenant isolation
+   - Secure API key management
+
+5. **Testing**
+   - Mock AI responses
+   - Test error scenarios
+   - Validate output formats
+   - Test rate limiting
+
+6. **Monitoring**
+   - Log AI requests/responses
+   - Track token usage
+   - Monitor performance metrics
+   - Alert on failures
+
+7. **Integration Points**
+   - Content generation
+   - Image analysis
+   - Text translation
+   - Audience analytics
+   - Personalization rules
+

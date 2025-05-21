@@ -1,0 +1,53 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Testing & Quality Assurance
+
+This rule documents the standards and best practices for testing and quality assurance in the digital signage SaaS platform.
+
+## Test Types & Directories
+
+- [tests/Unit](mdc:tests/Unit): Unit tests for models, services, and business logic
+- [tests/Feature](mdc:tests/Feature): Feature tests for HTTP endpoints, Livewire components, and workflows
+- [tests/Feature/Livewire](mdc:tests/Feature/Livewire): Livewire component feature tests
+- [tests/Feature/Auth](mdc:tests/Feature/Auth): Authentication and authorization tests
+- [tests/Unit/Devices](mdc:tests/Unit/Devices): Device-specific unit tests
+- [tests/Unit/Models](mdc:tests/Unit/Models): Model-specific unit tests
+
+## Testing Standards
+
+- All new features must include appropriate unit and feature tests
+- Livewire components must have dedicated feature tests for all public actions and state changes
+- Use Laravel Dusk for browser and Alpine.js interaction tests
+- Accessibility (a11y) checks should be included for all major UI components
+- Use factories and seeders for test data setup
+- Use database transactions or refresh database trait for test isolation
+- Mock external services and APIs
+
+## Coverage & CI
+
+- Maintain high code coverage for critical business logic
+- All tests must pass in CI before merging
+- Use PHPUnit for all automated tests
+- Run Dusk tests for critical user flows
+
+## Example Test Files
+
+- [tests/Feature/Livewire/Devices/DeviceManagerTest.php](mdc:tests/Feature/Livewire/Devices/DeviceManagerTest.php)
+- [tests/Unit/Devices/Services/DeviceServiceTest.php](mdc:tests/Unit/Devices/Services/DeviceServiceTest.php)
+
+## Accessibility Checklist
+
+- All interactive elements have keyboard focus
+- Screen readers announce actions correctly
+- Color contrast meets WCAG standards
+- Alt text provided for images/icons
+- Form inputs have associated labels
+- Focus indicators are visible
+
+---
+
+**Note:** This rule is designed to ensure robust, maintainable, and accessible code through comprehensive testing and quality assurance practices.
+

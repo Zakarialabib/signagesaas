@@ -1,0 +1,203 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Database\Factories;
+
+use App\Enums\ScreenOrientation;
+use App\Enums\ScreenResolution;
+use App\Enums\ScreenStatus;
+use App\Tenant\Models\Device;
+use App\Tenant\Models\Screen;
+use App\Tenant\Models\Tenant;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+final class ScreenFactory extends Factory
+{
+    protected $model = Screen::class;
+
+    public function definition(): array
+    {
+        $device = Device::factory()->create();
+
+        // Determine orientation - match device if available
+        $orientation = $device->orientation ?? fake()->randomElement(ScreenOrientation::cases());
+
+        // Select an appropriate resolution based on orientation
+        $resolution = $this->getResolutionForOrientation($orientation);
+
+        return [
+            'tenant_id'   => fn () => $device->tenant_id,
+            'name'        => fake()->words(2, true).' Screen',
+            'description' => fake()->optional()->sentence(),
+            'status'      => fake()->randomElement(ScreenStatus::cases()),
+            'resolution'  => $resolution,
+            'orientation' => $orientation,
+            'device_id'   => $device->id,
+            'location'    => [
+                'zone'     => fake()->word(),
+                'floor'    => fake()->numberBetween(1, 10),
+                'building' => fake()->optional()->buildingNumber(),
+                'notes'    => fake()->optional()->sentence(),
+            ],
+            'settings' => [
+                'refresh_rate'        => fake()->numberBetween(30, 120),
+                'transition_effect'   => fake()->randomElement(['fade', 'slide', 'none']),
+                'transition_duration' => fake()->numberBetween(300, 1500),
+                'brightness'          => fake()->numberBetween(50, 100),
+                'volume'              => fake()->numberBetween(0, 100),
+                'enable_touch'        => fake()->boolean(70),
+                'enable_sensors'      => fake()->boolean(30),
+            ],
+        ];
+    }
+
+    /** Helper method to get appropriate resolution for orientation */
+    private function getResolutionForOrientation(ScreenOrientation $orientation): ScreenResolution
+    {
+        return match ($orientation) {
+            ScreenOrientation::LANDSCAPE => fake()->randomElement([
+                ScreenResolution::FULL_HD,
+                ScreenResolution::UHD_4K,
+                ScreenResolution::HD,
+                ScreenResolution::HD_PLUS,
+                ScreenResolution::XGA,
+            ]),
+            ScreenOrientation::PORTRAIT => fake()->randomElement([
+                ScreenResolution::PORTRAIT_FULL_HD,
+                ScreenResolution::PORTRAIT_HD,
+                ScreenResolution::PORTRAIT_HD_PLUS,
+            ]),
+        };
+    }
+
+    public function forTenant(Tenant $tenant): self
+    {
+        return $this->state([
+            'tenant_id' => $tenant->id,
+        ]);
+    }
+
+    public function active(): self
+    {
+        return $this->state([
+            'status' => ScreenStatus::ACTIVE,
+        ]);
+    }
+
+    public function inactive(): self
+    {
+        return $this->state([
+            'status' => ScreenStatus::INACTIVE,
+        ]);
+    }
+
+    public function maintenance(): self
+    {
+        return $this->state([
+            'status' => ScreenStatus::MAINTENANCE,
+        ]);
+    }
+
+    public function scheduled(): self
+    {
+        return $this->state([
+            'status' => ScreenStatus::SCHEDULED,
+        ]);
+    }
+
+    public function forDevice(Device $device): self
+    {
+        return $this->state(function () use ($device) {
+            // Match orientation with device
+            $orientation = $device->orientation ?? ScreenOrientation::LANDSCAPE;
+
+            return [
+                'device_id'   => $device->id,
+                'tenant_id'   => $device->tenant_id,
+                'orientation' => $orientation,
+                'resolution'  => $this->getResolutionForOrientation($orientation),
+            ];
+        });
+    }
+
+    public function landscape(): self
+    {
+        return $this->state([
+            'orientation' => ScreenOrientation::LANDSCAPE,
+            'resolution'  => fake()->randomElement([
+                ScreenResolution::FULL_HD,
+                ScreenResolution::UHD_4K,
+                ScreenResolution::HD,
+                ScreenResolution::HD_PLUS,
+            ]),
+        ]);
+    }
+
+    public function portrait(): self
+    {
+        return $this->state([
+            'orientation' => ScreenOrientation::PORTRAIT,
+            'resolution'  => fake()->randomElement([
+                ScreenResolution::PORTRAIT_FULL_HD,
+                ScreenResolution::PORTRAIT_HD,
+                ScreenResolution::PORTRAIT_HD_PLUS,
+            ]),
+        ]);
+    }
+
+    public function fullHD(): self
+    {
+        return $this->state([
+            'orientation' => ScreenOrientation::LANDSCAPE,
+            'resolution'  => ScreenResolution::FULL_HD,
+        ]);
+    }
+
+    public function uhd4K(): self
+    {
+        return $this->state([
+            'orientation' => ScreenOrientation::LANDSCAPE,
+            'resolution'  => ScreenResolution::UHD_4K,
+        ]);
+    }
+
+    public function portraitFullHD(): self
+    {
+        return $this->state([
+            'orientation' => ScreenOrientation::PORTRAIT,
+            'resolution'  => ScreenResolution::PORTRAIT_FULL_HD,
+        ]);
+    }
+
+    public function withZone(string $zone): self
+    {
+        return $this->state(function (array $attributes) use ($zone) {
+            $location = $attributes['location'] ?? [];
+            $location['zone'] = $zone;
+
+            return [
+                'location' => $location,
+            ];
+        });
+    }
+
+    public function withSettings(array $settings): self
+    {
+        return $this->state(function (array $attributes) use ($settings) {
+            return [
+                'settings' => array_merge($attributes['settings'] ?? [], $settings),
+            ];
+        });
+    }
+
+    public function withTouchEnabled(): self
+    {
+        return $this->withSettings(['enable_touch' => true]);
+    }
+
+    public function withSensorsEnabled(): self
+    {
+        return $this->withSettings(['enable_sensors' => true]);
+    }
+}

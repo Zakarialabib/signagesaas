@@ -1,0 +1,273 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# 🎨 UI Standards & Tailwind Implementation
+
+This application follows a strict design system built with **Tailwind CSS**, ensuring consistent, accessible, responsive, and maintainable UI across all components. The interface supports both **light and dark modes** seamlessly using Tailwind’s `dark:` variant and persistent user preference handling.
+
+---
+
+## 🧭 Design System Principles
+
+### 1. **Utility-First Approach**
+- Use Tailwind classes for **all styling**.
+- Avoid custom CSS unless absolutely necessary (e.g., complex animations or third-party integrations).
+- Extend Tailwind config only for design tokens (colors, spacing, fonts).
+
+### 2. **Dark/Light Mode Support**
+- Every component must support **both light and dark themes**.
+- Use Tailwind’s `dark:` variant consistently:  
+  ```html
+  <div class="bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+  ```
+- Store user theme preference in localStorage or database.
+- Provide a toggle UI component (see below).
+
+### 3. **Responsive Design**
+- Follow a **mobile-first** approach.
+- Use responsive prefixes (`sm:`, `md:`, etc.) consistently.
+- Test layouts at key breakpoints:
+  - Mobile (max-width: 640px)
+  - Tablet (768px)
+  - Desktop (1024px)
+
+### 4. **Accessibility**
+- Maintain **WCAG 2.1 AA compliance**.
+- Use semantic HTML tags (`<button>`, `<nav>`, `<main>`, etc.).
+- Add appropriate ARIA attributes where needed.
+- Ensure sufficient color contrast in both themes.
+
+---
+
+## 🌞🌙 Dark Mode Toggle Component
+
+Create a reusable blade component for switching themes:
+
+
+### ✅ Blade Template – `theme-toggle.blade.php`
+
+```blade
+@props 
+<!-- get from app.js   -->
+<div class="flex items-center space-x-2">
+    <button
+        wire:click="$set('theme', 'light')"
+        type="button"
+        class="p-2 rounded-full {{ $theme === 'light' ? 'bg-gray-200 dark:bg-gray-700' : '' }}"
+        aria-pressed="{{ $theme === 'light' ? 'true' : 'false' }}"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+    </button>
+
+    <button
+        wire:click="$set('theme', 'dark')"
+        type="button"
+        class="p-2 rounded-full {{ $theme === 'dark' ? 'bg-gray-200 dark:bg-gray-700' : '' }}"
+        aria-pressed="{{ $theme === 'dark' ? 'true' : 'false' }}"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg>
+    </button>
+</div>
+```
+
+---
+
+## 🧩 Standardized UI Components
+
+### Page Headers
+
+```blade
+<div class="sm:flex sm:items-center mb-8">
+    <div class="sm:flex-auto"-xl font-semibold text-gray-90 $title }}</h1>
+ text-sm text-gray-700 dark:text-gray-300">
+            {{ $description }}
+        </p>
+    </div>
+    <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex sm:space-x-3">
+        {{ $actions ?? '' }}
+    </div>
+</div>
+```
+
+### Data Tables
+
+```blade
+<div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg bg-white dark:bg-gray-800">
+    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+        <thead class="bg-gray-50 dark:bg-gray-900">
+            <!-- Header Cells -->
+        </thead>
+        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+            <!-- Rows -->
+        </tbody>
+    </table>
+</div>
+```
+
+### Form Layouts
+
+```blade
+<form wire:submit="submitForm" class="bg-white dark:bg-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 sm:rounded-xl">
+    <div class="px-4 py-6 sm:p-8">
+        <div class="grid grid-cols-1 gap-y-6 sm:grid-cols-6 gap-x-4">
+            {{ $fields }}
+        </div>
+    </div>
+    <div class="flex items-center justify-end gap-x-6 border-t border-gray-200 dark:border-gray-700 px-4 py-4 sm:px-8">
+        {{ $buttons }}
+    </div>
+</form>
+```
+
+### Input Field Wrapper
+
+```blade
+<div>
+    <label for="{{ $name }}" class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100">
+        {{ $label }}
+    </label>
+    <div class="mt-2">
+        <input
+            type="{{ $type ?? 'text' }}"
+            id="{{ $name }}"
+            wire:model="{{ $name }}"
+            @class([
+                'block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6',
+                'text-gray-900 dark:text-gray-100 dark:bg-gray-700 ring-gray-300 dark:ring-gray-600 placeholder:text-gray-400 focus:ring-indigo-600' => !$errors->{$name}->isNotEmpty(),
+                'ring-red-300 dark:ring-red-700 focus:ring-red-500' => $errors->{$name}->isNotEmpty()
+            ])
+        >
+    </div>
+    @error($name)
+        <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+    @enderror
+</div>
+```
+
+### Buttons
+
+#### Primary
+
+```html
+<button type="submit" class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+    Submit
+</button>
+```
+
+#### Secondary
+
+```html
+<button type="button" class="inline-flex items-center rounded-md bg-white dark:bg-gray-700 px-3 py-2 text-sm font-semibold text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600">
+    Cancel
+</button>
+```
+
+#### Tertiary / Link Style
+
+```html
+<button type="button" class="text-sm font-semibold text-gray-900 dark:text-gray-100 underline decoration-2 underline-offset-4 hover:text-indigo-600 dark:hover:text-indigo-400">
+    Learn more
+</button>
+```
+
+### Status Indicators
+
+#### Success
+
+```html
+<span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium bg-green-50 text-green-700 ring-1 ring-inset ring-green-600/20 dark:bg-green-500/10 dark:text-green-400 dark:ring-green-500/20">
+    Online
+</span>
+```
+
+#### Error
+
+```html
+<span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium bg-red-50 text-red-700 ring-1 ring-inset ring-red-600/20 dark:bg-red-500/10 dark:text-red-400 dark:ring-red-500/20">
+    Error
+</span>
+```
+
+#### Warning
+
+```html
+<span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium bg-yellow-50 text-yellow-700 ring-1 ring-inset ring-yellow-600/20 dark:bg-yellow-500/10 dark:text-yellow-400 dark:ring-yellow-500/20">
+    Warning
+</span>
+```
+
+---
+
+## 🧠 Component Composition Strategy
+
+- **Parent-child component architecture** for SPA-like behavior.
+- Use `wire:navigate` or Livewire modals/drawers instead of full-page reloads.
+- Load subcomponents conditionally based on state (e.g., tabs, panels).
+- Dispatch events to update shared UI elements (e.g., notifications, theme changes).
+
+---
+
+## ⚙️ Alpine.js Usage Guidelines
+
+Use Alpine.js only for client-side enhancements that don’t require Livewire interaction:
+
+- Dropdowns
+- Modals
+- Tabs
+- Tooltips
+- Animations
+
+Example modal:
+
+```html
+<div x-data="{ open: false }" class="relative">
+    <button @click="open = true">Open Modal</button>
+
+    <div x-show="open" class="fixed inset-0 z-50 overflow-y-auto p-4" style="display: none;">
+        <div class="flex min-h-screen items-center justify-center">
+            <div class="w-full max-w-md transform overflow-hidden rounded-lg bg-white dark:bg-gray-800 p-6 shadow-xl transition-all">
+                <p>This is a modal.</p>
+                <button @click="open = false" class="mt-4 text-indigo-600 dark:text-indigo-400">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+```
+
+---
+
+## 📦 Example Component Files
+
+| Type | File |
+|------|------|
+| Device Manager | `resources/views/livewire/devices/manager.blade.php` |
+| Device Create Form | `resources/views/livewire/devices/create.blade.php` |
+| Device Detail View | `resources/views/livewire/devices/show.blade.php` |
+
+---
+
+## 🧪 Accessibility Testing Checklist
+
+- [ ] All interactive elements have keyboard focus
+- [ ] Screen readers announce actions correctly
+- [ ] Color contrast meets WCAG standards
+- [ ] Alt text provided for images/icons
+- [ ] Form inputs have associated labels
+- [ ] Focus indicators are visible
+
+---
+
+## 🧱 Final Notes
+
+- Keep Tailwind utilities consistent across the app.
+- Always test in both light and dark mode.
+- Break large views into smaller, reusable components.
+- Leverage Livewire’s SPA capabilities via dynamic rendering and event-based communication.
+
+---

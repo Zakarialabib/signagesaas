@@ -1,0 +1,27 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+    
+parameters:
+
+    paths:
+#        - app
+#       - app/Models
+       - app/Livewire
+#        - database/factories
+#        - database/seeders
+#        - routes
+#        - tests
+        
+    # Level 9 is the highest level
+    level: 5
+
+    checkMissingIterableValueType: false
+
+    checkGenericClassInNonGenericObjectType: false
+
+    ignoreErrors:
+        - '#PHPDoc tag @var#'
+#
+#    excludePaths:
+#        - ./*/*/FileToBeExcluded.php
+#

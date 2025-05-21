@@ -1,0 +1,141 @@
+version: '3.9'
+
+services:
+    # PHP Application
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: signagesaas-app
+        restart: unless-stopped
+        working_dir: /var/www/html
+        volumes:
+            - .:/var/www/html
+            - ./storage:/var/www/html/storage
+            - ./bootstrap/cache:/var/www/html/bootstrap/cache
+            - node_modules:/var/www/html/node_modules
+        environment:
+            DB_CONNECTION: mysql
+            DB_HOST: db
+            DB_PORT: 3306
+            DB_DATABASE: signagesaas
+            DB_USERNAME: signagesaas
+            DB_PASSWORD: secret
+        depends_on:
+            db:
+                condition: service_healthy
+        networks:
+            - signagesaas
+
+    # Nginx Service
+    nginx:
+        image: nginx:alpine
+        container_name: signagesaas-nginx
+        restart: unless-stopped
+        ports:
+            - '80:80'
+            - '443:443'
+        volumes:
+            - .:/var/www/html
+            - ./docker/nginx/conf.d:/etc/nginx/conf.d
+            - ./docker/nginx/ssl:/etc/nginx/ssl
+        depends_on:
+            - app
+        networks:
+            - signagesaas
+        healthcheck:
+            test: ['CMD-SHELL', "mysql -u signagesaas -psecret -e 'SELECT 1;'"]
+            interval: 10s
+            timeout: 5s
+            retries: 3
+            start_period: 60s
+
+    # MySQL Service (renamed to db for convention and easier switching)
+    db:
+        image: mysql:8.0.36
+        container_name: signagesaas-mysql
+        restart: unless-stopped
+        environment:
+            MYSQL_DATABASE: signagesaas
+            MYSQL_USER: signagesaas
+            MYSQL_PASSWORD: secret
+            MYSQL_ROOT_PASSWORD: secret
+        command:
+            - --default-authentication-plugin=caching_sha2_password
+            - --character-set-server=utf8mb4
+            - --collation-server=utf8mb4_unicode_ci
+            - --bind-address=0.0.0.0
+            - --skip-name-resolve
+            - --max_connections=1000
+        volumes:
+            - mysql_data:/var/lib/mysql
+            - ./docker/mysql/conf.d:/etc/mysql/conf.d
+            - ./docker/mysql/ssl:/etc/mysql/ssl
+        ports:
+            - '3306:3306'
+        networks:
+            - signagesaas
+        healthcheck:
+            test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost', '-psecret']
+            interval: 10s
+            timeout: 5s
+            retries: 5
+            start_period: 20s
+
+    # phpMyAdmin Service
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: signagesaas-phpmyadmin
+        restart: unless-stopped
+        ports:
+            - '8080:80'
+        environment:
+            PMA_HOST: db
+            PMA_PORT: 3306
+            MYSQL_ROOT_PASSWORD: secret
+        depends_on:
+            - db
+        networks:
+            - signagesaas
+
+    # Node Service for Frontend Development
+    node:
+        image: node:20-alpine
+        container_name: signagesaas-node
+        volumes:
+            - .:/var/www/html
+            - node_modules:/var/www/html/node_modules
+        working_dir: /var/www/html
+        command: sh -c "npm install && npm run dev"
+        networks:
+            - signagesaas
+
+    # Certificate Generator Service
+    cert-gen:
+        image: alpine
+        volumes:
+            - ./docker/mysql/ssl:/mysql/ssl
+            - ./docker/nginx/ssl:/nginx/ssl
+        command: >
+            sh -c "
+              apk add --no-cache openssl &&
+              mkdir -p /mysql/ssl /nginx/ssl &&
+              openssl genpkey -algorithm RSA -out /mysql/ssl/ca.key -pkeyopt rsa_keygen_bits:2048 &&
+              openssl req -new -x509 -key /mysql/ssl/ca.key -out /mysql/ssl/ca.crt -days 365 -subj '/CN=Local CA' &&
+              openssl genpkey -algorithm RSA -out /mysql/ssl/mysql.key -pkeyopt rsa_keygen_bits:2048 &&
+              openssl req -new -key /mysql/ssl/mysql.key -out /mysql/ssl/mysql.csr -subj '/CN=mysql' &&
+              openssl x509 -req -in /mysql/ssl/mysql.csr -CA /mysql/ssl/ca.crt -CAkey /mysql/ssl/ca.key -CAcreateserial -out /mysql/ssl/mysql.crt -days 365 &&
+              openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /nginx/ssl/cert.key -out /nginx/ssl/cert.pem -subj '/CN=localhost' &&
+              chmod 600 /mysql/ssl/* /nginx/ssl/* &&
+              cp /mysql/ssl/ca.crt /nginx/ssl/
+            "
+        networks:
+            - signagesaas
+
+networks:
+    signagesaas:
+        driver: bridge
+
+volumes:
+    mysql_data:
+    node_modules:
