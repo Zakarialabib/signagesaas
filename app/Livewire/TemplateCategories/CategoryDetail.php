@@ -22,7 +22,7 @@ class CategoryDetail extends Component
         
         $this->templates = Template::where('category', $this->category->value)
             // ->where('is_active', true)
-            ->orderBy('sort_order')
+            // ->orderBy('sort_order')
             ->get();
             
         $this->relatedCategories = $this->getRelatedCategories();

@@ -506,244 +506,412 @@
             </div>
         </div>
 
-        <div class="mx-auto max-w-7xl px-6 lg:px-8">
-            <!-- Header with CTA -->
-            <div class="mx-auto max-w-2xl text-center">
-                <h2 class="text-4xl font-bold tracking-tight text-white sm:text-5xl">Transform Your Digital Displays
-                </h2>
-                <p class="mt-6 text-lg leading-8 text-gray-300">
-                    Experience the future of digital signage with our dynamic, TV-friendly web app. Engage your audience
-                    with real-time content that captivates.
-                </p>
-                <div class="mt-10 flex items-center justify-center gap-x-6">
-                    <a href="#contact"
-                        class="rounded-full bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600 transition-all duration-300">
-                        Start Your Free Trial
-                    </a>
-                    <a href="#demos" class="group text-sm font-semibold leading-6 text-white">
-                        See Demos
-                        <span
-                            class="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">→</span>
-                    </a>
-                </div>
+        <!-- Header with CTA -->
+        <div class="mx-auto max-w-2xl text-center">
+            <h2 class="text-4xl font-bold tracking-tight text-white sm:text-5xl">Transform Your Digital Displays
+            </h2>
+            <p class="mt-6 text-lg leading-8 text-gray-300">
+                Experience our comprehensive suite of widgets and templates. From real-time information to engaging
+                social feeds,
+                we have everything you need to create compelling digital signage displays.
+            </p>
+            <div class="mt-10 flex items-center justify-center gap-x-6">
+                <a href="#contact"
+                    class="rounded-full bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600 transition-all duration-300">
+                    Start Your Free Trial
+                </a>
+                <a href="#demos" class="group text-sm font-semibold leading-6 text-white">
+                    See All Widgets
+                    <span
+                        class="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">→</span>
+                </a>
             </div>
+        </div>
+        
+        <!-- Featured Widget Section -->
+        <div class="w-full mx-auto mt-24" id="widget-demos-anchor"> {{-- Anchor point for "See All Widgets" link --}}
+            <h3 class="text-3xl font-bold tracking-tight text-white mb-12 text-center sm:text-4xl">Featured Powerhouse
+                Widget</h3>
+            <div class="mx-auto max-w-3xl px-6 lg:px-8"> {{-- Max-width for a single featured item might look better --}}
+                {{-- Removed the grid here as it's for a single featured item. If more featured, add grid back. --}}
+                <x-base-demos title="Digital Menu Board"
+                    iconSvgPath='<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12m-8.25 0V18M12 18.75V18m0 0H18M18 18v-1.25A2.25 2.25 0 0015.75 15H8.25A2.25 2.25 0 006 17.25V18m6-12V5.25A2.25 2.25 0 008.25 3H6a2.25 2.25 0 00-2.25 2.25v1.5M12 6V5.25A2.25 2.25 0 0114.25 3H16.5a2.25 2.25 0 012.25 2.25v1.5" />'
+                    description="Transform your static menu into a <strong>dynamic marketing tool</strong>. Upsell high-margin items, showcase daily specials with mouth-watering animations, and <strong>reduce perceived wait times</strong> by engaging customers visually."
+                    industry="Restaurants & Hospitality"
+                    caseStudyQuote="After implementing the digital menu, we saw an <strong>immediate 18% increase</strong> in average order value as customers were drawn to our animated chef's specials and combo deals."
+                    caseStudyResult="18% higher average order value"
+                    testimonialAuthor="Sarah K., Director of Operations at BurgerCo" :features="[
+                        'Real-time price & item updates',
+                        'Nutritional info & allergen alerts',
+                        'Promotional video/image spotlight',
+                        'Dayparting (Breakfast/Lunch/Dinner)',
+                        'Multilingual support',
+                    ]"
+                    :useCases="[
+                        'Quick-service: Highlight combo deals during peak hours.',
+                        'Fine dining: Showcase wine pairings and chef recommendations.',
+                        'Cafés & Bakeries: Promote seasonal drinks and fresh pastries with enticing visuals.',
+                        'Food Trucks: Instantly update availability and specials on the go.',
+                    ]" category="menu" themeColor="green" gradientToColor="emerald"
+                    :isBestSeller="true" />
+            </div>
+        </div>
+        <!-- Information Widgets -->
+        <div class="mx-auto mt-24 max-w-7xl px-4 sm:px-6 lg:px-8">
+            <h3 class="text-2xl font-semibold text-white mb-8 text-center">Informational & Utility Widgets</h3>
+            <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                <x-base-demos title="Weather Widget"
+                    iconSvgPath='<path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" />'
+                    description="Effortlessly <strong>enhance visitor experience</strong> with dynamic, real-time weather. Perfect for lobbies, retail, or transit hubs to help people plan their day."
+                    industry="Retail, Hospitality, Transportation"
+                    caseStudyQuote="A shopping mall displayed local weather, helping shoppers decide on purchases like umbrellas or sunscreen, subtly <strong>boosting sales by 5% in related stores</strong>."
+                    caseStudyResult="5% sales uplift in weather-related items" :features="['Real-time updates', 'Hourly/Daily forecasts', 'Multiple locations', 'Animated icons']" :useCases="[
+                        'Retail: Promote seasonal clothing based on forecast.',
+                        'Hotels: Inform guests for better activity planning.',
+                        'Outdoor venues: Display conditions for event attendees.',
+                    ]"
+                    category="weather" themeColor="blue" gradientToColor="cyan" />
+                <x-base-demos title="Clock Widget"
+                    iconSvgPath='<path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />'
+                    description="Keep everyone synchronized and operations smooth. Display elegant, accurate time across multiple zones, crucial for transport, corporate, and educational settings."
+                    industry="Corporate, Transportation, Education"
+                    caseStudyQuote="A large corporate campus synchronized clocks across all meeting rooms and common areas, resulting in a <strong>15% reduction in meeting start delays</strong>."
+                    caseStudyResult="15% fewer meeting delays" :features="[
+                        'Multiple formats (Analog/Digital)',
+                        'Time zone support',
+                        'Customizable styles',
+                        'Countdown timers',
+                    ]" :useCases="[
+                        'Airports/Stations: Show local and destination times.',
+                        'Schools: Synchronize class change bells.',
+                        'Global offices: Display time for key international branches.',
+                    ]" category="clock"
+                    themeColor="emerald" gradientToColor="teal" />
+                <x-base-demos title="RSS Feed Widget"
+                    iconSvgPath='<path stroke-linecap="round" stroke-linejoin="round" d="M12.75 19.5v-.75a7.5 7.5 0 00-7.5-7.5H4.5m0-6.75h.75c7.87 0 14.25 6.38 14.25 14.25v.75M6 18.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />'
+                    description="Streamline information delivery and keep your audience engaged with automated content from any RSS source. Ideal for news, blogs, or industry updates."
+                    industry="Education, Corporate, Public Venues"
+                    caseStudyQuote="A university library used RSS feeds to display new acquisitions and academic news, <strong>increasing resource discovery by 20%</strong>."
+                    caseStudyResult="20% higher resource discovery" :features="['Multiple feeds', 'Auto-refresh', 'Custom layouts', 'Keyword filtering']" :useCases="[
+                        'Waiting rooms: Display relevant industry news or health tips.',
+                        'Company intranets: Show internal blog updates and announcements.',
+                        'Event venues: Stream live updates or relevant news tickers.',
+                    ]"
+                    category="rss_feed" themeColor="orange" gradientToColor="amber" />
+            </div>
+        </div>
 
-            <!-- Demo Cards Section -->
-            <div id="demos" class="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
-                <div class="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-2">
-                    <!-- Full Dashboard Demo -->
+        <div class="mx-auto mt-24 max-w-7xl px-4 sm:px-6 lg:px-8">
+            <h3 class="text-2xl font-semibold text-white mb-8 text-center">Social & Community Engagement Widgets</h3>
+            <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                <x-base-demos title="Social Media Wall"
+                    iconSvgPath='<path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z" />'
+                    description="Transform displays into dynamic social hubs. <strong>Amplify brand reach</strong> and <strong>foster community</strong> by showcasing user-generated content and official posts."
+                    industry="Events, Retail, Hospitality"
+                    caseStudyQuote="A music festival's social wall <strong>increased online mentions by 70%</strong> and boosted ticket sales for the next event by showcasing attendee excitement."
+                    caseStudyResult="70% more online mentions" testimonialAuthor="Alex P., Event Organizer"
+                    :features="[
+                        'Multi-platform (Instagram, X, Facebook)',
+                        'Real-time updates',
+                        'Moderation tools',
+                        'Branded templates',
+                    ]" :useCases="[
+                        'Conferences: Display live tweets and photos with event hashtag.',
+                        'Retail Stores: Show customer posts featuring products to build social proof.',
+                        'Restaurants: Feature foodie photos and reviews to entice diners.',
+                    ]" category="social_media" themeColor="pink"
+                    gradientToColor="rose" :isBestSeller="true" />
+                <x-base-demos title="News Feed Widget"
+                    iconSvgPath='<path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" />'
+                    description="Keep your audience informed and engaged with curated news from trusted global or local sources. <strong>Enhance dwell time</strong> and perceived value in waiting areas."
+                    industry="Finance, Healthcare, Corporate Lobbies"
+                    caseStudyQuote="A financial advisory firm displayed relevant market news in their lobby, leading to <strong>more informed client conversations and a 10% increase in new service inquiries</strong>."
+                    caseStudyResult="10% rise in service inquiries" :features="[
+                        'Multiple news sources',
+                        'Category & keyword filters',
+                        'Auto-scrolling ticker',
+                        'Customizable layouts',
+                    ]" :useCases="[
+                        'Hospital waiting rooms: Display health news and wellness tips.',
+                        'Bank branches: Show financial news and stock market updates.',
+                        'University common areas: Curate news relevant to student interests.',
+                    ]"
+                    category="news" themeColor="indigo" gradientToColor="violet" />
+                <x-base-demos title="Announcements Widget"
+                    iconSvgPath='<path stroke-linecap="round" stroke-linejoin="round" d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 110-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 01-1.44-4.282m3.102.069a18.03 18.03 0 01-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 018.835 2.535M10.34 6.66a23.847 23.847 0 008.835-2.535m0 0A23.74 23.74 0 0018.795 3m.38 1.125a23.91 23.91 0 011.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 001.014-5.395m0-3.46c.495.413.811 1.035.811 1.73 0 .695-.316 1.317-.811 1.73m0-3.46a24.347 24.347 0 010 3.46" />'
+                    description="Grab attention and ensure critical information is seen. Share important updates, urgent alerts, or upcoming events with eye-catching animations and scheduling."
+                    industry="Corporate, Education, Healthcare"
+                    caseStudyQuote="A manufacturing plant used announcement screens for safety alerts, contributing to a <strong>25% reduction in workplace incidents</strong>."
+                    caseStudyResult="25% fewer workplace incidents" :features="[
+                        'Rich text & media support',
+                        'Scheduling & expiry',
+                        'Animations & transitions',
+                        'Priority levels for alerts',
+                    ]" :useCases="[
+                        'Offices: Broadcast company-wide news, achievements, or policy changes.',
+                        'Schools: Announce events, schedule changes, or emergency alerts.',
+                        'Hospitals: Share visitor guidelines, department updates, or health campaigns.',
+                    ]"
+                    category="announcement" themeColor="amber" gradientToColor="yellow" />
+            </div>
+        </div>
+
+        <!-- Business Widgets Section -->
+        <div class="mx-auto mt-24 max-w-7xl">
+            <h3 class="text-2xl font-semibold text-white mb-8">Business Widgets</h3>
+            <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                <!-- Menu Widget Demo -->
+                <div
+                    class="group relative rounded-3xl bg-white/5 p-6 shadow-2xl backdrop-blur-sm transition-all hover:scale-[1.02]">
                     <div
-                        class="group relative rounded-3xl bg-white/5 p-6 shadow-2xl backdrop-blur-sm transition-all hover:scale-[1.02]">
-                        <div
-                            class="absolute -inset-1 rounded-3xl bg-gradient-to-r from-purple-600/30 to-pink-600/30 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                        class="absolute -inset-1 rounded-3xl bg-gradient-to-r from-green-600/30 to-emerald-600/30 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                    </div>
+                    <div class="relative">
+                        <div class="flex items-center gap-x-4">
+                            <div
+                                class="flex h-12 w-12 items-center justify-center rounded-full bg-green-600/10 text-green-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="h-7 w-7">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold leading-7 text-white">Menu Board</h3>
                         </div>
-                        <div class="relative">
-                            <div class="flex items-center gap-x-4">
-                                <div
-                                    class="flex h-12 w-12 items-center justify-center rounded-full bg-purple-600/10 text-purple-400">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor" class="h-7 w-7">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
-                                    </svg>
-                                </div>
-                                <h3 class="text-xl font-semibold leading-7 text-white">Interactive Dashboard</h3>
-                            </div>
-                            <p class="mt-4 text-gray-300">
-                                Our comprehensive dashboard combines multiple widgets into a single, cohesive display
-                                perfect for lobbies, waiting areas, and control rooms.
-                            </p>
-                            <div class="mt-6 flex flex-wrap gap-4">
-                                <div
-                                    class="flex items-center rounded-full bg-gray-800/50 px-3 py-1 text-xs font-medium text-gray-300">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                        class="mr-1 h-3 w-3 text-purple-400">
-                                        <path fill-rule="evenodd"
-                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                    Weather integration
-                                </div>
-                                <div
-                                    class="flex items-center rounded-full bg-gray-800/50 px-3 py-1 text-xs font-medium text-gray-300">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                        class="mr-1 h-3 w-3 text-purple-400">
-                                        <path fill-rule="evenodd"
-                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                    News feeds
-                                </div>
-                                <div
-                                    class="flex items-center rounded-full bg-gray-800/50 px-3 py-1 text-xs font-medium text-gray-300">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                        class="mr-1 h-3 w-3 text-purple-400">
-                                        <path fill-rule="evenodd"
-                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                    Social media
-                                </div>
-                            </div>
-                            <a href="{{ route('tenant.tv.display') }}"
-                                class="mt-8 inline-flex items-center gap-x-1.5 text-sm font-semibold text-white hover:text-purple-300 transition-colors">
-                                View display Demo
+                        <p class="mt-4 text-gray-300">
+                            Boost sales and enhance customer experience with enticing digital menu boards.
+                            Showcase your offerings with dynamic pricing, vivid imagery, and easy-to-update
+                            specials.
+                        </p>
+                        <!-- Case Study Badge -->
+                        <div
+                            class="mt-4 flex items-center text-xs font-medium text-green-300 bg-green-500/10 px-3 py-1 rounded-full w-fit">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                class="mr-1 h-3 w-3">
+                                <path fill-rule="evenodd"
+                                    d="M9.315 7.585C12.195 6.939 15.143 8.816 15.143 12A6.859 6.859 0 018.5 18.5a6.859 6.859 0 01-6.643-6.5c0-3.185 2.948-5.061 5.828-4.415A3.97 3.97 0 019 8c0-.479.11-.944.315-1.355z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            Marketing Use Case
+                        </div>
+                        <!-- Case Study Text -->
+                        <p class="mt-2 text-sm text-gray-400 italic">
+                            "A fast-food restaurant chain saw a 30% uplift in sales of promotional items by
+                            using dynamic digital menu boards to highlight special offers and new arrivals."
+                        </p>
+                        <div class="mt-6 flex flex-wrap gap-4">
+                            <div
+                                class="flex items-center rounded-full bg-gray-800/50 px-3 py-1 text-xs font-medium text-gray-300">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                    class="h-4 w-4">
+                                    class="mr-1 h-3 w-3 text-green-400">
                                     <path fill-rule="evenodd"
-                                        d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
                                         clip-rule="evenodd" />
                                 </svg>
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Focused Widget Demo -->
-                    <div
-                        class="group relative rounded-3xl bg-white/5 p-6 shadow-2xl backdrop-blur-sm transition-all hover:scale-[1.02]">
-                        <div
-                            class="absolute -inset-1 rounded-3xl bg-gradient-to-r from-teal-600/30 to-cyan-600/30 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                        </div>
-                        <div class="relative">
-                            <div class="flex items-center gap-x-4">
-                                <div
-                                    class="flex h-12 w-12 items-center justify-center rounded-full bg-teal-600/10 text-teal-400">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor" class="h-7 w-7">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" />
-                                    </svg>
-                                </div>
-                                <h3 class="text-xl font-semibold leading-7 text-white">Focused Widget View</h3>
+                                Price updates
                             </div>
-                            <p class="mt-4 text-gray-300">
-                                Maximize impact with full-screen widget displays perfect for targeted messaging, weather
-                                forecasts, or social media walls in high-traffic areas.
-                            </p>
-                            <div class="mt-6 flex flex-wrap gap-4">
-                                <div
-                                    class="flex items-center rounded-full bg-gray-800/50 px-3 py-1 text-xs font-medium text-gray-300">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                        class="mr-1 h-3 w-3 text-teal-400">
-                                        <path fill-rule="evenodd"
-                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                    Full-screen display
-                                </div>
-                                <div
-                                    class="flex items-center rounded-full bg-gray-800/50 px-3 py-1 text-xs font-medium text-gray-300">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                        class="mr-1 h-3 w-3 text-teal-400">
-                                        <path fill-rule="evenodd"
-                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                    Auto-rotation
-                                </div>
-                                <div
-                                    class="flex items-center rounded-full bg-gray-800/50 px-3 py-1 text-xs font-medium text-gray-300">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                        class="mr-1 h-3 w-3 text-teal-400">
-                                        <path fill-rule="evenodd"
-                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                    Custom durations
-                                </div>
+                            <div
+                                class="flex items-center rounded-full bg-gray-800/50 px-3 py-1 text-xs font-medium text-gray-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                    class="mr-1 h-3 w-3 text-green-400">
+                                    <path fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                Categories
                             </div>
-                            <div class="mt-8 flex flex-wrap gap-3">
-                                <a href="{{ route('tenant.tv.widget', ['category' => 'weather']) }}"
-                                    class="inline-flex items-center gap-x-1.5 text-sm font-semibold text-white hover:text-teal-300 transition-colors">
-                                    Weather Demo
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                        class="h-4 w-4">
-                                        <path fill-rule="evenodd"
-                                            d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </a>
-                                <a href="{{ route('tenant.tv.widget', ['category' => 'news']) }}"
-                                    class="inline-flex items-center gap-x-1.5 text-sm font-semibold text-white hover:text-teal-300 transition-colors">
-                                    News Demo
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                        class="h-4 w-4">
-                                        <path fill-rule="evenodd"
-                                            d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </a>
-                                <a href="{{ route('tenant.tv.widget', ['category' => 'social']) }}"
-                                    class="inline-flex items-center gap-x-1.5 text-sm font-semibold text-white hover:text-teal-300 transition-colors">
-                                    Social Demo
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                        class="h-4 w-4">
-                                        <path fill-rule="evenodd"
-                                            d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </a>
+                            <div
+                                class="flex items-center rounded-full bg-gray-800/50 px-3 py-1 text-xs font-medium text-gray-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                    class="mr-1 h-3 w-3 text-green-400">
+                                    <path fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                Specials
                             </div>
                         </div>
+                        <a href="{{ route('tenant.tv.widget', ['category' => 'menu']) }}"
+                            class="mt-8 inline-flex items-center gap-x-1.5 text-sm font-semibold text-white hover:text-green-300 transition-colors">
+                            View Menu Demo
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                class="h-4 w-4">
+                                <path fill-rule="evenodd"
+                                    d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </a>
                     </div>
                 </div>
-            </div>
 
-            <!-- Coming Soon Section -->
-            <div class="mx-auto mt-24 max-w-2xl lg:text-center">
-                <h2 class="text-base font-semibold leading-7 text-purple-400">Coming Soon</h2>
-                <p class="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">Exciting New Features</p>
-                <p class="mt-6 text-lg leading-8 text-gray-300">
-                    We're constantly innovating to bring you the best digital signage experience.
-                </p>
-            </div>
-            <div class="mx-auto mt-10 max-w-2xl lg:max-w-none">
-                <div class="grid grid-cols-1 gap-8 sm:grid-cols-3">
+                <!-- Retail Product Widget Demo -->
+                <div
+                    class="group relative rounded-3xl bg-white/5 p-6 shadow-2xl backdrop-blur-sm transition-all hover:scale-[1.02]">
                     <div
-                        class="rounded-2xl bg-white/5 p-8 text-center shadow-lg backdrop-blur-sm border border-white/10">
-                        <div
-                            class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-purple-600/10 text-purple-400">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                            </svg>
-                        </div>
-                        <h3 class="mt-6 text-lg font-semibold leading-7 text-white">Employee Recognition</h3>
-                        <p class="mt-2 text-sm leading-6 text-gray-400">
-                            Celebrate your team with dynamic recognition displays featuring photos, achievements, and
-                            milestones.
-                        </p>
+                        class="absolute -inset-1 rounded-3xl bg-gradient-to-r from-cyan-600/30 to-sky-600/30 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
                     </div>
-                    <div
-                        class="rounded-2xl bg-white/5 p-8 text-center shadow-lg backdrop-blur-sm border border-white/10">
-                        <div
-                            class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-teal-600/10 text-teal-400">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
-                            </svg>
+                    <div class="relative">
+                        <div class="flex items-center gap-x-4">
+                            <div
+                                class="flex h-12 w-12 items-center justify-center rounded-full bg-cyan-600/10 text-cyan-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="h-7 w-7">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold leading-7 text-white">Retail Products</h3>
                         </div>
-                        <h3 class="mt-6 text-lg font-semibold leading-7 text-white">Data Visualization</h3>
-                        <p class="mt-2 text-sm leading-6 text-gray-400">
-                            Beautiful real-time data dashboards that make complex information instantly understandable.
+                        <p class="mt-4 text-gray-300">
+                            Drive sales and inform purchase decisions by showcasing your products
+                            dynamically.
+                            Highlight promotions, display real-time pricing, and manage inventory visibility
+                            effectively.
                         </p>
+                        <!-- Case Study Badge -->
+                        <div
+                            class="mt-4 flex items-center text-xs font-medium text-cyan-300 bg-cyan-500/10 px-3 py-1 rounded-full w-fit">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                class="mr-1 h-3 w-3">
+                                <path fill-rule="evenodd"
+                                    d="M9.315 7.585C12.195 6.939 15.143 8.816 15.143 12A6.859 6.859 0 018.5 18.5a6.859 6.859 0 01-6.643-6.5c0-3.185 2.948-5.061 5.828-4.415A3.97 3.97 0 019 8c0-.479.11-.944.315-1.355z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            Marketing Use Case
+                        </div>
+                        <!-- Case Study Text -->
+                        <p class="mt-2 text-sm text-gray-400 italic">
+                            "Grocery stores boost impulse purchases by 35% through dynamic pricing displays
+                            tied
+                            to current promotions."
+                        </p>
+                        <div class="mt-6 flex flex-wrap gap-4">
+                            <div
+                                class="flex items-center rounded-full bg-gray-800/50 px-3 py-1 text-xs font-medium text-gray-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                    class="mr-1 h-3 w-3 text-cyan-400">
+                                    <path fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                Live inventory
+                            </div>
+                            <div
+                                class="flex items-center rounded-full bg-gray-800/50 px-3 py-1 text-xs font-medium text-gray-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                    class="mr-1 h-3 w-3 text-cyan-400">
+                                    <path fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                Promotions
+                            </div>
+                            <div
+                                class="flex items-center rounded-full bg-gray-800/50 px-3 py-1 text-xs font-medium text-gray-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                    class="mr-1 h-3 w-3 text-cyan-400">
+                                    <path fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                Dynamic pricing
+                            </div>
+                        </div>
+                        <a href="{{ route('tenant.tv.widget', ['category' => 'retail']) }}"
+                            class="mt-8 inline-flex items-center gap-x-1.5 text-sm font-semibold text-white hover:text-cyan-300 transition-colors">
+                            View Retail Demo
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                class="h-4 w-4">
+                                <path fill-rule="evenodd"
+                                    d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </a>
                     </div>
+                </div>
+
+                <!-- Calendar Widget Demo -->
+                <div
+                    class="group relative rounded-3xl bg-white/5 p-6 shadow-2xl backdrop-blur-sm transition-all hover:scale-[1.02]">
                     <div
-                        class="rounded-2xl bg-white/5 p-8 text-center shadow-lg backdrop-blur-sm border border-white/10">
-                        <div
-                            class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-pink-600/10 text-pink-400">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
-                            </svg>
+                        class="absolute -inset-1 rounded-3xl bg-gradient-to-r from-violet-600/30 to-purple-600/30 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                    </div>
+                    <div class="relative">
+                        <div class="flex items-center gap-x-4">
+                            <div
+                                class="flex h-12 w-12 items-center justify-center rounded-full bg-violet-600/10 text-violet-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="h-7 w-7">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold leading-7 text-white">Calendar & Events</h3>
                         </div>
-                        <h3 class="mt-6 text-lg font-semibold leading-7 text-white">Interactive Kiosks</h3>
-                        <p class="mt-2 text-sm leading-6 text-gray-400">
-                            Touch-enabled displays with wayfinding, directories, and self-service options.
+                        <p class="mt-4 text-gray-300">
+                            Maximize attendance and keep everyone informed about upcoming events and
+                            schedules.
+                            Display clear, interactive calendar views to enhance planning and engagement.
                         </p>
+                        <!-- Case Study Badge -->
+                        <div
+                            class="mt-4 flex items-center text-xs font-medium text-violet-300 bg-violet-500/10 px-3 py-1 rounded-full w-fit">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                class="mr-1 h-3 w-3">
+                                <path fill-rule="evenodd"
+                                    d="M9.315 7.585C12.195 6.939 15.143 8.816 15.143 12A6.859 6.859 0 018.5 18.5a6.859 6.859 0 01-6.643-6.5c0-3.185 2.948-5.061 5.828-4.415A3.97 3.97 0 019 8c0-.479.11-.944.315-1.355z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            Marketing Use Case
+                        </div>
+                        <!-- Case Study Text -->
+                        <p class="mt-2 text-sm text-gray-400 italic">
+                            "A community center drove a 50% increase in event participation by showcasing
+                            upcoming activities and registration details on vibrant digital calendars in
+                            high-traffic areas."
+                        </p>
+                        <div class="mt-6 flex flex-wrap gap-4">
+                            <div
+                                class="flex items-center rounded-full bg-gray-800/50 px-3 py-1 text-xs font-medium text-gray-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                    class="mr-1 h-3 w-3 text-violet-400">
+                                    <path fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                Multiple views
+                            </div>
+                            <div
+                                class="flex items-center rounded-full bg-gray-800/50 px-3 py-1 text-xs font-medium text-gray-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                    class="mr-1 h-3 w-3 text-violet-400">
+                                    <path fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                Event details
+                            </div>
+                            <div
+                                class="flex items-center rounded-full bg-gray-800/50 px-3 py-1 text-xs font-medium text-gray-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                    class="mr-1 h-3 w-3 text-violet-400">
+                                    <path fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                Reminders
+                            </div>
+                        </div>
+                        <a href="{{ route('tenant.tv.widget', ['category' => 'calendar']) }}"
+                            class="mt-8 inline-flex items-center gap-x-1.5 text-sm font-semibold text-white hover:text-violet-300 transition-colors">
+                            View Calendar Demo
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                class="h-4 w-4">
+                                <path fill-rule="evenodd"
+                                    d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -1219,4 +1387,6 @@
             </form>
         </div>
     </div>
+
+
 </div>

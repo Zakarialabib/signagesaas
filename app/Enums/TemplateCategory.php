@@ -26,6 +26,8 @@ enum TemplateCategory: string
     case OTHER = 'other';
     case SOCIAL = 'social';
     case ANNOUNCEMENTS = 'announcements';
+    case CLOCK = 'clock';
+    case RSS_FEED = 'rss_feed';
 
     public function label(): string
     {
@@ -50,6 +52,8 @@ enum TemplateCategory: string
             self::OTHER          => 'Other',
             self::SOCIAL         => 'Social Media',
             self::ANNOUNCEMENTS  => 'Announcements',
+            self::CLOCK          => 'Clock',
+            self::RSS_FEED       => 'RSS Feed',
         };
     }
 
@@ -76,6 +80,8 @@ enum TemplateCategory: string
             self::OTHER          => 'Other template category',
             self::SOCIAL         => 'Display social media feeds and updates',
             self::ANNOUNCEMENTS  => 'Show important announcements and alerts',
+            self::CLOCK          => 'Display a clock',
+            self::RSS_FEED       => 'Display RSS Feed',
         };
     }
 
@@ -102,6 +108,8 @@ enum TemplateCategory: string
             self::OTHER          => 'dots-horizontal',
             self::SOCIAL         => '📱',
             self::ANNOUNCEMENTS  => '📢',
+            self::CLOCK          => '🕒',
+            self::RSS_FEED       => 'rss',
         };
     }
 }

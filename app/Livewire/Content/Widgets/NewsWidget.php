@@ -88,7 +88,6 @@ final class NewsWidget extends BaseWidget
             'category' => 'NEWS',
             'icon' => '<svg class="h-5 w-5 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2.5 2.5 0 00-2.5-2.5H15M9 11l3 3m0 0l3-3m-3 3V8" /></svg>',
             'newsItems' => $this->newsItems,
-            'lastUpdated' => $this->lastUpdated,
             'error' => $this->error,
             'isLoading' => $this->isLoading,
         ]);

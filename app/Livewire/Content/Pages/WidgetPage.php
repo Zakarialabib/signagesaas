@@ -14,11 +14,32 @@ final class WidgetPage extends Component
     public TemplateCategory $category;
     public ?string $weatherApiKey = null;
     public ?string $weatherLocation = null;
-    public bool $isWeatherWidget = false;
+    // You can add more properties here if other widgets need specific data passed from the page
+    public string $rssFeedUrl = 'https://feeds.bbci.co.uk/news/world/rss.xml'; // Example default for RSS
+    public int $rssItemCount = 5;
 
+    public string $defaultAnnouncementTitle = "Important Update";
+    public string $defaultAnnouncementMessage = "Please be advised of the new company policy effective next Monday. Details will be shared via email.";
+    public string $defaultCustomText = "Welcome to Our Digital Signage Display!";
+  
+    public bool $isWeatherWidget = false;
+    public ?string $announcementText = null;
+    public bool $isAnnouncementWidget = false;
+    
     public function mount($category): void
     {
         $this->category = TemplateCategory::from($category->value);
+    
+        // if ($this->category === TemplateCategory::WEATHER) {
+        //     $this->isWeatherWidget = true;
+        //     $this->weatherApiKey = session('demo_weather_api_key', 'YOUR_FALLBACK_API_KEY');
+        //     $this->weatherLocation = session('demo_weather_location', 'London');
+        // }
+    
+        if ($this->category === TemplateCategory::ANNOUNCEMENT) {
+            $this->isAnnouncementWidget = true;
+            $this->announcementText = session('demo_announcement_text', 'Welcome to our Digital Signage!');
+        }
 
         if ($this->category === TemplateCategory::WEATHER) {
             $this->isWeatherWidget = true;
@@ -48,7 +69,7 @@ final class WidgetPage extends Component
             // --- SIMPLIFIED DEMO FOR NOW ---
             // Manually set for demo until template loading logic is solid
             // In a real scenario, these would come from the $template's zone settings
-            $this->weatherApiKey = session('demo_weather_api_key', 'YOUR_FALLBACK_API_KEY'); 
+            $this->weatherApiKey = session('demo_weather_api_key', 'YOUR_FALLBACK_API_KEY');
             $this->weatherLocation = session('demo_weather_location', 'London');
             // You'd need to ensure the TemplateConfigurator actually saves 'widget_type'
             // for the zone to be identified here.

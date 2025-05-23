@@ -31,20 +31,22 @@
                     `transform: translateY(-${currentIndex * 100}%)` :
                     `transform: translateX(-${currentIndex * 100}%)`">
                 @foreach ($announcements as $announcement)
-                    <div class="p-4 rounded-lg"
+                    <div class="p-6 rounded-xl shadow-md"
                         :class="{
-                            'bg-yellow-50 dark:bg-yellow-900': '{{ $announcement['type'] }}'
+                            'bg-yellow-100 dark:bg-yellow-800 border-l-4 border-yellow-500': '{{ $announcement['type'] }}'
                             === 'warning',
-                            'bg-blue-50 dark:bg-blue-900': '{{ $announcement['type'] }}'
+                            'bg-blue-100 dark:bg-blue-800 border-l-4 border-blue-500': '{{ $announcement['type'] }}'
                             === 'info',
-                            'bg-gray-50 dark:bg-gray-900': '{{ $announcement['type'] }}'
-                            === 'notice'
+                            'bg-gray-100 dark:bg-gray-800 border-l-4 border-gray-500': '{{ $announcement['type'] }}'
+                            === 'notice',
+                            'bg-green-100 dark:bg-green-800 border-l-4 border-green-500': '{{ $announcement['type'] }}'
+                            === 'meeting' // Added meeting type styling
                         }">
-                        <div class="flex items-center mb-2">
+                        <div class="flex items-start mb-3">
                             <div class="flex-shrink-0">
                                 @switch($announcement['type'])
                                     @case('warning')
-                                        <svg class="h-5 w-5 text-yellow-400" fill="none" viewBox="0 0 24 24"
+                                        <svg class="h-6 w-6 text-yellow-600 dark:text-yellow-400" fill="none" viewBox="0 0 24 24"
                                             stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -52,43 +54,56 @@
                                     @break
 
                                     @case('info')
-                                        <svg class="h-5 w-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <svg class="h-6 w-6 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
                                     @break
 
                                     @default
-                                        <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <svg class="h-6 w-6 text-gray-600 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
                                         </svg>
                                 @endswitch
                             </div>
-                            <div class="ml-3">
-                                <h3 class="text-sm font-medium"
+                            <div class="ml-4 flex-1">
+                                <h3 class="text-lg font-semibold leading-6"
+                                    :class="{
+                                        'text-yellow-900 dark:text-yellow-100': '{{ $announcement['type'] }}'
+                                        === 'warning',
+                                        'text-blue-900 dark:text-blue-100': '{{ $announcement['type'] }}'
+                                        === 'info',
+                                        'text-gray-900 dark:text-gray-100': '{{ $announcement['type'] }}'
+                                        === 'notice',
+                                        'text-green-900 dark:text-green-100': '{{ $announcement['type'] }}'
+                                        === 'meeting' // Added meeting type styling
+                                    }">
+                                    {{ $announcement['title'] }}
+                                </h3>
+                                <div class="mt-2 text-sm"
                                     :class="{
                                         'text-yellow-800 dark:text-yellow-200': '{{ $announcement['type'] }}'
                                         === 'warning',
                                         'text-blue-800 dark:text-blue-200': '{{ $announcement['type'] }}'
                                         === 'info',
                                         'text-gray-800 dark:text-gray-200': '{{ $announcement['type'] }}'
-                                        === 'notice'
+                                        === 'notice',
+                                        'text-green-800 dark:text-green-200': '{{ $announcement['type'] }}'
+                                        === 'meeting' // Added meeting type styling
                                     }">
-                                    {{ $announcement['title'] }}
-                                </h3>
-                                <div class="mt-1">
-                                    <p class="text-sm"
-                                        :class="{
-                                            'text-yellow-700 dark:text-yellow-300': '{{ $announcement['type'] }}'
-                                            === 'warning',
-                                            'text-blue-700 dark:text-blue-300': '{{ $announcement['type'] }}'
-                                            === 'info',
-                                            'text-gray-700 dark:text-gray-300': '{{ $announcement['type'] }}'
-                                            === 'notice'
-                                        }">
-                                        {{ $announcement['content'] }}
-                                    </p>
+                                    @if (isset($announcement['description']))
+                                        <p>{{ $announcement['description'] }}</p>
+                                    @endif
+                                    @if (isset($announcement['content']))
+                                        <p>{{ $announcement['content'] }}</p>
+                                    @endif
+                                    @if (isset($announcement['time']))
+                                        <p class="mt-1 font-medium">Time: {{ $announcement['time'] }}</p>
+                                    @endif
+                                    @if (isset($announcement['location']))
+                                        <p class="mt-1 font-medium">Location: {{ $announcement['location'] }}</p>
+                                    @endif
                                 </div>
                             </div>
                         </div>

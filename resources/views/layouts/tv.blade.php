@@ -15,6 +15,23 @@
             document.documentElement.classList.remove('dark');
         }
     </script>
+    <style>
+        /* Optional: For a nicer scrollbar on widgets that overflow */
+        .tv-widget-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .tv-widget-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .tv-widget-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(100, 116, 139, 0.7); /* slate-500 with opacity */
+            border-radius: 3px;
+        }
+        .tv-widget-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(71, 85, 105, 0.9); /* slate-600 with opacity */
+        }
+    </style>
 </head>
 <body class="h-full bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
     {{ $slot }}

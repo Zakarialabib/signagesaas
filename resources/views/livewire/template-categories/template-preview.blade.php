@@ -147,7 +147,7 @@
                                         @endif
                                         <a href="{{ route('template-category.show', $relatedTemplate->category) }}"
                                             class="relative z-10 rounded-full bg-gray-50 dark:bg-gray-800 px-3 py-1.5 font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
-                                            {{ App\Enums\TemplateCategory::from($relatedTemplate->category)->label() }}
+                                            {{ $relatedTemplate->category->value }}
                                         </a>
                                     </div>
                                     <div class="group relative">
@@ -165,14 +165,14 @@
                                     <div class="relative mt-8 flex items-center gap-x-4">
                                         <div
                                             class="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 text-lg">
-                                            {!! App\Enums\TemplateCategory::from($relatedTemplate->category)->getIcon() !!}
+                                            {{-- {!! App\Enums\TemplateCategory::from($relatedTemplate->category)->getIcon() !!} --}}
                                         </div>
                                         <div class="text-sm leading-6">
                                             <p class="font-semibold text-gray-900 dark:text-white">
                                                 <a
                                                     href="{{ route('template-category.show', $relatedTemplate->category) }}">
                                                     <span class="absolute inset-0"></span>
-                                                    {{ App\Enums\TemplateCategory::from($relatedTemplate->category)->label() }}
+                                                    {{-- {{ App\Enums\TemplateCategory::from($relatedTemplate->category)->label() }} --}}
                                                 </a>
                                             </p>
                                         </div>

@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\TemplateCategory;
 use App\Livewire\Auth\Login;
 use App\Livewire\Pages\Home;
 use App\Livewire\Auth\Register;
@@ -11,6 +12,8 @@ use App\Livewire\SuperAdmin\TenantsManager;
 use App\Livewire\SuperAdmin\AuditLogManager;
 use App\Livewire\SuperAdmin\GlobalSettingsManager;
 use App\Http\Controllers\TenantImpersonationController;
+use App\Livewire\Content\Pages\TvDisplay;
+use App\Livewire\Content\Pages\WidgetPage;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 
@@ -67,9 +70,8 @@ Route::get('/auto-login', function () {
 // Landing page on central domains
 Route::get('/', Home::class)->name('home');
 
-// Authentication
-Route::get('/register', Register::class)->name('register');
-Route::get('/login', Login::class)->name('login');
+// link auth.php
+require __DIR__.'/auth.php';
 
 // SuperAdmin Authentication
 Route::middleware(['web'])->prefix('superadmin')->group(function () {
@@ -119,3 +121,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::get('/template-categories', \App\Livewire\TemplateCategories\CategoryShowcase::class)->name('template-categories.index');
 Route::get('/template-categories/{category}', \App\Livewire\TemplateCategories\CategoryDetail::class)->name('template-category.show');
 Route::get('/templates/{template}/preview', \App\Livewire\TemplateCategories\TemplatePreview::class)->name('templates.preview');
+
+
+// TV Routes
+Route::prefix('tv')->group(function () {
+    // Full dashboard page (all widgets)
+    Route::get('display', TvDisplay::class)
+        ->name('tenant.tv.display');
+
+    // Single widget page by category
+    Route::get('widget/{category}', WidgetPage::class)
+        ->where('category', implode('|', array_column(TemplateCategory::cases(), 'value')))
+        ->name('tenant.tv.widget');
+});
+
+
+

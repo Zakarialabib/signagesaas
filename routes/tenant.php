@@ -85,15 +85,3 @@ Route::get('/screen/{screen}/preview', ScreenPreviewController::class)
 Route::get('/impersonate/stop', [TenantImpersonationController::class, 'endImpersonation'])
     ->middleware(['auth'])
     ->name('impersonate.stop');
-
-// TV Routes
-Route::prefix('tv')->group(function () {
-    // Full dashboard page (all widgets)
-    Route::get('display', TvDisplay::class)
-        ->name('tenant.tv.display');
-
-    // Single widget page by category
-    Route::get('widget/{category}', WidgetPage::class)
-        ->where('category', implode('|', array_column(TemplateCategory::cases(), 'value')))
-        ->name('tenant.tv.widget');
-});

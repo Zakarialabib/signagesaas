@@ -25,11 +25,8 @@ final class WeatherWidget extends BaseWidget
             throw new \Exception('Weather widget: Location is missing.');
         }
 
-        // Replace with your actual weather API call logic
-        // Example (requires Guzzle or Laravel HTTP Client):
-        /*
+        // Improved weather API call logic
         try {
-            // Ensure you have a valid API endpoint and key structure
             $response = Http::get("https://api.openweathermap.org/data/2.5/weather", [
                 'q' => $this->location,
                 'appid' => $this->apiKey,
@@ -47,7 +44,6 @@ final class WeatherWidget extends BaseWidget
         } catch (\Illuminate\Http\Client\RequestException | \Exception $e) {
             throw new \Exception('Error fetching weather data: ' . $e->getMessage());
         }
-        */
 
         // Placeholder / Demo data for now if no real API call
         $this->weather = "Fake Weather for {$this->location}: Sunny, 25°C";

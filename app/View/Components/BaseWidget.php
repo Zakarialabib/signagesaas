@@ -14,7 +14,7 @@ final class BaseWidget extends Component
         public string $category = '',
         public string $icon = '',
         public bool $isLoading = false,
-        public ?string $error = null,
+        // public ?string $error = null,
         public int $refreshInterval = 0,
         
     ) {
@@ -27,7 +27,7 @@ final class BaseWidget extends Component
             'category' => $this->category,
             'icon' => $this->icon,
             'isLoading' => $this->isLoading,
-            'error' => $this->error,
+            // 'error' => $this->error,
         ]);
     }
 }
