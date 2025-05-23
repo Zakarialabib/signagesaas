@@ -22,11 +22,11 @@
             </div>
         </div>
 
-        <div class="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:flex lg:items-center lg:gap-x-10 lg:px-8 lg:py-40">
+        <div class="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:flex lg:items-center lg:gap-x-10 lg:px-8 lg:py-40 xl:py-48">
             <div class="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl lg:shrink-0">
                 <div class="flex">
                     <div
-                        class="relative flex items-center gap-x-3 rounded-full px-4 py-1 text-sm leading-6 text-gray-300 ring-1 ring-gray-700/10 hover:ring-gray-700/20">
+                        class="relative flex items-center gap-x-3 rounded-full px-4 py-1 text-base lg:text-lg leading-6 text-gray-300 ring-1 ring-gray-700/10 hover:ring-gray-700/20">
                         <span class="font-semibold text-purple-400">New</span>
                         <span class="h-4 w-px bg-gray-700/20"></span>
                         <a href="#features" class="flex items-center gap-x-1 font-semibold text-white">
@@ -39,23 +39,23 @@
                     </div>
                 </div>
 
-                <h1 class="mt-10 text-4xl font-bold tracking-tight text-white sm:text-6xl">
+                <h1 class="mt-10 text-5xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl">
                     Transform Your <span
                         class="text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-pink-600">Visual
                         Communication</span>
                 </h1>
 
-                <p class="mt-6 text-lg leading-8 text-gray-300">
+                <p class="mt-6 text-xl leading-8 text-gray-300 lg:text-2xl lg:leading-9">
                     Elevate your business with cutting-edge digital signage solutions designed for the Moroccan market.
                     Engage your audience with dynamic content that drives results.
                 </p>
 
                 <div class="mt-10 flex items-center gap-x-6">
                     <a href="#contact"
-                        class="rounded-full bg-linear-to-r from-purple-600 to-pink-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600 transition-all duration-300">
+                        class="rounded-full bg-linear-to-r from-purple-600 to-pink-600 px-6 py-3 text-base lg:text-lg font-semibold text-white shadow-sm hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600 transition-all duration-300">
                         Start Free Trial
                     </a>
-                    <a href="#solutions" class="group text-sm font-semibold leading-6 text-white">
+                    <a href="#solutions" class="group text-base lg:text-lg font-semibold leading-6 text-white">
                         Explore Solutions
                         <span
                             class="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">→</span>
@@ -76,20 +76,20 @@
     </div>
 
     <!-- Solutions Section -->
-    <div id="solutions" class="bg-gray-900 py-24 sm:py-32">
+    <div id="solutions" class="bg-gray-900 py-24 sm:py-32 lg:py-40">
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
             <div class="mx-auto max-w-2xl lg:text-center">
-                <h2 class="text-base font-semibold leading-7 text-purple-400">Industry Solutions</h2>
-                <p class="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">Tailored Digital Experiences
+                <h2 class="text-lg sm:text-xl font-semibold leading-7 text-purple-400">Industry Solutions</h2>
+                <p class="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">Tailored Digital Experiences
                 </p>
-                <p class="mt-6 text-lg leading-8 text-gray-300">Our digital signage solutions are customized for various
+                <p class="mt-6 text-lg leading-8 text-gray-300 lg:text-xl lg:leading-9">Our digital signage solutions are customized for various
                     industries across Morocco, helping businesses communicate effectively with their audience.</p>
             </div>
 
-            <div class="mt-16 grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="mt-16 lg:mt-20 grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 xl:grid-cols-3">
                 <!-- Restaurant & Cafés -->
                 <div
-                    class="group relative overflow-hidden rounded-3xl bg-gray-800 p-8 hover:bg-gray-700/70 transition-all duration-300">
+                    class="group relative overflow-hidden rounded-3xl bg-gray-800 p-8 lg:p-10 hover:bg-gray-700/70 transition-all duration-300">
                     <div
                         class="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-purple-500/20 blur-3xl transition-all duration-500 group-hover:bg-purple-500/30">
                     </div>
@@ -104,10 +104,10 @@
                             </svg>
                         </div>
 
-                        <h3 class="mt-6 text-xl font-semibold leading-8 text-white">Restaurants & Cafés</h3>
+                        <h3 class="mt-6 text-2xl lg:text-3xl font-semibold leading-8 text-white">Restaurants & Cafés</h3>
 
-                        <div class="mt-2 min-h-[100px]">
-                            <p class="text-base leading-7 text-gray-300">Digital menu boards, promotional displays, and
+                        <div class="mt-2 min-h-[100px] lg:min-h-[120px]">
+                            <p class="text-lg leading-7 text-gray-300 lg:text-xl lg:leading-8">Digital menu boards, promotional displays, and
                                 queue management systems that enhance customer experience and boost sales.</p>
                         </div>
 
@@ -118,7 +118,7 @@
                                         d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                <span class="ml-2 text-sm text-gray-300">Digital menu boards</span>
+                                <span class="ml-2 text-base lg:text-lg text-gray-300">Digital menu boards</span>
                             </div>
                             <div class="flex items-center">
                                 <svg class="h-5 w-5 text-purple-400" viewBox="0 0 20 20" fill="currentColor">
@@ -126,7 +126,7 @@
                                         d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                <span class="ml-2 text-sm text-gray-300">Promotional displays</span>
+                                <span class="ml-2 text-base lg:text-lg text-gray-300">Promotional displays</span>
                             </div>
                             <div class="flex items-center">
                                 <svg class="h-5 w-5 text-purple-400" viewBox="0 0 20 20" fill="currentColor">
@@ -134,12 +134,12 @@
                                         d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                <span class="ml-2 text-sm text-gray-300">Queue management</span>
+                                <span class="ml-2 text-base lg:text-lg text-gray-300">Queue management</span>
                             </div>
                         </div>
 
                         <a href="#"
-                            class="mt-8 inline-flex items-center text-sm font-medium text-purple-400 hover:text-purple-300 transition-colors">
+                            class="mt-8 inline-flex items-center text-base lg:text-lg font-medium text-purple-400 hover:text-purple-300 transition-colors">
                             View case study
                             <svg class="ml-1 h-4 w-4" viewBox="0 0 16 16" fill="none">
                                 <path d="M6.75 3.25L10.75 8L6.75 12.75" stroke="currentColor" stroke-width="1.5"
@@ -151,7 +151,7 @@
 
                 <!-- Retail Stores -->
                 <div
-                    class="group relative overflow-hidden rounded-3xl bg-gray-800 p-8 hover:bg-gray-700/70 transition-all duration-300">
+                    class="group relative overflow-hidden rounded-3xl bg-gray-800 p-8 lg:p-10 hover:bg-gray-700/70 transition-all duration-300">
                     <div
                         class="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-pink-500/20 blur-3xl transition-all duration-500 group-hover:bg-pink-500/30">
                     </div>
@@ -166,10 +166,10 @@
                             </svg>
                         </div>
 
-                        <h3 class="mt-6 text-xl font-semibold leading-8 text-white">Retail Stores</h3>
+                        <h3 class="mt-6 text-2xl lg:text-3xl font-semibold leading-8 text-white">Retail Stores</h3>
 
-                        <div class="mt-2 min-h-[100px]">
-                            <p class="text-base leading-7 text-gray-300">Interactive product displays, promotional
+                        <div class="mt-2 min-h-[100px] lg:min-h-[120px]">
+                            <p class="text-lg leading-7 text-gray-300 lg:text-xl lg:leading-8">Interactive product displays, promotional
                                 campaigns, and wayfinding solutions that enhance the shopping experience.</p>
                         </div>
 
@@ -180,7 +180,7 @@
                                         d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                <span class="ml-2 text-sm text-gray-300">Interactive catalogs</span>
+                                <span class="ml-2 text-base lg:text-lg text-gray-300">Interactive catalogs</span>
                             </div>
                             <div class="flex items-center">
                                 <svg class="h-5 w-5 text-pink-400" viewBox="0 0 20 20" fill="currentColor">
@@ -188,7 +188,7 @@
                                         d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                <span class="ml-2 text-sm text-gray-300">Promotional displays</span>
+                                <span class="ml-2 text-base lg:text-lg text-gray-300">Promotional displays</span>
                             </div>
                             <div class="flex items-center">
                                 <svg class="h-5 w-5 text-pink-400" viewBox="0 0 20 20" fill="currentColor">
@@ -196,12 +196,12 @@
                                         d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                <span class="ml-2 text-sm text-gray-300">Wayfinding solutions</span>
+                                <span class="ml-2 text-base lg:text-lg text-gray-300">Wayfinding solutions</span>
                             </div>
                         </div>
 
                         <a href="#"
-                            class="mt-8 inline-flex items-center text-sm font-medium text-pink-400 hover:text-pink-300 transition-colors">
+                            class="mt-8 inline-flex items-center text-base lg:text-lg font-medium text-pink-400 hover:text-pink-300 transition-colors">
                             View case study
                             <svg class="ml-1 h-4 w-4" viewBox="0 0 16 16" fill="none">
                                 <path d="M6.75 3.25L10.75 8L6.75 12.75" stroke="currentColor" stroke-width="1.5"
@@ -213,7 +213,7 @@
 
                 <!-- Corporate Offices -->
                 <div
-                    class="group relative overflow-hidden rounded-3xl bg-gray-800 p-8 hover:bg-gray-700/70 transition-all duration-300">
+                    class="group relative overflow-hidden rounded-3xl bg-gray-800 p-8 lg:p-10 hover:bg-gray-700/70 transition-all duration-300">
                     <div
                         class="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-blue-500/20 blur-3xl transition-all duration-500 group-hover:bg-blue-500/30">
                     </div>
@@ -228,10 +228,10 @@
                             </svg>
                         </div>
 
-                        <h3 class="mt-6 text-xl font-semibold leading-8 text-white">Corporate Offices</h3>
+                        <h3 class="mt-6 text-2xl lg:text-3xl font-semibold leading-8 text-white">Corporate Offices</h3>
 
-                        <div class="mt-2 min-h-[100px]">
-                            <p class="text-base leading-7 text-gray-300">Internal communications, meeting room
+                        <div class="mt-2 min-h-[100px] lg:min-h-[120px]">
+                            <p class="text-lg leading-7 text-gray-300 lg:text-xl lg:leading-8">Internal communications, meeting room
                                 displays, and visitor information systems that streamline operations.</p>
                         </div>
 
@@ -242,7 +242,7 @@
                                         d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                <span class="ml-2 text-sm text-gray-300">Meeting room displays</span>
+                                <span class="ml-2 text-base lg:text-lg text-gray-300">Meeting room displays</span>
                             </div>
                             <div class="flex items-center">
                                 <svg class="h-5 w-5 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
@@ -250,7 +250,7 @@
                                         d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                <span class="ml-2 text-sm text-gray-300">Internal communications</span>
+                                <span class="ml-2 text-base lg:text-lg text-gray-300">Internal communications</span>
                             </div>
                             <div class="flex items-center">
                                 <svg class="h-5 w-5 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
@@ -258,12 +258,12 @@
                                         d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                <span class="ml-2 text-sm text-gray-300">Visitor information systems</span>
+                                <span class="ml-2 text-base lg:text-lg text-gray-300">Visitor information systems</span>
                             </div>
                         </div>
 
                         <a href="#"
-                            class="mt-8 inline-flex items-center text-sm font-medium text-blue-400 hover:text-blue-300 transition-colors">
+                            class="mt-8 inline-flex items-center text-base lg:text-lg font-medium text-blue-400 hover:text-blue-300 transition-colors">
                             View case study
                             <svg class="ml-1 h-4 w-4" viewBox="0 0 16 16" fill="none">
                                 <path d="M6.75 3.25L10.75 8L6.75 12.75" stroke="currentColor" stroke-width="1.5"
@@ -277,22 +277,22 @@
     </div>
 
     <!-- Features Section with Example -->
-    <div id="features" class="relative bg-gray-900 py-24 sm:py-32">
+    <div id="features" class="relative bg-gray-900 py-24 sm:py-32 lg:py-40">
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
             <div class="mx-auto max-w-2xl lg:text-center">
-                <h2 class="text-base font-semibold leading-7 text-purple-400">Powerful Features</h2>
-                <p class="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">Control Your Content with Ease
+                <h2 class="text-lg sm:text-xl font-semibold leading-7 text-purple-400">Powerful Features</h2>
+                <p class="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">Control Your Content with Ease
                 </p>
-                <p class="mt-6 text-lg leading-8 text-gray-300">
+                <p class="mt-6 text-lg leading-8 text-gray-300 lg:text-xl lg:leading-9">
                     Our platform makes digital signage management effortless, whether you're managing a single screen or
                     a network of displays across multiple locations.
                 </p>
             </div>
 
-            <div class="mt-16">
-                <div class="grid grid-cols-1 gap-y-16 lg:grid-cols-2 lg:gap-x-12">
+            <div class="mt-16 lg:mt-20">
+                <div class="grid grid-cols-1 gap-y-16 lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16">
                     <!-- Image Section with Floating Cards -->
-                    <div class="relative mx-auto lg:mx-0 max-w-md lg:max-w-none">
+                    <div class="relative mx-auto lg:mx-0 max-w-md lg:max-w-none lg:p-8 xl:p-12">
                         <!-- Main Feature Image -->
                         <div
                             class="overflow-hidden rounded-2xl bg-gray-800 shadow-xl ring-1 ring-white/10 relative z-10">
@@ -341,7 +341,7 @@
                     <div class="lg:ml-12">
                         <dl class="space-y-10">
                             <div class="relative pl-16">
-                                <dt class="text-base font-semibold leading-7 text-white">
+                                <dt class="text-xl lg:text-2xl font-semibold leading-7 text-white">
                                     <div
                                         class="absolute left-0 top-0 flex h-12 w-12 items-center justify-center rounded-lg bg-purple-600/10">
                                         <svg class="h-6 w-6 text-purple-400" fill="none" viewBox="0 0 24 24"
@@ -352,14 +352,14 @@
                                     </div>
                                     Cloud-Based Management
                                 </dt>
-                                <dd class="mt-2 text-base leading-7 text-gray-300">
+                                <dd class="mt-2 text-lg leading-7 text-gray-300 lg:text-xl lg:leading-8">
                                     Manage all your screens from anywhere with our intuitive cloud dashboard. No
                                     technical expertise required. Updates are pushed instantly to all your displays.
                                 </dd>
                             </div>
 
                             <div class="relative pl-16">
-                                <dt class="text-base font-semibold leading-7 text-white">
+                                <dt class="text-xl lg:text-2xl font-semibold leading-7 text-white">
                                     <div
                                         class="absolute left-0 top-0 flex h-12 w-12 items-center justify-center rounded-lg bg-purple-600/10">
                                         <svg class="h-6 w-6 text-purple-400" fill="none" viewBox="0 0 24 24"
@@ -370,14 +370,14 @@
                                     </div>
                                     Content Security
                                 </dt>
-                                <dd class="mt-2 text-base leading-7 text-gray-300">
+                                <dd class="mt-2 text-lg leading-7 text-gray-300 lg:text-xl lg:leading-8">
                                     Enterprise-grade security ensures your content is protected. Role-based access
                                     control lets you manage who can make changes to your displays.
                                 </dd>
                             </div>
 
                             <div class="relative pl-16">
-                                <dt class="text-base font-semibold leading-7 text-white">
+                                <dt class="text-xl lg:text-2xl font-semibold leading-7 text-white">
                                     <div
                                         class="absolute left-0 top-0 flex h-12 w-12 items-center justify-center rounded-lg bg-purple-600/10">
                                         <svg class="h-6 w-6 text-purple-400" fill="none" viewBox="0 0 24 24"
@@ -388,14 +388,14 @@
                                     </div>
                                     Analytics & Insights
                                 </dt>
-                                <dd class="mt-2 text-base leading-7 text-gray-300">
+                                <dd class="mt-2 text-lg leading-7 text-gray-300 lg:text-xl lg:leading-8">
                                     Gain valuable insights into how your content performs. Track viewer engagement and
                                     optimize your messaging for maximum impact.
                                 </dd>
                             </div>
 
                             <div class="relative pl-16">
-                                <dt class="text-base font-semibold leading-7 text-white">
+                                <dt class="text-xl lg:text-2xl font-semibold leading-7 text-white">
                                     <div
                                         class="absolute left-0 top-0 flex h-12 w-12 items-center justify-center rounded-lg bg-purple-600/10">
                                         <svg class="h-6 w-6 text-purple-400" fill="none" viewBox="0 0 24 24"
@@ -406,7 +406,7 @@
                                     </div>
                                     Real-Time Updates
                                 </dt>
-                                <dd class="mt-2 text-base leading-7 text-gray-300">
+                                <dd class="mt-2 text-lg leading-7 text-gray-300 lg:text-xl lg:leading-8">
                                     Make changes instantly across your entire network. Monitor screen status in
                                     real-time and receive alerts if any display goes offline.
                                 </dd>
@@ -419,32 +419,32 @@
     </div>
 
     <!-- How It Works Section -->
-    <div class="bg-gray-900 py-24 sm:py-32">
+    <div class="bg-gray-900 py-24 sm:py-32 lg:py-40">
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
             <div class="mx-auto max-w-2xl lg:text-center">
-                <h2 class="text-base font-semibold leading-7 text-purple-400">How It Works</h2>
-                <p class="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">Simple Setup, Powerful Results
+                <h2 class="text-lg sm:text-xl font-semibold leading-7 text-purple-400">How It Works</h2>
+                <p class="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">Simple Setup, Powerful Results
                 </p>
-                <p class="mt-6 text-lg leading-8 text-gray-300">Get your digital signage network up and running in
+                <p class="mt-6 text-lg leading-8 text-gray-300 lg:text-xl lg:leading-9">Get your digital signage network up and running in
                     minutes, not days.</p>
             </div>
 
             <div class="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
-                <div class="grid grid-cols-1 gap-y-8 gap-x-8 text-center sm:grid-cols-2 lg:grid-cols-3 lg:text-left">
+                <div class="grid grid-cols-1 gap-y-8 gap-x-8 text-center sm:grid-cols-2 xl:grid-cols-3 lg:text-left">
                     <div class="group relative">
                         <div
                             class="absolute -inset-px rounded-2xl bg-linear-to-r from-purple-500 to-pink-500 opacity-20 blur-lg transition duration-1000 group-hover:opacity-30">
                         </div>
-                        <div class="relative rounded-2xl bg-gray-800 p-8 ring-1 ring-gray-700/10">
+                        <div class="relative rounded-2xl bg-gray-800 p-8 lg:p-10 ring-1 ring-gray-700/10">
                             <div class="flex items-center justify-center lg:justify-start">
                                 <div
                                     class="flex h-12 w-12 items-center justify-center rounded-full bg-purple-600/10 text-purple-400">
                                     <span class="text-xl font-bold">1</span>
                                 </div>
-                                <h3 class="ml-4 text-lg font-semibold leading-8 tracking-tight text-white">Connect Your
+                                <h3 class="ml-4 text-xl lg:text-2xl font-semibold leading-8 tracking-tight text-white">Connect Your
                                     Displays</h3>
                             </div>
-                            <p class="mt-4 text-base leading-7 text-gray-300">
+                            <p class="mt-4 text-lg leading-7 text-gray-300 lg:text-xl lg:leading-8">
                                 Connect any screen with our plug-and-play media players or use your existing hardware.
                                 Our system works with virtually any display.
                             </p>
@@ -455,16 +455,16 @@
                         <div
                             class="absolute -inset-px rounded-2xl bg-linear-to-r from-purple-500 to-pink-500 opacity-20 blur-lg transition duration-1000 group-hover:opacity-30">
                         </div>
-                        <div class="relative rounded-2xl bg-gray-800 p-8 ring-1 ring-gray-700/10">
+                        <div class="relative rounded-2xl bg-gray-800 p-8 lg:p-10 ring-1 ring-gray-700/10">
                             <div class="flex items-center justify-center lg:justify-start">
                                 <div
                                     class="flex h-12 w-12 items-center justify-center rounded-full bg-purple-600/10 text-purple-400">
                                     <span class="text-xl font-bold">2</span>
                                 </div>
-                                <h3 class="ml-4 text-lg font-semibold leading-8 tracking-tight text-white">Create Your
+                                <h3 class="ml-4 text-xl lg:text-2xl font-semibold leading-8 tracking-tight text-white">Create Your
                                     Content</h3>
                             </div>
-                            <p class="mt-4 text-base leading-7 text-gray-300">
+                            <p class="mt-4 text-lg leading-7 text-gray-300 lg:text-xl lg:leading-8">
                                 Use our intuitive drag-and-drop editor to create stunning content or import your
                                 existing designs. No design skills required.
                             </p>
@@ -475,16 +475,16 @@
                         <div
                             class="absolute -inset-px rounded-2xl bg-linear-to-r from-purple-500 to-pink-500 opacity-20 blur-lg transition duration-1000 group-hover:opacity-30">
                         </div>
-                        <div class="relative rounded-2xl bg-gray-800 p-8 ring-1 ring-gray-700/10">
+                        <div class="relative rounded-2xl bg-gray-800 p-8 lg:p-10 ring-1 ring-gray-700/10">
                             <div class="flex items-center justify-center lg:justify-start">
                                 <div
                                     class="flex h-12 w-12 items-center justify-center rounded-full bg-purple-600/10 text-purple-400">
                                     <span class="text-xl font-bold">3</span>
                                 </div>
-                                <h3 class="ml-4 text-lg font-semibold leading-8 tracking-tight text-white">Manage &
+                                <h3 class="ml-4 text-xl lg:text-2xl font-semibold leading-8 tracking-tight text-white">Manage &
                                     Monitor</h3>
                             </div>
-                            <p class="mt-4 text-base leading-7 text-gray-300">
+                            <p class="mt-4 text-lg leading-7 text-gray-300 lg:text-xl lg:leading-8">
                                 Schedule content, monitor performance, and make real-time updates from our cloud
                                 dashboard. Control everything from anywhere.
                             </p>
@@ -496,7 +496,7 @@
     </div>
 
     <!-- Demo Showcase Section -->
-    <section class="relative isolate overflow-hidden bg-gradient-to-br from-gray-900 to-purple-900 py-24 sm:py-32">
+    <section class="relative isolate overflow-hidden bg-gradient-to-br from-gray-900 to-purple-900 py-24 sm:py-32 lg:py-40">
         <!-- Decorative elements -->
         <div class="absolute inset-0 -z-10">
             <div class="absolute left-1/2 top-0 -ml-24 transform-gpu blur-3xl lg:ml-24 xl:ml-48" aria-hidden="true">
@@ -507,20 +507,20 @@
         </div>
 
         <!-- Header with CTA -->
-        <div class="mx-auto max-w-2xl text-center">
-            <h2 class="text-4xl font-bold tracking-tight text-white sm:text-5xl">Transform Your Digital Displays
+        <div class="mx-auto max-w-2xl text-center px-4 sm:px-6 lg:px-8">
+            <h2 class="text-5xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">Transform Your Digital Displays
             </h2>
-            <p class="mt-6 text-lg leading-8 text-gray-300">
+            <p class="mt-6 text-xl leading-8 text-gray-300 lg:text-2xl lg:leading-9">
                 Experience our comprehensive suite of widgets and templates. From real-time information to engaging
                 social feeds,
                 we have everything you need to create compelling digital signage displays.
             </p>
             <div class="mt-10 flex items-center justify-center gap-x-6">
                 <a href="#contact"
-                    class="rounded-full bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600 transition-all duration-300">
+                    class="rounded-full bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 text-base lg:text-lg font-semibold text-white shadow-sm hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600 transition-all duration-300">
                     Start Your Free Trial
                 </a>
-                <a href="#demos" class="group text-sm font-semibold leading-6 text-white">
+                <a href="#demos" class="group text-base lg:text-lg font-semibold leading-6 text-white">
                     See All Widgets
                     <span
                         class="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">→</span>
@@ -529,10 +529,10 @@
         </div>
         
         <!-- Featured Widget Section -->
-        <div class="w-full mx-auto mt-24" id="widget-demos-anchor"> {{-- Anchor point for "See All Widgets" link --}}
-            <h3 class="text-3xl font-bold tracking-tight text-white mb-12 text-center sm:text-4xl">Featured Powerhouse
+        <div class="w-full mx-auto mt-24 lg:mt-32" id="widget-demos-anchor"> {{-- Anchor point for "See All Widgets" link --}}
+            <h3 class="text-4xl font-bold tracking-tight text-white mb-12 text-center sm:text-4xl lg:text-5xl lg:mb-16">Featured Powerhouse
                 Widget</h3>
-            <div class="mx-auto max-w-3xl px-6 lg:px-8"> {{-- Max-width for a single featured item might look better --}}
+            <div class="mx-auto max-w-3xl px-6 lg:px-8 xl:max-w-4xl"> 
                 {{-- Removed the grid here as it's for a single featured item. If more featured, add grid back. --}}
                 <x-base-demos title="Digital Menu Board"
                     iconSvgPath='<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12m-8.25 0V18M12 18.75V18m0 0H18M18 18v-1.25A2.25 2.25 0 0015.75 15H8.25A2.25 2.25 0 006 17.25V18m6-12V5.25A2.25 2.25 0 008.25 3H6a2.25 2.25 0 00-2.25 2.25v1.5M12 6V5.25A2.25 2.25 0 0114.25 3H16.5a2.25 2.25 0 012.25 2.25v1.5" />'
@@ -557,9 +557,9 @@
             </div>
         </div>
         <!-- Information Widgets -->
-        <div class="mx-auto mt-24 max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h3 class="text-2xl font-semibold text-white mb-8 text-center">Informational & Utility Widgets</h3>
-            <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="mx-auto mt-24 lg:mt-32 max-w-7xl px-4 sm:px-6 lg:px-8">
+            <h3 class="text-3xl lg:text-4xl font-semibold text-white mb-8 lg:mb-12 text-center">Informational & Utility Widgets</h3>
+            <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3">
                 <x-base-demos title="Weather Widget"
                     iconSvgPath='<path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" />'
                     description="Effortlessly <strong>enhance visitor experience</strong> with dynamic, real-time weather. Perfect for lobbies, retail, or transit hubs to help people plan their day."
@@ -601,9 +601,9 @@
             </div>
         </div>
 
-        <div class="mx-auto mt-24 max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h3 class="text-2xl font-semibold text-white mb-8 text-center">Social & Community Engagement Widgets</h3>
-            <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="mx-auto mt-24 lg:mt-32 max-w-7xl px-4 sm:px-6 lg:px-8">
+            <h3 class="text-3xl lg:text-4xl font-semibold text-white mb-8 lg:mb-12 text-center">Social & Community Engagement Widgets</h3>
+            <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3">
                 <x-base-demos title="Social Media Wall"
                     iconSvgPath='<path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z" />'
                     description="Transform displays into dynamic social hubs. <strong>Amplify brand reach</strong> and <strong>foster community</strong> by showcasing user-generated content and official posts."
@@ -657,12 +657,12 @@
         </div>
 
         <!-- Business Widgets Section -->
-        <div class="mx-auto mt-24 max-w-7xl">
-            <h3 class="text-2xl font-semibold text-white mb-8">Business Widgets</h3>
-            <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="mx-auto mt-24 lg:mt-32 max-w-7xl px-4 sm:px-6 lg:px-8">
+            <h3 class="text-3xl lg:text-4xl font-semibold text-white mb-8 lg:mb-12 text-center">Business Widgets</h3>
+            <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3">
                 <!-- Menu Widget Demo -->
                 <div
-                    class="group relative rounded-3xl bg-white/5 p-6 shadow-2xl backdrop-blur-sm transition-all hover:scale-[1.02]">
+                    class="group relative rounded-3xl bg-white/5 p-6 lg:p-8 shadow-2xl backdrop-blur-sm transition-all hover:scale-[1.02]">
                     <div
                         class="absolute -inset-1 rounded-3xl bg-gradient-to-r from-green-600/30 to-emerald-600/30 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
                     </div>
@@ -676,16 +676,16 @@
                                         d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                                 </svg>
                             </div>
-                            <h3 class="text-xl font-semibold leading-7 text-white">Menu Board</h3>
+                            <h3 class="text-2xl lg:text-3xl font-semibold leading-7 text-white">Menu Board</h3>
                         </div>
-                        <p class="mt-4 text-gray-300">
+                        <p class="mt-4 text-lg lg:text-xl text-gray-300">
                             Boost sales and enhance customer experience with enticing digital menu boards.
                             Showcase your offerings with dynamic pricing, vivid imagery, and easy-to-update
                             specials.
                         </p>
                         <!-- Case Study Badge -->
                         <div
-                            class="mt-4 flex items-center text-xs font-medium text-green-300 bg-green-500/10 px-3 py-1 rounded-full w-fit">
+                            class="mt-4 flex items-center text-sm lg:text-base font-medium text-green-300 bg-green-500/10 px-3 py-1 rounded-full w-fit">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                                 class="mr-1 h-3 w-3">
                                 <path fill-rule="evenodd"
@@ -695,13 +695,13 @@
                             Marketing Use Case
                         </div>
                         <!-- Case Study Text -->
-                        <p class="mt-2 text-sm text-gray-400 italic">
+                        <p class="mt-2 text-base lg:text-lg text-gray-400 italic">
                             "A fast-food restaurant chain saw a 30% uplift in sales of promotional items by
                             using dynamic digital menu boards to highlight special offers and new arrivals."
                         </p>
                         <div class="mt-6 flex flex-wrap gap-4">
                             <div
-                                class="flex items-center rounded-full bg-gray-800/50 px-3 py-1 text-xs font-medium text-gray-300">
+                                class="flex items-center rounded-full bg-gray-800/50 px-3 py-1 text-sm lg:text-base font-medium text-gray-300">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                                     class="mr-1 h-3 w-3 text-green-400">
                                     <path fill-rule="evenodd"
@@ -711,7 +711,7 @@
                                 Price updates
                             </div>
                             <div
-                                class="flex items-center rounded-full bg-gray-800/50 px-3 py-1 text-xs font-medium text-gray-300">
+                                class="flex items-center rounded-full bg-gray-800/50 px-3 py-1 text-sm lg:text-base font-medium text-gray-300">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                                     class="mr-1 h-3 w-3 text-green-400">
                                     <path fill-rule="evenodd"
@@ -721,7 +721,7 @@
                                 Categories
                             </div>
                             <div
-                                class="flex items-center rounded-full bg-gray-800/50 px-3 py-1 text-xs font-medium text-gray-300">
+                                class="flex items-center rounded-full bg-gray-800/50 px-3 py-1 text-sm lg:text-base font-medium text-gray-300">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                                     class="mr-1 h-3 w-3 text-green-400">
                                     <path fill-rule="evenodd"
@@ -732,7 +732,7 @@
                             </div>
                         </div>
                         <a href="{{ route('tenant.tv.widget', ['category' => 'menu']) }}"
-                            class="mt-8 inline-flex items-center gap-x-1.5 text-sm font-semibold text-white hover:text-green-300 transition-colors">
+                            class="mt-8 inline-flex items-center gap-x-1.5 text-base lg:text-lg font-semibold text-white hover:text-green-300 transition-colors">
                             View Menu Demo
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                                 class="h-4 w-4">
@@ -746,7 +746,7 @@
 
                 <!-- Retail Product Widget Demo -->
                 <div
-                    class="group relative rounded-3xl bg-white/5 p-6 shadow-2xl backdrop-blur-sm transition-all hover:scale-[1.02]">
+                    class="group relative rounded-3xl bg-white/5 p-6 lg:p-8 shadow-2xl backdrop-blur-sm transition-all hover:scale-[1.02]">
                     <div
                         class="absolute -inset-1 rounded-3xl bg-gradient-to-r from-cyan-600/30 to-sky-600/30 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
                     </div>
@@ -760,9 +760,9 @@
                                         d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
                                 </svg>
                             </div>
-                            <h3 class="text-xl font-semibold leading-7 text-white">Retail Products</h3>
+                            <h3 class="text-2xl lg:text-3xl font-semibold leading-7 text-white">Retail Products</h3>
                         </div>
-                        <p class="mt-4 text-gray-300">
+                        <p class="mt-4 text-lg lg:text-xl text-gray-300">
                             Drive sales and inform purchase decisions by showcasing your products
                             dynamically.
                             Highlight promotions, display real-time pricing, and manage inventory visibility
@@ -770,7 +770,7 @@
                         </p>
                         <!-- Case Study Badge -->
                         <div
-                            class="mt-4 flex items-center text-xs font-medium text-cyan-300 bg-cyan-500/10 px-3 py-1 rounded-full w-fit">
+                            class="mt-4 flex items-center text-sm lg:text-base font-medium text-cyan-300 bg-cyan-500/10 px-3 py-1 rounded-full w-fit">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                                 class="mr-1 h-3 w-3">
                                 <path fill-rule="evenodd"
@@ -780,14 +780,14 @@
                             Marketing Use Case
                         </div>
                         <!-- Case Study Text -->
-                        <p class="mt-2 text-sm text-gray-400 italic">
+                        <p class="mt-2 text-base lg:text-lg text-gray-400 italic">
                             "Grocery stores boost impulse purchases by 35% through dynamic pricing displays
                             tied
                             to current promotions."
                         </p>
                         <div class="mt-6 flex flex-wrap gap-4">
                             <div
-                                class="flex items-center rounded-full bg-gray-800/50 px-3 py-1 text-xs font-medium text-gray-300">
+                                class="flex items-center rounded-full bg-gray-800/50 px-3 py-1 text-sm lg:text-base font-medium text-gray-300">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                                     class="mr-1 h-3 w-3 text-cyan-400">
                                     <path fill-rule="evenodd"
@@ -797,7 +797,7 @@
                                 Live inventory
                             </div>
                             <div
-                                class="flex items-center rounded-full bg-gray-800/50 px-3 py-1 text-xs font-medium text-gray-300">
+                                class="flex items-center rounded-full bg-gray-800/50 px-3 py-1 text-sm lg:text-base font-medium text-gray-300">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                                     class="mr-1 h-3 w-3 text-cyan-400">
                                     <path fill-rule="evenodd"
@@ -807,7 +807,7 @@
                                 Promotions
                             </div>
                             <div
-                                class="flex items-center rounded-full bg-gray-800/50 px-3 py-1 text-xs font-medium text-gray-300">
+                                class="flex items-center rounded-full bg-gray-800/50 px-3 py-1 text-sm lg:text-base font-medium text-gray-300">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                                     class="mr-1 h-3 w-3 text-cyan-400">
                                     <path fill-rule="evenodd"
@@ -818,7 +818,7 @@
                             </div>
                         </div>
                         <a href="{{ route('tenant.tv.widget', ['category' => 'retail']) }}"
-                            class="mt-8 inline-flex items-center gap-x-1.5 text-sm font-semibold text-white hover:text-cyan-300 transition-colors">
+                            class="mt-8 inline-flex items-center gap-x-1.5 text-base lg:text-lg font-semibold text-white hover:text-cyan-300 transition-colors">
                             View Retail Demo
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                                 class="h-4 w-4">
@@ -832,7 +832,7 @@
 
                 <!-- Calendar Widget Demo -->
                 <div
-                    class="group relative rounded-3xl bg-white/5 p-6 shadow-2xl backdrop-blur-sm transition-all hover:scale-[1.02]">
+                    class="group relative rounded-3xl bg-white/5 p-6 lg:p-8 shadow-2xl backdrop-blur-sm transition-all hover:scale-[1.02]">
                     <div
                         class="absolute -inset-1 rounded-3xl bg-gradient-to-r from-violet-600/30 to-purple-600/30 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
                     </div>
@@ -846,16 +846,16 @@
                                         d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
                                 </svg>
                             </div>
-                            <h3 class="text-xl font-semibold leading-7 text-white">Calendar & Events</h3>
+                            <h3 class="text-2xl lg:text-3xl font-semibold leading-7 text-white">Calendar & Events</h3>
                         </div>
-                        <p class="mt-4 text-gray-300">
+                        <p class="mt-4 text-lg lg:text-xl text-gray-300">
                             Maximize attendance and keep everyone informed about upcoming events and
                             schedules.
                             Display clear, interactive calendar views to enhance planning and engagement.
                         </p>
                         <!-- Case Study Badge -->
                         <div
-                            class="mt-4 flex items-center text-xs font-medium text-violet-300 bg-violet-500/10 px-3 py-1 rounded-full w-fit">
+                            class="mt-4 flex items-center text-sm lg:text-base font-medium text-violet-300 bg-violet-500/10 px-3 py-1 rounded-full w-fit">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                                 class="mr-1 h-3 w-3">
                                 <path fill-rule="evenodd"
@@ -865,14 +865,14 @@
                             Marketing Use Case
                         </div>
                         <!-- Case Study Text -->
-                        <p class="mt-2 text-sm text-gray-400 italic">
+                        <p class="mt-2 text-base lg:text-lg text-gray-400 italic">
                             "A community center drove a 50% increase in event participation by showcasing
                             upcoming activities and registration details on vibrant digital calendars in
                             high-traffic areas."
                         </p>
                         <div class="mt-6 flex flex-wrap gap-4">
                             <div
-                                class="flex items-center rounded-full bg-gray-800/50 px-3 py-1 text-xs font-medium text-gray-300">
+                                class="flex items-center rounded-full bg-gray-800/50 px-3 py-1 text-sm lg:text-base font-medium text-gray-300">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                                     class="mr-1 h-3 w-3 text-violet-400">
                                     <path fill-rule="evenodd"
@@ -882,7 +882,7 @@
                                 Multiple views
                             </div>
                             <div
-                                class="flex items-center rounded-full bg-gray-800/50 px-3 py-1 text-xs font-medium text-gray-300">
+                                class="flex items-center rounded-full bg-gray-800/50 px-3 py-1 text-sm lg:text-base font-medium text-gray-300">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                                     class="mr-1 h-3 w-3 text-violet-400">
                                     <path fill-rule="evenodd"
@@ -892,7 +892,7 @@
                                 Event details
                             </div>
                             <div
-                                class="flex items-center rounded-full bg-gray-800/50 px-3 py-1 text-xs font-medium text-gray-300">
+                                class="flex items-center rounded-full bg-gray-800/50 px-3 py-1 text-sm lg:text-base font-medium text-gray-300">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                                     class="mr-1 h-3 w-3 text-violet-400">
                                     <path fill-rule="evenodd"
@@ -903,7 +903,7 @@
                             </div>
                         </div>
                         <a href="{{ route('tenant.tv.widget', ['category' => 'calendar']) }}"
-                            class="mt-8 inline-flex items-center gap-x-1.5 text-sm font-semibold text-white hover:text-violet-300 transition-colors">
+                            class="mt-8 inline-flex items-center gap-x-1.5 text-base lg:text-lg font-semibold text-white hover:text-violet-300 transition-colors">
                             View Calendar Demo
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                                 class="h-4 w-4">
@@ -919,20 +919,20 @@
     </section>
 
     <!-- Testimonials Section -->
-    <div class="bg-gray-900 py-24 sm:py-32">
+    <div class="bg-gray-900 py-24 sm:py-32 lg:py-40">
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
             <div class="mx-auto max-w-2xl lg:text-center">
-                <h2 class="text-base font-semibold leading-7 text-purple-400">Testimonials</h2>
-                <p class="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">Trusted by Businesses Across
+                <h2 class="text-lg sm:text-xl font-semibold leading-7 text-purple-400">Testimonials</h2>
+                <p class="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">Trusted by Businesses Across
                     Morocco</p>
-                <p class="mt-6 text-lg leading-8 text-gray-300">Hear what our customers have to say about their
+                <p class="mt-6 text-lg leading-8 text-gray-300 lg:text-xl lg:leading-9">Hear what our customers have to say about their
                     experience with our digital signage solutions.</p>
             </div>
 
-            <div class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+            <div class="mx-auto mt-16 lg:mt-20 grid max-w-2xl grid-cols-1 gap-8 lg:mx-0 lg:max-w-none lg:grid-cols-2 xl:grid-cols-3">
                 <!-- Testimonial 1 -->
                 <div
-                    class="flex flex-col justify-between rounded-2xl bg-gray-800 p-8 shadow-lg ring-1 ring-gray-700/10">
+                    class="flex flex-col justify-between rounded-2xl bg-gray-800 p-8 lg:p-10 shadow-lg ring-1 ring-gray-700/10">
                     <div>
                         <div class="flex gap-x-1 text-purple-400">
                             <!-- 5 stars -->
@@ -963,8 +963,8 @@
                             </svg>
                         </div>
                         <div class="mt-6">
-                            <p class="text-lg font-semibold text-white">Transformed our customer experience</p>
-                            <p class="mt-3 text-base leading-7 text-gray-300">
+                            <p class="text-xl lg:text-2xl font-semibold text-white">Transformed our customer experience</p>
+                            <p class="mt-3 text-lg leading-7 text-gray-300 lg:text-xl lg:leading-8">
                                 "Since implementing digital menu boards in our restaurant chain, we've seen a 20%
                                 increase in high-margin item sales. The ability to update all locations instantly has
                                 been a game-changer for our promotions."
@@ -975,15 +975,15 @@
                         <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                             alt="Customer" class="h-12 w-12 rounded-full bg-gray-700">
                         <div>
-                            <p class="text-base font-semibold text-white">Karim Benali</p>
-                            <p class="text-sm text-gray-400">Operations Director, Café Maroc</p>
+                            <p class="text-lg lg:text-xl font-semibold text-white">Karim Benali</p>
+                            <p class="text-base lg:text-lg text-gray-400">Operations Director, Café Maroc</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Testimonial 2 -->
                 <div
-                    class="flex flex-col justify-between rounded-2xl bg-gray-800 p-8 shadow-lg ring-1 ring-gray-700/10">
+                    class="flex flex-col justify-between rounded-2xl bg-gray-800 p-8 lg:p-10 shadow-lg ring-1 ring-gray-700/10">
                     <div>
                         <div class="flex gap-x-1 text-purple-400">
                             <!-- 5 stars -->
@@ -1014,8 +1014,8 @@
                             </svg>
                         </div>
                         <div class="mt-6">
-                            <p class="text-lg font-semibold text-white">Streamlined our internal communications</p>
-                            <p class="mt-3 text-base leading-7 text-gray-300">
+                            <p class="text-xl lg:text-2xl font-semibold text-white">Streamlined our internal communications</p>
+                            <p class="mt-3 text-lg leading-7 text-gray-300 lg:text-xl lg:leading-8">
                                 "The meeting room displays and internal communication screens have significantly
                                 improved our office efficiency. The system is incredibly easy to use, and the support
                                 team has been exceptional."
@@ -1026,15 +1026,15 @@
                         <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                             alt="Customer" class="h-12 w-12 rounded-full bg-gray-700">
                         <div>
-                            <p class="text-base font-semibold text-white">Leila Amrani</p>
-                            <p class="text-sm text-gray-400">IT Manager, TechMaroc</p>
+                            <p class="text-lg lg:text-xl font-semibold text-white">Leila Amrani</p>
+                            <p class="text-base lg:text-lg text-gray-400">IT Manager, TechMaroc</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Testimonial 3 -->
                 <div
-                    class="flex flex-col justify-between rounded-2xl bg-gray-800 p-8 shadow-lg ring-1 ring-gray-700/10">
+                    class="flex flex-col justify-between rounded-2xl bg-gray-800 p-8 lg:p-10 shadow-lg ring-1 ring-gray-700/10">
                     <div>
                         <div class="flex gap-x-1 text-purple-400">
                             <!-- 5 stars -->
@@ -1065,8 +1065,8 @@
                             </svg>
                         </div>
                         <div class="mt-6">
-                            <p class="text-lg font-semibold text-white">Boosted our in-store sales</p>
-                            <p class="mt-3 text-base leading-7 text-gray-300">
+                            <p class="text-xl lg:text-2xl font-semibold text-white">Boosted our in-store sales</p>
+                            <p class="mt-3 text-lg leading-7 text-gray-300 lg:text-xl lg:leading-8">
                                 "The interactive product displays have completely transformed our retail experience.
                                 Customers love the engaging content, and we've seen a significant increase in dwell time
                                 and sales conversion."
@@ -1077,8 +1077,8 @@
                         <img src="https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                             alt="Customer" class="h-12 w-12 rounded-full bg-gray-700">
                         <div>
-                            <p class="text-base font-semibold text-white">Omar El Fassi</p>
-                            <p class="text-sm text-gray-400">Marketing Director, Fashion Maroc</p>
+                            <p class="text-lg lg:text-xl font-semibold text-white">Omar El Fassi</p>
+                            <p class="text-base lg:text-lg text-gray-400">Marketing Director, Fashion Maroc</p>
                         </div>
                     </div>
                 </div>
@@ -1087,25 +1087,25 @@
     </div>
 
     <!-- Pricing Section -->
-    <div id="pricing" class="bg-gray-800 py-24 sm:py-32">
+    <div id="pricing" class="bg-gray-800 py-24 sm:py-32 lg:py-40">
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
             <div class="mx-auto max-w-2xl lg:text-center">
-                <h2 class="text-base font-semibold leading-7 text-purple-400">Pricing</h2>
-                <p class="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">Simple, transparent pricing
+                <h2 class="text-lg sm:text-xl font-semibold leading-7 text-purple-400">Pricing</h2>
+                <p class="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">Simple, transparent pricing
                 </p>
-                <p class="mt-6 text-lg leading-8 text-gray-300">Choose the plan that's right for your business. All
+                <p class="mt-6 text-lg leading-8 text-gray-300 lg:text-xl lg:leading-9">Choose the plan that's right for your business. All
                     plans include a 30-day free trial.</p>
             </div>
 
             <div class="mt-8 flex justify-center">
                 <div class="relative inline-flex items-center rounded-full border border-gray-600 p-1"
                     x-data="{ billingCycle: '{{ $billingCycle }}' }">
-                    <button type="button" class="relative px-4 py-2 text-sm rounded-full transition-all duration-200"
+                    <button type="button" class="relative px-4 py-2 text-base lg:text-lg rounded-full transition-all duration-200"
                         :class="billingCycle === 'monthly' ? 'bg-purple-600 text-white' : 'text-gray-300 hover:text-white'"
                         wire:click="setBillingCycle('monthly')" x-on:click="billingCycle = 'monthly'">
                         Monthly
                     </button>
-                    <button type="button" class="relative px-4 py-2 text-sm rounded-full transition-all duration-200"
+                    <button type="button" class="relative px-4 py-2 text-base lg:text-lg rounded-full transition-all duration-200"
                         :class="billingCycle === 'yearly' ? 'bg-purple-600 text-white' : 'text-gray-300 hover:text-white'"
                         wire:click="setBillingCycle('yearly')" x-on:click="billingCycle = 'yearly'">
                         Yearly
@@ -1115,10 +1115,10 @@
                 </div>
             </div>
 
-            <div class="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="mt-16 lg:mt-20 grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3">
                 @foreach ($plans as $plan)
                     <div
-                        class="group relative overflow-hidden rounded-3xl bg-gray-900 p-8 shadow-xl ring-1 ring-gray-700 transition-all duration-300 hover:ring-purple-500">
+                        class="group relative overflow-hidden rounded-3xl bg-gray-900 p-8 lg:p-10 shadow-xl ring-1 ring-gray-700 transition-all duration-300 hover:ring-purple-500">
                         <div
                             class="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-purple-500/20 blur-3xl transition-all duration-500 group-hover:bg-purple-500/30">
                         </div>
@@ -1126,30 +1126,30 @@
                         @if ($plan->is_popular)
                             <div class="absolute right-6 top-6">
                                 <span
-                                    class="inline-flex items-center rounded-full bg-purple-500/10 px-3 py-1 text-xs font-medium text-purple-400 ring-1 ring-inset ring-purple-500/20">
+                                    class="inline-flex items-center rounded-full bg-purple-500/10 px-3 py-1 text-sm lg:text-base font-medium text-purple-400 ring-1 ring-inset ring-purple-500/20">
                                     Popular
                                 </span>
                             </div>
                         @endif
 
                         <div class="relative">
-                            <h3 class="text-xl font-bold text-white">{{ $plan->name }}</h3>
-                            <p class="mt-2 text-sm text-gray-400">{{ $plan->description }}</p>
+                            <h3 class="text-2xl lg:text-3xl font-bold text-white">{{ $plan->name }}</h3>
+                            <p class="mt-2 text-base lg:text-lg text-gray-400">{{ $plan->description }}</p>
 
                             <div class="mt-6 flex items-baseline">
                                 <span
-                                    class="text-4xl font-bold tracking-tight text-white">${{ $billingCycle === 'monthly' ? number_format($plan->price_monthly, 2) : number_format($plan->price_yearly / 12, 2) }}</span>
-                                <span class="ml-1 text-sm font-medium text-gray-400">/month</span>
+                                    class="text-5xl lg:text-6xl font-bold tracking-tight text-white">${{ $billingCycle === 'monthly' ? number_format($plan->price_monthly, 2) : number_format($plan->price_yearly / 12, 2) }}</span>
+                                <span class="ml-1 text-base lg:text-lg font-medium text-gray-400">/month</span>
                             </div>
 
                             @if ($billingCycle === 'yearly')
-                                <p class="mt-1 text-sm text-purple-400">
+                                <p class="mt-1 text-base lg:text-lg text-purple-400">
                                     Billed annually (${!! number_format($plan->price_yearly, 2) !!})
-                                    <span class="ml-1 text-xs font-medium">Save ${!! number_format($plan->price_monthly * 12 - $plan->price_yearly, 2) !!}</span>
+                                    <span class="ml-1 text-sm lg:text-base font-medium">Save ${!! number_format($plan->price_monthly * 12 - $plan->price_yearly, 2) !!}</span>
                                 </p>
                             @endif
 
-                            <ul class="mt-8 space-y-4 text-sm text-gray-300">
+                            <ul class="mt-8 space-y-4 text-base lg:text-lg text-gray-300">
                                 <li class="flex items-center">
                                     <svg class="h-5 w-5 shrink-0 text-purple-400" viewBox="0 0 20 20"
                                         fill="currentColor">
@@ -1211,7 +1211,7 @@
 
                             <div class="mt-8">
                                 <a href="{{ route('register', ['plan' => $plan->id, 'billing_cycle' => $billingCycle]) }}"
-                                    class="block w-full rounded-full bg-linear-to-r from-purple-600 to-pink-600 px-4 py-3 text-center text-sm font-semibold text-white shadow-sm hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600 transition-all duration-300">
+                                    class="block w-full rounded-full bg-linear-to-r from-purple-600 to-pink-600 px-4 py-3 text-center text-base lg:text-lg font-semibold text-white shadow-sm hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600 transition-all duration-300">
                                     Get started
                                 </a>
                             </div>
@@ -1220,10 +1220,10 @@
                 @endforeach
             </div>
 
-            <div class="mt-12 text-center">
-                <p class="text-base text-gray-400">Need a custom plan for your enterprise?</p>
+            <div class="mt-12 lg:mt-16 text-center">
+                <p class="text-lg lg:text-xl text-gray-400">Need a custom plan for your enterprise?</p>
                 <a href="#contact"
-                    class="mt-2 inline-flex items-center text-sm font-semibold leading-6 text-purple-400 hover:text-purple-300 transition-colors">
+                    class="mt-2 inline-flex items-center text-base lg:text-lg font-semibold leading-6 text-purple-400 hover:text-purple-300 transition-colors">
                     Contact us for custom pricing
                     <svg class="ml-1 h-4 w-4" viewBox="0 0 16 16" fill="none">
                         <path d="M6.75 3.25L10.75 8L6.75 12.75" stroke="currentColor" stroke-width="1.5"
@@ -1237,7 +1237,7 @@
     <!-- Contact Section -->
     <div id="contact" class="relative isolate bg-gray-900">
         <div class="mx-auto grid max-w-7xl grid-cols-1 lg:grid-cols-2">
-            <div class="relative px-6 pb-20 pt-24 sm:pt-32 lg:static lg:px-8 lg:py-48">
+            <div class="relative px-6 pb-20 pt-24 sm:pt-32 lg:static lg:px-8 lg:py-48 xl:py-56">
                 <div class="mx-auto max-w-xl lg:mx-0 lg:max-w-lg">
                     <div class="absolute inset-y-0 left-0 -z-10 w-full overflow-hidden ring-1 ring-white/5 lg:w-1/2">
                         <svg class="absolute inset-0 h-full w-full stroke-gray-700 mask-[radial-gradient(100%_100%_at_top_right,white,transparent)]"
@@ -1254,10 +1254,10 @@
                             <rect width="100%" height="100%" stroke-width="0" fill="url(#contact-pattern)" />
                         </svg>
                     </div>
-                    <h2 class="text-3xl font-bold tracking-tight text-white">Get in Touch</h2>
-                    <p class="mt-6 text-lg leading-8 text-gray-300">Ready to transform your displays? Our team is here
+                    <h2 class="text-4xl font-bold tracking-tight text-white lg:text-5xl">Get in Touch</h2>
+                    <p class="mt-6 text-xl leading-8 text-gray-300 lg:text-2xl lg:leading-9">Ready to transform your displays? Our team is here
                         to help you get started with the perfect digital signage solution for your business.</p>
-                    <dl class="mt-10 space-y-6 text-base leading-7 text-gray-300">
+                    <dl class="mt-10 space-y-6 text-lg leading-7 text-gray-300 lg:text-xl lg:leading-8">
                         <div class="flex gap-x-4">
                             <dt class="flex-none">
                                 <span class="sr-only">Address</span>
@@ -1335,31 +1335,31 @@
                 <div class="mx-auto max-w-xl lg:mr-0 lg:max-w-lg">
                     <div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
                         <div class="sm:col-span-2">
-                            <label for="name" class="block text-sm font-medium leading-6 text-white">Name</label>
+                            <label for="name" class="block text-base lg:text-lg font-medium leading-6 text-white">Name</label>
                             <div class="mt-2.5">
                                 <input wire:model="name" type="text" id="name" autocomplete="name"
-                                    class="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-purple-500 sm:text-sm sm:leading-6">
+                                    class="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-purple-500 text-base lg:text-lg sm:leading-6">
                                 @error('name')
                                     <span class="mt-2 text-sm text-red-500">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
                         <div class="sm:col-span-2">
-                            <label for="email" class="block text-sm font-medium leading-6 text-white">Email</label>
+                            <label for="email" class="block text-base lg:text-lg font-medium leading-6 text-white">Email</label>
                             <div class="mt-2.5">
                                 <input wire:model="email" type="email" id="email" autocomplete="email"
-                                    class="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-purple-500 sm:text-sm sm:leading-6">
+                                    class="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-purple-500 text-base lg:text-lg sm:leading-6">
                                 @error('email')
                                     <span class="mt-2 text-sm text-red-500">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
                         <div class="sm:col-span-2">
-                            <label for="phone" class="block text-sm font-medium leading-6 text-white">Phone
+                            <label for="phone" class="block text-base lg:text-lg font-medium leading-6 text-white">Phone
                                 number</label>
                             <div class="mt-2.5">
                                 <input wire:model="phone" type="tel" id="phone" autocomplete="tel"
-                                    class="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-purple-500 sm:text-sm sm:leading-6">
+                                    class="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-purple-500 text-base lg:text-lg sm:leading-6">
                                 @error('phone')
                                     <span class="mt-2 text-sm text-red-500">{{ $message }}</span>
                                 @enderror
@@ -1367,10 +1367,10 @@
                         </div>
                         <div class="sm:col-span-2">
                             <label for="message"
-                                class="block text-sm font-medium leading-6 text-white">Message</label>
+                                class="block text-base lg:text-lg font-medium leading-6 text-white">Message</label>
                             <div class="mt-2.5">
                                 <textarea wire:model="message" id="message" rows="4"
-                                    class="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-purple-500 sm:text-sm sm:leading-6"></textarea>
+                                    class="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-purple-500 text-base lg:text-lg sm:leading-6"></textarea>
                                 @error('message')
                                     <span class="mt-2 text-sm text-red-500">{{ $message }}</span>
                                 @enderror
@@ -1379,7 +1379,7 @@
                     </div>
                     <div class="mt-8 flex justify-end">
                         <button type="submit"
-                            class="rounded-full bg-linear-to-r from-purple-600 to-pink-600 px-4 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-500 transition-all duration-300">
+                            class="rounded-full bg-linear-to-r from-purple-600 to-pink-600 px-4 py-2.5 text-center text-base lg:text-lg font-semibold text-white shadow-sm hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-500 transition-all duration-300">
                             Send message
                         </button>
                     </div>
