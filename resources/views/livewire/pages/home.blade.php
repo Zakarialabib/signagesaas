@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        <div class="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:flex lg:items-center lg:gap-x-10 lg:px-8 lg:py-40 xl:py-48">
+        <div class="mx-auto max-w-7xl px-6 py-10 sm:py-16 lg:flex lg:items-center lg:gap-x-10 lg:px-8 lg:py-16 xl:py-48">
             <div class="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl lg:shrink-0">
                 <div class="flex">
                     <div
@@ -76,7 +76,7 @@
     </div>
 
     <!-- Solutions Section -->
-    <div id="solutions" class="bg-gray-900 py-24 sm:py-32 lg:py-40">
+    <div id="solutions" class="bg-gray-900 py-24 sm:py-32 lg:py-16">
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
             <div class="mx-auto max-w-2xl lg:text-center">
                 <h2 class="text-lg sm:text-xl font-semibold leading-7 text-purple-400">Industry Solutions</h2>
@@ -277,7 +277,7 @@
     </div>
 
     <!-- Features Section with Example -->
-    <div id="features" class="relative bg-gray-900 py-24 sm:py-32 lg:py-40">
+    <div id="features" class="relative bg-gray-900 py-24 sm:py-32 lg:py-16">
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
             <div class="mx-auto max-w-2xl lg:text-center">
                 <h2 class="text-lg sm:text-xl font-semibold leading-7 text-purple-400">Powerful Features</h2>
@@ -419,7 +419,7 @@
     </div>
 
     <!-- How It Works Section -->
-    <div class="bg-gray-900 py-24 sm:py-32 lg:py-40">
+    <div class="bg-gray-900 py-24 sm:py-32 lg:py-16">
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
             <div class="mx-auto max-w-2xl lg:text-center">
                 <h2 class="text-lg sm:text-xl font-semibold leading-7 text-purple-400">How It Works</h2>
@@ -496,7 +496,7 @@
     </div>
 
     <!-- Demo Showcase Section -->
-    <section class="relative isolate overflow-hidden bg-gradient-to-br from-gray-900 to-purple-900 py-24 sm:py-32 lg:py-40">
+    <section class="relative isolate overflow-hidden bg-gradient-to-br from-gray-900 to-purple-900 py-24 sm:py-32 lg:py-16">
         <!-- Decorative elements -->
         <div class="absolute inset-0 -z-10">
             <div class="absolute left-1/2 top-0 -ml-24 transform-gpu blur-3xl lg:ml-24 xl:ml-48" aria-hidden="true">
@@ -919,7 +919,7 @@
     </section>
 
     <!-- Testimonials Section -->
-    <div class="bg-gray-900 py-24 sm:py-32 lg:py-40">
+    <div class="bg-gray-900 py-24 sm:py-32 lg:py-16">
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
             <div class="mx-auto max-w-2xl lg:text-center">
                 <h2 class="text-lg sm:text-xl font-semibold leading-7 text-purple-400">Testimonials</h2>
@@ -1087,7 +1087,7 @@
     </div>
 
     <!-- Pricing Section -->
-    <div id="pricing" class="bg-gray-800 py-24 sm:py-32 lg:py-40">
+    <div id="pricing" class="bg-gray-800 py-24 sm:py-32 lg:py-16">
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
             <div class="mx-auto max-w-2xl lg:text-center">
                 <h2 class="text-lg sm:text-xl font-semibold leading-7 text-purple-400">Pricing</h2>

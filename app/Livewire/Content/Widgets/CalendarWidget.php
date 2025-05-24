@@ -6,6 +6,7 @@ namespace App\Livewire\Content\Widgets;
 
 use Livewire\Attributes\Locked;
 use Carbon\Carbon;
+use App\Tenant\Models\Content; // If events might be loaded from a Content model in the future
 
 final class CalendarWidget extends BaseWidget
 {
@@ -25,6 +26,111 @@ final class CalendarWidget extends BaseWidget
     public string $view = 'month'; // month, week, day
     public array $calendarSources = ['google', 'outlook']; // Calendar sources to fetch from
     public array $apiKeys = [];
+
+    public ?string $contentId = null; // For loading dynamic events from a Content model
+
+    // Configurable settings
+    public string $startOfWeek = 'monday'; // 'sunday' or 'monday'
+    public int $eventDisplayLimit = 3; // Max events to show per day in month view before a "+X more" link
+    public bool $showRemindersOption = true; // Visual toggle in settings
+    public string $defaultDate; // YYYY-MM-DD, for initial display month/year
+    public string $displayTimeZone = 'UTC'; // Timezone for displaying event times
+
+    // Internal state for calendar navigation
+    public int $currentYear;
+    public int $currentDay; // For daily or weekly views
+
+    public string $widgetTitle = 'Company Events Calendar';
+
+    #[Locked]
+    public array $availableViews = [
+        'month-view' => [
+            'name' => 'Month View',
+            'view_path' => 'livewire.content.widgets.calendar-templates.month-view'
+        ],
+        'week-view' => [
+            'name' => 'Week View',
+            'view_path' => 'livewire.content.widgets.calendar-templates.week-view'
+        ],
+        'list-view' => [
+            'name' => 'Upcoming List',
+            'view_path' => 'livewire.content.widgets.calendar-templates.list-view'
+        ],
+    ];
+    public string $activeView = 'month-view'; // Default view key
+
+    public function mount(
+        array $settings = [],
+        string $title = 'Calendar Widget', // BaseWidget title
+        string $category = 'CALENDAR', // BaseWidget category
+        string $icon = 'heroicon-o-calendar-days', // BaseWidget icon
+        array $initialData = [],      // Fallback data for events
+        ?string $contentId = null
+    ): void {
+        parent::mount($settings, $title, $category, $icon);
+
+        $this->contentId = $contentId;
+        $this->defaultDate = $settings['default_date'] ?? Carbon::now()->toDateString();
+        $this->displayTimeZone = $settings['display_time_zone'] ?? config('app.timezone', 'UTC');
+
+        $initialCarbonDate = Carbon::parse($this->defaultDate, $this->displayTimeZone);
+        $this->currentYear = $initialCarbonDate->year;
+        $this->currentMonth = (string)$initialCarbonDate->month;
+        $this->currentDay = $initialCarbonDate->day;
+
+        $this->activeView = $settings['default_view'] ?? 'month-view';
+
+        if ($this->contentId) {
+            $contentModel = Content::find($this->contentId);
+            if ($contentModel && isset($contentModel->content_data['widget_type']) && $contentModel->content_data['widget_type'] === 'CalendarWidget') {
+                $widgetDataSource = $contentModel->content_data['data'] ?? [];
+                $this->events = $widgetDataSource['events'] ?? [];
+                $this->widgetTitle = $widgetDataSource['title'] ?? $contentModel->name; // Use content name as fallback
+            } else {
+                $this->loadPlaceholderData();
+                $this->error = $this->error ?? "Content ID {$this->contentId} not found or not a CalendarWidget. Using placeholders.";
+            }
+        } elseif (!empty($initialData['events'])) {
+            $this->events = $initialData['events'] ?? [];
+            $this->widgetTitle = $initialData['title'] ?? 'Upcoming Events';
+            if (isset($initialData['active_view']) && array_key_exists($initialData['active_view'], $this->availableViews)) {
+                $this->activeView = $initialData['active_view'];
+            }
+        } else {
+            $this->loadPlaceholderData();
+        }
+
+        $this->applySettings($settings);
+        $this->processEventsForView();
+    }
+
+    protected function applySettings(array $settings): void
+    {
+        $this->startOfWeek = $settings['start_of_week'] ?? $this->startOfWeek;
+        $this->eventDisplayLimit = (int) ($settings['event_display_limit'] ?? $this->eventDisplayLimit);
+        $this->showRemindersOption = $settings['show_reminders_option'] ?? $this->showRemindersOption;
+        $this->refreshInterval = (int) ($settings['refresh_interval'] ?? $this->refreshInterval);
+        $this->displayTimeZone = $settings['display_time_zone'] ?? $this->displayTimeZone;
+
+        if ($this->title === 'Calendar Widget' && isset($settings['title'])) {
+            $this->title = $settings['title']; // BaseWidget's title
+        }
+        if (isset($settings['widget_title'])) {
+            $this->widgetTitle = $settings['widget_title'];
+        } elseif (empty($this->widgetTitle) || $this->widgetTitle === 'Upcoming Events') {
+            $this->widgetTitle = 'Company Events Calendar';
+        }
+        if (isset($settings['active_view']) && array_key_exists($settings['active_view'], $this->availableViews)) {
+            $this->activeView = $settings['active_view'];
+        }
+        if (isset($settings['default_date'])) {
+            $newDefaultDate = Carbon::parse($settings['default_date'], $this->displayTimeZone);
+            $this->currentYear = $newDefaultDate->year;
+            $this->currentMonth = (string)$newDefaultDate->month;
+            $this->currentDay = $newDefaultDate->day;
+        }
+        $this->processEventsForView();
+    }
 
     protected function loadData(): void
     {
@@ -130,15 +236,15 @@ final class CalendarWidget extends BaseWidget
             ],
             [
                 'title' => 'Tech Conference 2024',
-                'start' => $today->copy()->addDays(7)->setTime(9,0)->format('Y-m-d H:i:s'),
-                'end' => $today->copy()->addDays(9)->setTime(17,0)->format('Y-m-d H:i:s'), // Multi-day event
+                'start' => $today->copy()->addDays(7)->setTime(9, 0)->format('Y-m-d H:i:s'),
+                'end' => $today->copy()->addDays(9)->setTime(17, 0)->format('Y-m-d H:i:s'), // Multi-day event
                 'location' => 'Convention Center',
                 'source' => 'google'
             ],
-             [
+            [
                 'title' => 'Past Event Example',
-                'start' => $today->copy()->subDays(5)->setTime(10,0)->format('Y-m-d H:i:s'),
-                'end' => $today->copy()->subDays(5)->setTime(11,0)->format('Y-m-d H:i:s'),
+                'start' => $today->copy()->subDays(5)->setTime(10, 0)->format('Y-m-d H:i:s'),
+                'end' => $today->copy()->subDays(5)->setTime(11, 0)->format('Y-m-d H:i:s'),
                 'location' => 'Archive Room',
                 'source' => 'outlook'
             ]
@@ -180,8 +286,8 @@ final class CalendarWidget extends BaseWidget
         for ($day = 1; $day <= $daysInMonth; $day++) {
             $currentDate = $startOfMonth->copy()->addDays($day - 1);
             $currentDateString = $currentDate->format('Y-m-d');
-            
-            $dayEvents = array_filter($this->events, function($event) use ($currentDateString) {
+
+            $dayEvents = array_filter($this->events, function ($event) use ($currentDateString) {
                 $eventStartDate = Carbon::parse($event['start'])->format('Y-m-d');
                 $eventEndDate = Carbon::parse($event['end'])->format('Y-m-d');
                 // Check if the event occurs on, starts on, or spans across the current date
@@ -213,18 +319,166 @@ final class CalendarWidget extends BaseWidget
         $this->calendar = $calendar;
     }
 
-    public function render(): \Illuminate\View\View
+    protected function loadPlaceholderData(): void
     {
-        return view('livewire.content.widgets.calendar-widget', [
-            'title' => 'Calendar',
-            'category' => 'CALENDAR',
-            'icon' => '<svg class="h-5 w-5 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>',
+        $today = Carbon::now($this->displayTimeZone);
+        $this->events = [
+            [
+                'id' => 'evt_001',
+                'title' => 'Team All-Hands Meeting',
+                'start' => $today->copy()->setHour(10)->setMinute(0)->setSecond(0)->toDateTimeString(),
+                'end' => $today->copy()->setHour(11)->setMinute(30)->setSecond(0)->toDateTimeString(),
+                'description' => 'Quarterly all-hands meeting to discuss company progress and future goals. All team members are encouraged to attend.',
+                'location' => 'Main Conference Hall / Zoom Link',
+                'category' => 'Meeting',
+                'color' => 'blue',
+                'attendees' => ['John Doe', 'Jane Smith', 'Alice Brown'],
+                'isFullDay' => false,
+            ],
+            [
+                'id' => 'evt_002',
+                'title' => 'Project Phoenix Deadline',
+                'start' => $today->copy()->addDays(2)->startOfDay()->toDateTimeString(),
+                'end' => $today->copy()->addDays(2)->endOfDay()->toDateTimeString(),
+                'description' => 'Final submission deadline for Project Phoenix. Ensure all deliverables are uploaded to the project portal.',
+                'location' => 'Online Portal',
+                'category' => 'Deadline',
+                'color' => 'red',
+                'isFullDay' => true,
+            ],
+            [
+                'id' => 'evt_003',
+                'title' => 'Yoga & Wellness Session',
+                'start' => $today->copy()->addDays(3)->setHour(17)->setMinute(0)->toDateTimeString(),
+                'end' => $today->copy()->addDays(3)->setHour(18)->setMinute(0)->toDateTimeString(),
+                'description' => 'Relax and rejuvenate with our weekly yoga session. Mats provided.',
+                'location' => 'Gym Room B',
+                'category' => 'Wellness',
+                'color' => 'green',
+                'isFullDay' => false,
+            ],
+            [
+                'id' => 'evt_004',
+                'title' => 'Client Workshop: Digital Strategy',
+                'start' => $today->copy()->addDays(5)->setHour(14)->setMinute(0)->toDateTimeString(),
+                'end' => $today->copy()->addDays(5)->setHour(16)->setMinute(30)->toDateTimeString(),
+                'description' => 'Interactive workshop with Acme Corp to define their new digital strategy.',
+                'location' => 'Client Offices & Virtual',
+                'category' => 'Workshop',
+                'color' => 'purple',
+                'isFullDay' => false,
+            ],
+            [
+                'id' => 'evt_005',
+                'title' => 'Company Anniversary Celebration',
+                'start' => $today->copy()->addWeeks(2)->setHour(19)->setMinute(0)->toDateTimeString(),
+                'end' => $today->copy()->addWeeks(2)->setHour(23)->setMinute(0)->toDateTimeString(),
+                'description' => 'Join us for an evening of celebration for our 10th company anniversary! Food, drinks, and entertainment.',
+                'location' => 'The Grand Ballroom',
+                'category' => 'Social Event',
+                'color' => 'amber',
+                'isFullDay' => false,
+            ],
+            [
+                'id' => 'evt_006',
+                'title' => 'Maintenance Window',
+                'start' => $today->copy()->addMonth()->startOfMonth()->addDays(5)->setHour(2)->setMinute(0)->toDateTimeString(),
+                'end' => $today->copy()->addMonth()->startOfMonth()->addDays(5)->setHour(6)->setMinute(0)->toDateTimeString(),
+                'description' => 'Scheduled server maintenance. Brief outages may occur.',
+                'location' => 'Data Center',
+                'category' => 'Technical',
+                'color' => 'gray',
+                'isFullDay' => false,
+            ],
+            [
+                'id' => 'evt_007',
+                'title' => 'Marketing Campaign Launch',
+                'start' => $today->copy()->subDays(3)->startOfDay()->toDateTimeString(), // An event from the past
+                'end' => $today->copy()->subDays(3)->endOfDay()->toDateTimeString(),
+                'description' => 'Launch of the new Spring marketing campaign across all channels.',
+                'location' => 'N/A',
+                'category' => 'Marketing',
+                'color' => 'pink',
+                'isFullDay' => true,
+            ],
+        ];
+        $this->widgetTitle = 'Company Events Calendar';
+    }
+
+    protected function processEventsForView(): void
+    {
+        // This is where you might filter or re-format events based on $this->activeView,
+        // $this->currentYear, $this->currentMonth, etc.
+        // For example, for a list view, you might sort upcoming events.
+        // For a month view, you'd group them by day.
+        // For now, the raw events array is passed.
+        // The actual filtering/display logic will be primarily in the specific Blade templates.
+    }
+
+    // Methods for calendar navigation (to be called from Blade templates via wire:click)
+    public function goToNextMonth(): void
+    {
+        $newDate = Carbon::create((int)$this->currentYear, (int)$this->currentMonth, 1, 0, 0, 0, $this->displayTimeZone)->addMonth();
+        $this->currentYear = $newDate->year;
+        $this->currentMonth = (string)$newDate->month;
+        $this->processEventsForView();
+    }
+
+    public function goToPreviousMonth(): void
+    {
+        $newDate = Carbon::create((int)$this->currentYear, (int)$this->currentMonth, 1, 0, 0, 0, $this->displayTimeZone)->subMonth();
+        $this->currentYear = $newDate->year;
+        $this->currentMonth = (string) $newDate->month;
+        $this->processEventsForView();
+    }
+
+    public function goToDate(string $date): void // YYYY-MM-DD
+    {
+        try {
+            $newDate = Carbon::parse($date, $this->displayTimeZone);
+            $this->currentYear = $newDate->year;
+            $this->currentMonth = (string) $newDate->month;
+            $this->currentDay = $newDate->day;
+            $this->processEventsForView();
+        } catch (\Exception $e) {
+            // Log error or handle invalid date string
+            $this->error = "Invalid date format provided for navigation.";
+        }
+    }
+
+    public function setView(string $viewKey): void
+    {
+        if (array_key_exists($viewKey, $this->availableViews)) {
+            $this->activeView = $viewKey;
+            $this->processEventsForView(); // Re-process events if view changes behavior
+        }
+    }
+
+    protected function getViewData(): array
+    {
+        return [
+            'widgetId' => $this->getId(),
+            'title' => $this->title, // BaseWidget title
+            'widgetTitle' => $this->widgetTitle,
             'events' => $this->events,
-            'calendar' => $this->calendar,
-            'currentMonth' => $this->currentMonth,
-            'lastUpdated' => $this->lastUpdated,
             'error' => $this->error,
             'isLoading' => $this->isLoading,
-        ]);
+            // Calendar specific settings & state
+            'startOfWeek' => $this->startOfWeek,
+            'eventDisplayLimit' => $this->eventDisplayLimit,
+            'showRemindersOption' => $this->showRemindersOption,
+            'currentYear' => (int)$this->currentYear,
+            'currentMonth' => (int)$this->currentMonth,
+            'currentDay' => (int)$this->currentDay,
+            'displayTimeZone' => $this->displayTimeZone,
+            // For the main wrapper view
+            'availableViews' => $this->availableViews,
+            'activeView' => $this->activeView,
+        ];
+    }
+
+    public function render(): \Illuminate\View\View
+    {
+        return view('livewire.content.widgets.calendar-widget', $this->getViewData());
     }
 }
