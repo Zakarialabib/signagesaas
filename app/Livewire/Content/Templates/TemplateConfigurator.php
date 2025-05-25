@@ -134,6 +134,19 @@ final class TemplateConfigurator extends Component
             $this->template->update(['layout' => $layout]);
             $this->zoneContent[$zoneId] = Content::find($contentId);
 
+            // NEW: Check and mark onboarding step
+            // Ensure $content is loaded to check its type, or assume any assignment counts
+            $assignedContent = $this->zoneContent[$zoneId];
+            if ($assignedContent) { // Check if content was successfully assigned
+                $onboardingProgress = \App\Tenant\Models\OnboardingProgress::firstOrCreate(['tenant_id' => $this->template->tenant_id]); // Assuming template has tenant_id
+                if (!$onboardingProgress->widget_content_assigned_to_template) {
+                    // Optional: Check if $assignedContent is specifically widget content if desired
+                    // if (isset($assignedContent->content_data['widget_type'])) {
+                    $onboardingProgress->markWidgetContentAssignedToTemplateCompleted();
+                    // }
+                }
+            }
+
             $this->dispatch('zone-content-updated', [
                 'zoneId'    => $zoneId,
                 'contentId' => $contentId,

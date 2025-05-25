@@ -112,6 +112,24 @@ final class OnboardingWidget extends Component
                 'icon'        => 'chart-bar',
                 'examples'    => OnboardingProgress::$stepExamples['viewed_analytics'],
             ],
+            [
+                'key'         => 'first_widget_content_created',
+                'title'       => 'Create Your First Widget Content',
+                'description' => 'Use pre-built widget types like Menus or Product Showcases and add your own data.',
+                'completed'   => $this->onboardingProgress->first_widget_content_created,
+                'route'       => 'tenant.content.index', // Assuming 'content.index' is the route for ContentManager
+                'icon'        => 'heroicon-o-puzzle-piece', 
+                'examples'    => OnboardingProgress::$stepExamples['first_widget_content_created'],
+            ],
+            [
+                'key'         => 'widget_content_assigned_to_template',
+                'title'       => 'Add Widget Content to a Template',
+                'description' => 'Assign your customized widget content to a zone in your screen templates.',
+                'completed'   => $this->onboardingProgress->widget_content_assigned_to_template,
+                'route'       => 'tenant.templates.index', // Assuming 'templates.index' is for TemplateManager
+                'icon'        => 'heroicon-o-squares-plus', 
+                'examples'    => OnboardingProgress::$stepExamples['widget_content_assigned_to_template'],
+            ],
         ]);
     }
 
@@ -152,8 +170,15 @@ final class OnboardingWidget extends Component
 
     public function getNextIncompleteStep(): ?array
     {
+        // Ensure getRequiredSteps() returns an array of strings
+        $requiredSteps = $this->onboardingProgress->getRequiredSteps();
+        if (!is_array($requiredSteps)) {
+            // Handle error or return null, depending on desired behavior
+            return null;
+        }
+
         foreach ($this->steps as $step) {
-            if ( ! $step['completed'] && in_array($step['key'], $this->onboardingProgress->getRequiredSteps())) {
+            if ( ! $step['completed'] && in_array($step['key'], $requiredSteps, true)) {
                 return $step;
             }
         }

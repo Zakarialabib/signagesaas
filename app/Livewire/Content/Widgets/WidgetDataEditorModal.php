@@ -193,10 +193,15 @@ class WidgetDataEditorModal extends Component
             return;
         }
 
-        $contentDataPrepared = [
-            'widget_type' => $this->widgetType, // Store widget type for rendering
-            'data' => $validatedData['widgetData'], // The actual structured data
-        ];
+        // $contentDataPrepared should contain the full structure including 'widget_type' and 'data'
+        // The $validatedData['widgetData'] already holds this structure if initialized and bound correctly.
+        $contentDataPrepared = $validatedData['widgetData'];
+        
+        // Ensure widget_type is set if it's missing from widgetData (e.g. if data was manually edited)
+        if (!isset($contentDataPrepared['widget_type'])) {
+            $contentDataPrepared['widget_type'] = $this->widgetType;
+        }
+
 
         $contentDetails = [
             'tenant_id'    => $currentTenant->id,
@@ -218,6 +223,13 @@ class WidgetDataEditorModal extends Component
             }
         } else {
             $content = Content::create($contentDetails);
+            // NEW: Check and mark onboarding step
+            if ($content && ($content->content_data['widget_type'] ?? null)) { // Ensure it's widget content
+                $onboardingProgress = \App\Tenant\Models\OnboardingProgress::firstOrCreate(['tenant_id' => $content->tenant_id]);
+                if (!$onboardingProgress->first_widget_content_created) {
+                    $onboardingProgress->markFirstWidgetContentCreatedCompleted();
+                }
+            }
         }
 
         // Dispatch to TemplateConfigurator or any other listener

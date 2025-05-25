@@ -1,4 +1,5 @@
 <div>
+    <livewire:dashboard.onboarding-widget :contextStepKey="'first_screen_created'" />
     <!-- Header -->
     <div class="sm:flex sm:items-center mb-8">
         <div class="sm:flex-auto">

@@ -1,6 +1,7 @@
 {{-- Template Configurator View --}}
 <div>
     <div class="template-configurator">
+        <livewire:dashboard.onboarding-widget :contextStepKey="'widget_content_assigned_to_template'" />
         <div class="mb-6">
             <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">Template Configuration</h2>
             <p class="mt-1 text-sm text-gray-500">Configure zones and assign content for this template.</p>

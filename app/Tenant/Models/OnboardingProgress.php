@@ -28,6 +28,8 @@ final class OnboardingProgress extends Model
         'viewed_analytics',
         'custom_steps',
         'completed_at',
+        'first_widget_content_created',
+        'widget_content_assigned_to_template',
     ];
 
     public static array $stepExamples = [
@@ -142,6 +144,18 @@ final class OnboardingProgress extends Model
             'Analyze audience behavior patterns for content optimization',
             'Set up automated performance alerts and weekly digest reports',
         ],
+        'first_widget_content_created' => [
+            "Navigate to Content > Content Library.",
+            "Click 'Add Widget Content'.",
+            "Choose a widget type like 'Digital Menu Board' or 'Retail Product Showcase'.",
+            "Fill in the specific details and save your new widget content."
+        ],
+        'widget_content_assigned_to_template' => [
+            "Go to Templates and open a template in the Configurator.",
+            "Select a zone, or add a new one.",
+            "Set the zone's 'Type' to 'Widget' and choose the specific 'Widget Type' (e.g., Menu Widget).",
+            "Click 'Assign Content' and select your widget content, or create new content for the zone."
+        ],
     ];
 
     protected $casts = [
@@ -155,6 +169,8 @@ final class OnboardingProgress extends Model
         'viewed_analytics'        => 'boolean',
         'custom_steps'            => 'array',
         'completed_at'            => 'datetime',
+        'first_widget_content_created' => 'boolean',
+        'widget_content_assigned_to_template' => 'boolean',
     ];
 
     // Completion methods
@@ -240,7 +256,20 @@ final class OnboardingProgress extends Model
 
     public function getRequiredSteps(): array
     {
-        return array_map(fn (OnboardingStep $step) => $step->value, OnboardingStep::getRequiredSteps());
+        // return array_map(fn (OnboardingStep $step) => $step->value, OnboardingStep::getRequiredSteps());
+        // Manual merge of existing logic with new steps, assuming OnboardingStep enum might not be updated yet.
+        return [
+            'profile_completed',
+            'first_device_registered',
+            'first_content_uploaded',
+            'first_screen_created',
+            'first_schedule_created',
+            'first_user_invited',
+            // 'subscription_setup', // Example: Assuming this might be optional for some tenants
+            // 'viewed_analytics',   // Example: Assuming this might be optional
+            'first_widget_content_created',
+            'widget_content_assigned_to_template',
+        ];
     }
 
     public function getCompletedStepsCount(): int
