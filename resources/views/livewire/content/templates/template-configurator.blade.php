@@ -139,6 +139,34 @@
                             <div>
                                 <h4 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-4">Settings</h4>
                                 <div class="space-y-4">
+                                    {{-- Zone Type and Widget Type Selection --}}
+                                    <div>
+                                        <label for="zone_type_{{ $zoneId }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Zone Type</label>
+                                        <select id="zone_type_{{ $zoneId }}" 
+                                                wire:change="updateZoneTypeProperties('{{ $zoneId }}', $event.target.value, document.getElementById('widget_type_select_{{ $zoneId }}') ? document.getElementById('widget_type_select_{{ $zoneId }}').value : null)"
+                                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100">
+                                            <option value="content" {{ ($zone['type'] ?? 'content') === 'content' ? 'selected' : '' }}>Generic Content</option>
+                                            <option value="image" {{ ($zone['type'] ?? '') === 'image' ? 'selected' : '' }}>Image (Fixed Type)</option>
+                                            <option value="video" {{ ($zone['type'] ?? '') === 'video' ? 'selected' : '' }}>Video (Fixed Type)</option>
+                                            {{-- Add other simple types as needed --}}
+                                            <option value="widget" {{ ($zone['type'] ?? '') === 'widget' ? 'selected' : '' }}>Widget</option>
+                                        </select>
+                                    </div>
+
+                                    @if(isset($zone['type']) && $zone['type'] === 'widget')
+                                    <div class="mt-4">
+                                        <label for="widget_type_select_{{ $zoneId }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Specific Widget Type</label>
+                                        <select id="widget_type_select_{{ $zoneId }}" 
+                                                wire:change="updateZoneTypeProperties('{{ $zoneId }}', 'widget', $event.target.value)"
+                                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100">
+                                            <option value="">-- Select Widget --</option>
+                                            @foreach($this->availableWidgetTypesForZones as $widgetKey => $widgetName)
+                                                <option value="{{ $widgetKey }}" {{ ($zone['widget_type'] ?? '') === $widgetKey ? 'selected' : '' }}>{{ $widgetName }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    @endif
+
                                     <!-- Duration -->
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">

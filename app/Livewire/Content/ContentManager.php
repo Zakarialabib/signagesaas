@@ -45,6 +45,7 @@ final class ContentManager extends Component
     public bool $deleteContentModal = false;
 
     public bool $bulkActionModal = false;
+    public bool $showWidgetTypeSelectorModal = false;
 
     #[Locked]
     public ?string $contentToDelete = null;
@@ -58,10 +59,24 @@ final class ContentManager extends Component
     public string $bulkAction = '';
     public bool $selectAll = false;
 
+    protected $listeners = [
+        // 'close-widget-type-selector' => 'closeWidgetTypeSelectorModal', // Potentially add if needed
+    ];
+
     public function mount(): void
     {
         // $this->authorize('viewAny', Content::class);
     }
+
+    public function openWidgetTypeSelector(): void
+    {
+        $this->showWidgetTypeSelectorModal = true;
+    }
+
+    // public function closeWidgetTypeSelectorModal(): void
+    // {
+    //     $this->showWidgetTypeSelectorModal = false;
+    // }
 
     public function render()
     {

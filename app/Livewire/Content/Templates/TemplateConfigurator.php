@@ -218,6 +218,43 @@ final class TemplateConfigurator extends Component
         $this->dispatch('zone-added', ['zoneId' => $newZoneId, 'zone' => $newZoneData]);
         $this->dispatch('notify', ['type' => 'success', 'message' => 'New zone added.']);
     }
+    
+    public function updateZoneTypeProperties(string $zoneId, string $newType, ?string $newWidgetType): void
+    {
+        $layout = $this->template->layout;
+        if (isset($layout['zones'][$zoneId])) {
+            $layout['zones'][$zoneId]['type'] = $newType; 
+            $layout['zones'][$zoneId]['widget_type'] = ($newType === 'widget' && $newWidgetType) ? $newWidgetType : null;
+    
+            // If changing to a non-widget type, or widget_type is cleared, also clear content_id if it's widget-specific
+            if ($newType !== 'widget' || !$newWidgetType) {
+                // Optionally clear content_id if it was widget-specific.
+                // $layout['zones'][$zoneId]['content_id'] = null; 
+                // $this->zoneContent[$zoneId] = null;
+            }
+
+            $this->template->update(['layout' => $layout]);
+            $this->loadZoneSettings(); // Reload zone settings to reflect potential changes
+            $this->dispatch('notify', ['type' => 'success', 'message' => "Zone '{$layout['zones'][$zoneId]['name']}' type updated."]);
+            $this->dispatch('zone-type-updated', ['zoneId' => $zoneId, 'newType' => $newType, 'newWidgetType' => $newWidgetType]);
+        }
+    }
+
+    public function getAvailableWidgetTypesForZonesProperty(): array
+    {
+        // This could be fetched from a service, config, or defined directly
+        // For now, let's mirror what WidgetTypeSelector might use (simplified)
+        return [
+            'MenuWidget' => 'Menu Board',
+            'RetailProductWidget' => 'Retail Products',
+            'WeatherWidget' => 'Weather Display',
+            'ClockWidget' => 'Clock Display',
+            'AnnouncementWidget' => 'Announcements',
+            'RssFeedWidget' => 'RSS Feed',
+            'CalendarWidget' => 'Calendar & Events',
+            // Add other widget identifiers and their friendly names
+        ];
+    }
 
     public function deleteZone(string $zoneId): void
     {
@@ -312,5 +349,42 @@ final class TemplateConfigurator extends Component
         return view('livewire.content.templates.template-configurator', [
             'zones' => $zones,
         ]);
+    }
+
+    public function updateZoneTypeProperties(string $zoneId, string $newType, ?string $newWidgetType): void
+    {
+        $layout = $this->template->layout;
+        if (isset($layout['zones'][$zoneId])) {
+            $layout['zones'][$zoneId]['type'] = $newType; 
+            $layout['zones'][$zoneId]['widget_type'] = ($newType === 'widget' && $newWidgetType) ? $newWidgetType : null;
+    
+            // If changing to a non-widget type, or widget_type is cleared, also clear content_id if it's widget-specific
+            if ($newType !== 'widget' || !$newWidgetType) {
+                // Optionally clear content_id if it was widget-specific.
+                // $layout['zones'][$zoneId]['content_id'] = null; 
+                // $this->zoneContent[$zoneId] = null;
+            }
+
+            $this->template->update(['layout' => $layout]);
+            $this->loadZoneSettings(); // Reload zone settings to reflect potential changes
+            $this->dispatch('notify', ['type' => 'success', 'message' => "Zone '{$layout['zones'][$zoneId]['name']}' type updated."]);
+            $this->dispatch('zone-type-updated', ['zoneId' => $zoneId, 'newType' => $newType, 'newWidgetType' => $newWidgetType]);
+        }
+    }
+
+    public function getAvailableWidgetTypesForZonesProperty(): array
+    {
+        // This could be fetched from a service, config, or defined directly
+        // For now, let's mirror what WidgetTypeSelector might use (simplified)
+        return [
+            'MenuWidget' => 'Menu Board',
+            'RetailProductWidget' => 'Retail Products',
+            'WeatherWidget' => 'Weather Display',
+            'ClockWidget' => 'Clock Display',
+            'AnnouncementWidget' => 'Announcements',
+            'RssFeedWidget' => 'RSS Feed',
+            'CalendarWidget' => 'Calendar & Events',
+            // Add other widget identifiers and their friendly names
+        ];
     }
 }
