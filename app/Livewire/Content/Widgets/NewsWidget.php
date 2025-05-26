@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Content\Widgets;
 
 use Livewire\Attributes\Locked;
+use Exception;
 
 final class NewsWidget extends BaseWidget
 {
@@ -22,7 +23,7 @@ final class NewsWidget extends BaseWidget
     protected function loadData(): void
     {
         if (empty($this->apiKey)) {
-            throw new \Exception('News widget: API Key is missing.');
+            throw new Exception('News widget: API Key is missing.');
         }
 
         // Replace with your actual news API call logic
@@ -57,25 +58,25 @@ final class NewsWidget extends BaseWidget
         // Placeholder / Demo data
         $this->newsItems = [
             [
-                'title' => 'Tech Conference Announces Keynote Speakers',
+                'title'  => 'Tech Conference Announces Keynote Speakers',
                 'source' => 'Tech News',
-                'time' => '2h ago'
+                'time'   => '2h ago',
             ],
             [
-                'title' => 'Local Community Raises Funds for New Park',
+                'title'  => 'Local Community Raises Funds for New Park',
                 'source' => 'Community Times',
-                'time' => '4h ago'
+                'time'   => '4h ago',
             ],
             [
-                'title' => 'Stock Markets Reach Record Highs',
+                'title'  => 'Stock Markets Reach Record Highs',
                 'source' => 'Financial Daily',
-                'time' => '6h ago'
+                'time'   => '6h ago',
             ],
             [
-                'title' => 'New Study Reveals Benefits of Remote Work',
+                'title'  => 'New Study Reveals Benefits of Remote Work',
                 'source' => 'Business Insider',
-                'time' => '8h ago'
-            ]
+                'time'   => '8h ago',
+            ],
         ];
 
         $this->lastUpdated = now()->diffForHumans();
@@ -84,12 +85,12 @@ final class NewsWidget extends BaseWidget
     public function render(): \Illuminate\View\View
     {
         return view('livewire.content.widgets.news-widget', [
-            'title' => 'Latest News',
-            'category' => 'NEWS',
-            'icon' => '<svg class="h-5 w-5 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2.5 2.5 0 00-2.5-2.5H15M9 11l3 3m0 0l3-3m-3 3V8" /></svg>',
+            'title'     => 'Latest News',
+            'category'  => 'NEWS',
+            'icon'      => '<svg class="h-5 w-5 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2.5 2.5 0 00-2.5-2.5H15M9 11l3 3m0 0l3-3m-3 3V8" /></svg>',
             'newsItems' => $this->newsItems,
-            'error' => $this->error,
+            'error'     => $this->error,
             'isLoading' => $this->isLoading,
         ]);
     }
-} 
+}

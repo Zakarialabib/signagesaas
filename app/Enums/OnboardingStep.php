@@ -25,15 +25,15 @@ enum OnboardingStep: string
     public function getTitle(): string
     {
         return match ($this) {
-            self::PROFILE_COMPLETED       => 'Complete Your Profile',
-            self::FIRST_DEVICE_REGISTERED => 'Register Your First Device',
-            self::FIRST_CONTENT_UPLOADED  => 'Upload Your First Content',
-            self::FIRST_SCREEN_CREATED    => 'Create Your First Screen',
-            self::FIRST_SCHEDULE_CREATED  => 'Create Your First Schedule',
-            self::FIRST_USER_INVITED      => 'Invite Team Members',
-            self::SUBSCRIPTION_SETUP      => 'Review Your Subscription',
-            self::VIEWED_ANALYTICS        => 'View Analytics',
-            self::FIRST_WIDGET_CONTENT_CREATED => 'Create Your First Widget Content',
+            self::PROFILE_COMPLETED                   => 'Complete Your Profile',
+            self::FIRST_DEVICE_REGISTERED             => 'Register Your First Device',
+            self::FIRST_CONTENT_UPLOADED              => 'Upload Your First Content',
+            self::FIRST_SCREEN_CREATED                => 'Create Your First Screen',
+            self::FIRST_SCHEDULE_CREATED              => 'Create Your First Schedule',
+            self::FIRST_USER_INVITED                  => 'Invite Team Members',
+            self::SUBSCRIPTION_SETUP                  => 'Review Your Subscription',
+            self::VIEWED_ANALYTICS                    => 'View Analytics',
+            self::FIRST_WIDGET_CONTENT_CREATED        => 'Create Your First Widget Content',
             self::WIDGET_CONTENT_ASSIGNED_TO_TEMPLATE => 'Assign Widget to Template',
         };
     }
@@ -41,15 +41,15 @@ enum OnboardingStep: string
     public function getDescription(): string
     {
         return match ($this) {
-            self::PROFILE_COMPLETED       => 'Set up your organization profile with logo and contact information.',
-            self::FIRST_DEVICE_REGISTERED => 'Add a digital signage device to your account.',
-            self::FIRST_CONTENT_UPLOADED  => 'Add images, videos, or create content using our editor.',
-            self::FIRST_SCREEN_CREATED    => 'Define a screen layout with zones for your content.',
-            self::FIRST_SCHEDULE_CREATED  => 'Schedule when your content should play on your screens.',
-            self::FIRST_USER_INVITED      => 'Add colleagues who will help manage your digital signage.',
-            self::SUBSCRIPTION_SETUP      => 'Make sure your plan meets your digital signage needs.',
-            self::VIEWED_ANALYTICS        => 'Check out how your digital signage is performing.',
-            self::FIRST_WIDGET_CONTENT_CREATED => 'Design reusable content blocks for your templates.',
+            self::PROFILE_COMPLETED                   => 'Set up your organization profile with logo and contact information.',
+            self::FIRST_DEVICE_REGISTERED             => 'Add a digital signage device to your account.',
+            self::FIRST_CONTENT_UPLOADED              => 'Add images, videos, or create content using our editor.',
+            self::FIRST_SCREEN_CREATED                => 'Define a screen layout with zones for your content.',
+            self::FIRST_SCHEDULE_CREATED              => 'Schedule when your content should play on your screens.',
+            self::FIRST_USER_INVITED                  => 'Add colleagues who will help manage your digital signage.',
+            self::SUBSCRIPTION_SETUP                  => 'Make sure your plan meets your digital signage needs.',
+            self::VIEWED_ANALYTICS                    => 'Check out how your digital signage is performing.',
+            self::FIRST_WIDGET_CONTENT_CREATED        => 'Design reusable content blocks for your templates.',
             self::WIDGET_CONTENT_ASSIGNED_TO_TEMPLATE => 'Incorporate your widget content into a screen template.',
         };
     }
@@ -57,15 +57,15 @@ enum OnboardingStep: string
     public function getRouteName(): string
     {
         return match ($this) {
-            self::PROFILE_COMPLETED       => 'settings.profile',
-            self::FIRST_DEVICE_REGISTERED => 'devices.index',
-            self::FIRST_CONTENT_UPLOADED  => 'content.index',
-            self::FIRST_SCREEN_CREATED    => 'screens.index',
-            self::FIRST_SCHEDULE_CREATED  => 'schedules.index',
-            self::FIRST_USER_INVITED      => 'settings.users',
-            self::SUBSCRIPTION_SETUP      => 'settings.subscription',
-            self::VIEWED_ANALYTICS        => 'dashboard.analytics',
-            self::FIRST_WIDGET_CONTENT_CREATED => 'content.widgets',
+            self::PROFILE_COMPLETED                   => 'settings.profile',
+            self::FIRST_DEVICE_REGISTERED             => 'devices.index',
+            self::FIRST_CONTENT_UPLOADED              => 'content.index',
+            self::FIRST_SCREEN_CREATED                => 'screens.index',
+            self::FIRST_SCHEDULE_CREATED              => 'schedules.index',
+            self::FIRST_USER_INVITED                  => 'settings.users',
+            self::SUBSCRIPTION_SETUP                  => 'settings.subscription',
+            self::VIEWED_ANALYTICS                    => 'dashboard.analytics',
+            self::FIRST_WIDGET_CONTENT_CREATED        => 'content.widgets',
             self::WIDGET_CONTENT_ASSIGNED_TO_TEMPLATE => 'templates.index',
         };
     }
@@ -73,15 +73,15 @@ enum OnboardingStep: string
     public function getIconName(): string
     {
         return match ($this) {
-            self::PROFILE_COMPLETED       => 'user-circle',
-            self::FIRST_DEVICE_REGISTERED => 'device-tablet',
-            self::FIRST_CONTENT_UPLOADED  => 'photo',
-            self::FIRST_SCREEN_CREATED    => 'desktop-computer',
-            self::FIRST_SCHEDULE_CREATED  => 'calendar',
-            self::FIRST_USER_INVITED      => 'users',
-            self::SUBSCRIPTION_SETUP      => 'credit-card',
-            self::VIEWED_ANALYTICS        => 'chart-bar',
-            self::FIRST_WIDGET_CONTENT_CREATED => 'puzzle',
+            self::PROFILE_COMPLETED                   => 'user-circle',
+            self::FIRST_DEVICE_REGISTERED             => 'device-tablet',
+            self::FIRST_CONTENT_UPLOADED              => 'photo',
+            self::FIRST_SCREEN_CREATED                => 'desktop-computer',
+            self::FIRST_SCHEDULE_CREATED              => 'calendar',
+            self::FIRST_USER_INVITED                  => 'users',
+            self::SUBSCRIPTION_SETUP                  => 'credit-card',
+            self::VIEWED_ANALYTICS                    => 'chart-bar',
+            self::FIRST_WIDGET_CONTENT_CREATED        => 'puzzle',
             self::WIDGET_CONTENT_ASSIGNED_TO_TEMPLATE => 'document-duplicate',
         };
     }
@@ -154,7 +154,7 @@ enum OnboardingStep: string
             ],
             self::FIRST_WIDGET_CONTENT_CREATED => [
                 'imagePath' => 'images/onboarding/widget-content.svg',
-                'features' => [
+                'features'  => [
                     'Create reusable blocks of content like menus, product lists, or custom HTML modules.',
                     'Define the structure and data for your widget.',
                     'Save widget content to be used across multiple templates and screens.',
@@ -188,7 +188,7 @@ enum OnboardingStep: string
             ],
             self::WIDGET_CONTENT_ASSIGNED_TO_TEMPLATE => [
                 'imagePath' => 'images/onboarding/template-assign.svg',
-                'features' => [
+                'features'  => [
                     'Open a template in the Template Configurator.',
                     'Add or select a zone designated for widget content.',
                     'Choose your previously created widget content to assign to the zone.',

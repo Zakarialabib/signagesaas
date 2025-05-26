@@ -14,11 +14,19 @@ class AssetFactory extends Factory
 
     public function definition(): array
     {
+        $type = fake()->randomElement(['image', 'video', 'audio', 'document']);
+        $path = match ($type) {
+            'image' => fake()->imageUrl(1920, 1080, 'cats', true, 'Placeholder'),
+            'video' => 'https://example.com/videos/'.fake()->uuid().'.mp4',
+            'audio' => 'https://example.com/audio/'.fake()->uuid().'.mp3',
+            default => fake()->filePath(),
+        };
+
         return [
             'tenant_id' => Tenant::factory(),
             'name'      => fake()->words(2, true),
-            'type'      => fake()->randomElement(['image', 'video', 'audio', 'document']),
-            'path'      => fake()->filePath(),
+            'type'      => $type,
+            'path'      => $path,
             'disk'      => 'public',
             'mime_type' => $this->getMimeType(),
             'size'      => fake()->numberBetween(1000, 10000000),

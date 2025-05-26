@@ -7,6 +7,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -22,6 +23,7 @@ final class User extends Authenticatable
     use HasRoles;
     use Notifiable;
     use BelongsToTenant;
+    use SoftDeletes;
     /**
      * The attributes that are mass assignable.
      *
@@ -61,6 +63,7 @@ final class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password'          => 'hashed',
             'preferences'       => 'array',
+            'deleted_at'        => 'datetime',
         ];
     }
 
@@ -100,5 +103,11 @@ final class User extends Authenticatable
         }
 
         return strtoupper(substr($words[0], 0, 1).substr(end($words), 0, 1));
+    }
+
+    /** Get the user's full name. */
+    public function getFullNameAttribute(): string
+    {
+        return $this->name;
     }
 }

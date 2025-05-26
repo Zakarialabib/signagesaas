@@ -23,4 +23,4 @@ final class OnboardingProgressService
             event(new OnboardingStepCompleted($progress, $step, Auth::id()));
         }
     }
-} 
+}

@@ -95,7 +95,8 @@ final class SubscriptionManager extends Component
 
                     // Mark onboarding step as complete
                     $onboardingProgress = OnboardingProgress::firstOrCreate(['tenant_id' => tenant('id')]);
-                    if (!$onboardingProgress->subscription_setup) {
+
+                    if ( ! $onboardingProgress->subscription_setup) {
                         app(OnboardingProgressService::class)->completeStep($onboardingProgress, 'subscription_setup');
                     }
                 } catch (Exception $e) {
@@ -197,7 +198,8 @@ final class SubscriptionManager extends Component
 
         // Mark onboarding step as complete if upgrading from free or if not already completed
         $onboardingProgress = OnboardingProgress::firstOrCreate(['tenant_id' => tenant('id')]);
-        if (!$onboardingProgress->subscription_setup || $this->subscription->getOriginal('plan_id') === Plan::where('slug', 'free')->first()?->id) {
+
+        if ( ! $onboardingProgress->subscription_setup || $this->subscription->getOriginal('plan_id') === Plan::where('slug', 'free')->first()?->id) {
             app(OnboardingProgressService::class)->completeStep($onboardingProgress, 'subscription_setup');
         }
 

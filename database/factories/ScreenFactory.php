@@ -10,7 +10,9 @@ use App\Enums\ScreenStatus;
 use App\Tenant\Models\Device;
 use App\Tenant\Models\Screen;
 use App\Tenant\Models\Tenant;
+use App\Tenant\Models\Content;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Collection;
 
 final class ScreenFactory extends Factory
 {
@@ -26,8 +28,11 @@ final class ScreenFactory extends Factory
         // Select an appropriate resolution based on orientation
         $resolution = $this->getResolutionForOrientation($orientation);
 
+        // Default tenant_id from device, can be overridden by forTenant state
+        $tenantId = $device->tenant_id;
+
         return [
-            'tenant_id'   => fn () => $device->tenant_id,
+            'tenant_id'   => $tenantId,
             'name'        => fake()->words(2, true).' Screen',
             'description' => fake()->optional()->sentence(),
             'status'      => fake()->randomElement(ScreenStatus::cases()),
@@ -199,5 +204,36 @@ final class ScreenFactory extends Factory
     public function withSensorsEnabled(): self
     {
         return $this->withSettings(['enable_sensors' => true]);
+    }
+
+    public function configure(): self
+    {
+        return $this->afterCreating(function (Screen $screen) {
+            if ($screen->wasRecentlyCreated && isset($this->contentToAttach)) {
+                $screen->contents()->attach($this->contentToAttach);
+            }
+        });
+    }
+
+    protected ?Collection $contentToAttach = null;
+
+    public function withContent(int $count = 1): self
+    {
+        return $this->afterCreating(function (Screen $screen) use ($count) {
+            // Content created will belong to the same tenant as the screen
+            $contentItems = Content::factory()->count($count)->forTenant($screen->tenant)->create([
+                // Potentially override screen_id if ContentFactory defaults to creating one screen
+                // Or ensure ContentFactory for this use case doesn't auto-assign a primary screen_id
+                // For now, we assume ContentFactory is flexible or we primarily use pivot table.
+            ]);
+            $screen->contents()->attach($contentItems->pluck('id')->all());
+        });
+    }
+
+    public function attachContent(array|Collection $contentIds): self
+    {
+        $this->contentToAttach = collect($contentIds);
+
+        return $this;
     }
 }

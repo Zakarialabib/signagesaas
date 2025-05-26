@@ -5,7 +5,6 @@ declare(strict_types=1);
 use App\Enums\TemplateCategory;
 use App\Livewire\Auth\Login;
 use App\Livewire\Pages\Home;
-use App\Livewire\Auth\Register;
 use App\Livewire\SuperAdmin\Auth\Login as SuperAdminLogin;
 use App\Livewire\SuperAdmin\PlansManager;
 use App\Livewire\SuperAdmin\TenantsManager;
@@ -118,10 +117,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 // Template Categories
-Route::get('/template-categories', \App\Livewire\TemplateCategories\CategoryShowcase::class)->name('template-categories.index');
-Route::get('/template-categories/{category}', \App\Livewire\TemplateCategories\CategoryDetail::class)->name('template-category.show');
-Route::get('/templates/{template}/preview', \App\Livewire\TemplateCategories\TemplatePreview::class)->name('templates.preview');
-
+Route::get('/template-categories', App\Livewire\TemplateCategories\CategoryShowcase::class)->name('template-categories.index');
+Route::get('/template-categories/{category}', App\Livewire\TemplateCategories\CategoryDetail::class)->name('template-category.show');
+Route::get('/templates/{template}/preview', App\Livewire\TemplateCategories\TemplatePreview::class)->name('templates.preview');
 
 // TV Routes
 Route::prefix('tv')->group(function () {
@@ -134,6 +132,3 @@ Route::prefix('tv')->group(function () {
         ->where('category', implode('|', array_column(TemplateCategory::cases(), 'value')))
         ->name('tenant.tv.widget');
 });
-
-
-

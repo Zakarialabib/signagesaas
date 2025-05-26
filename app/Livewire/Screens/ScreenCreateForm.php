@@ -16,77 +16,54 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\Attributes\Validate;
+use Exception;
 
 final class ScreenCreateForm extends Component
 {
-    /**
-     * Screen name
-     */
+    /** Screen name */
     #[Validate('required|string|max:255')]
     public string $name = '';
 
-    /**
-     * Screen description
-     */
+    /** Screen description */
     #[Validate('nullable|string|max:1000')]
     public ?string $description = null;
 
-    /**
-     * Screen status
-     */
+    /** Screen status */
     #[Validate('required|string|in:active,inactive,maintenance,scheduled')]
     public string $status = 'active';
 
-    /**
-     * Screen resolution
-     */
+    /** Screen resolution */
     #[Validate('required|string')]
     public string $resolution = '1920x1080';
 
-    /**
-     * Screen orientation
-     */
+    /** Screen orientation */
     #[Validate('required|string|in:landscape,portrait')]
     public string $orientation = 'landscape';
 
-    /**
-     * Associated device ID
-     */
+    /** Associated device ID */
     #[Validate('required|uuid|exists:devices,id')]
     public string $device_id = '';
 
-    /**
-     * Location name
-     */
+    /** Location name */
     #[Validate('nullable|string|max:255')]
     public ?string $locationName = null;
 
-    /**
-     * Location address
-     */
+    /** Location address */
     #[Validate('nullable|string|max:255')]
     public ?string $locationAddress = null;
 
-    /**
-     * Location zone
-     */
+    /** Location zone */
     #[Validate('nullable|string|max:255')]
     public ?string $locationZone = null;
 
-    /**
-     * Location floor
-     */
+    /** Location floor */
     #[Validate('nullable|string|max:255')]
     public ?string $locationFloor = null;
 
-    /**
-     * Controls the visibility of the create screen modal
-     */
+    /** Controls the visibility of the create screen modal */
     public bool $createScreenModal = false;
 
-    /**
-     * Open the create screen modal and authorize the action
-     */
+    /** Open the create screen modal and authorize the action */
     #[On('createScreen')]
     public function openModal(): void
     {
@@ -98,9 +75,7 @@ final class ScreenCreateForm extends Component
         $this->createScreenModal = true;
     }
 
-    /**
-     * Render the screen create form
-     */
+    /** Render the screen create form */
     public function render(): View
     {
         return view('livewire.screens.screen-create-form', [
@@ -111,9 +86,7 @@ final class ScreenCreateForm extends Component
         ]);
     }
 
-    /**
-     * Get available resolutions based on selected orientation
-     */
+    /** Get available resolutions based on selected orientation */
     public function getResolutionOptions(): array
     {
         return $this->orientation === ScreenOrientation::LANDSCAPE->value
@@ -121,9 +94,7 @@ final class ScreenCreateForm extends Component
             : ScreenResolution::portraitOptions();
     }
 
-    /**
-     * Update resolution options when orientation changes
-     */
+    /** Update resolution options when orientation changes */
     public function updatedOrientation(): void
     {
         // Set default resolution based on new orientation
@@ -132,12 +103,10 @@ final class ScreenCreateForm extends Component
             : ScreenResolution::PORTRAIT_FULL_HD->value;
     }
 
-    /**
-     * Update orientation when device is selected
-     */
+    /** Update orientation when device is selected */
     public function updatedDeviceId(): void
     {
-        if (!$this->device_id) {
+        if ( ! $this->device_id) {
             return;
         }
 
@@ -150,9 +119,7 @@ final class ScreenCreateForm extends Component
         }
     }
 
-    /**
-     * Save the screen
-     */
+    /** Save the screen */
     public function save(): void
     {
         $this->authorize('create', Screen::class);
@@ -161,6 +128,7 @@ final class ScreenCreateForm extends Component
 
         // Prepare location data
         $location = null;
+
         if ($this->locationName || $this->locationAddress || $this->locationZone || $this->locationFloor) {
             $location = [
                 'name'    => $this->locationName,
@@ -188,10 +156,11 @@ final class ScreenCreateForm extends Component
                         'transition_duration' => 1000,
                     ],
                 ]);
-                
+
                 // Mark onboarding step as complete
                 $onboardingProgress = OnboardingProgress::firstOrCreate(['tenant_id' => $screen->tenant_id]);
-                if (!$onboardingProgress->first_screen_created) {
+
+                if ( ! $onboardingProgress->first_screen_created) {
                     app(OnboardingProgressService::class)->completeStep($onboardingProgress, 'first_screen_created');
                 }
 
@@ -202,20 +171,17 @@ final class ScreenCreateForm extends Component
             // Show notification
             session()->flash('flash.banner', 'Screen created successfully.');
             session()->flash('flash.bannerStyle', 'success');
-            
+
             // Reset the form and close modal
             $this->reset();
             $this->createScreenModal = false;
-            
-        } catch (\Exception $e) {
-            session()->flash('flash.banner', 'Error creating screen: ' . $e->getMessage());
+        } catch (Exception $e) {
+            session()->flash('flash.banner', 'Error creating screen: '.$e->getMessage());
             session()->flash('flash.bannerStyle', 'danger');
         }
     }
-    
-    /**
-     * Cancel screen creation and close modal
-     */
+
+    /** Cancel screen creation and close modal */
     public function cancel(): void
     {
         $this->reset();

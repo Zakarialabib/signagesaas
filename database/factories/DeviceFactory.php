@@ -9,6 +9,7 @@ use App\Enums\DeviceType;
 use App\Enums\ScreenOrientation;
 use App\Tenant\Models\Device;
 use App\Tenant\Models\Tenant;
+use App\Tenant\Models\Screen;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -18,9 +19,10 @@ final class DeviceFactory extends Factory
 
     public function definition(): array
     {
+        $tenantId = fn () => Tenant::factory()->create()->id;
+
         return [
-            'tenant_id'         => fn () => Tenant::factory()->create()->id,
-            'id'                => fake()->uuid(),
+            'tenant_id'         => $tenantId,
             'name'              => fake()->company().' Display',
             'type'              => fake()->randomElement(DeviceType::cases()),
             'status'            => fake()->randomElement(DeviceStatus::cases()),
@@ -45,6 +47,23 @@ final class DeviceFactory extends Factory
                 'autoUpdate' => fake()->boolean(),
             ],
         ];
+    }
+
+    public function configure(): self
+    {
+        return $this->afterCreating(function (Device $device) {
+            if (isset($this->numberOfScreensToCreate) && $this->numberOfScreensToCreate > 0) {
+                Screen::factory()->count($this->numberOfScreensToCreate)->forDevice($device)->create();
+            }
+        });
+    }
+
+    protected int $numberOfScreensToCreate = 0;
+
+    public function withScreens(int $count = 1): self
+    {
+        $this->numberOfScreensToCreate = $count;
+        return $this;
     }
 
     public function forTenant(Tenant $tenant): self

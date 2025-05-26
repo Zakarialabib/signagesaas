@@ -27,6 +27,7 @@ return new class () extends Migration {
             $table->string('profile_photo')->nullable();
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->unique(['tenant_id', 'email']);
         });

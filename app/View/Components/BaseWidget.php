@@ -16,16 +16,15 @@ final class BaseWidget extends Component
         public bool $isLoading = false,
         // public ?string $error = null,
         public int $refreshInterval = 0,
-        
     ) {
     }
 
     public function render(): View
     {
         return view('components.base-widget', [
-            'title' => $this->title,
-            'category' => $this->category,
-            'icon' => $this->icon,
+            'title'     => $this->title,
+            'category'  => $this->category,
+            'icon'      => $this->icon,
             'isLoading' => $this->isLoading,
             // 'error' => $this->error,
         ]);

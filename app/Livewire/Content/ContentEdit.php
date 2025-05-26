@@ -95,32 +95,33 @@ final class ContentEdit extends Component
         // Check if this content is a specialized widget type handled by WidgetDataEditorModal
         if (isset($this->content->content_data['widget_type']) &&
             in_array($this->content->content_data['widget_type'], [
-                'MenuWidget', 
-                'RetailProductWidget', 
-                'WeatherWidget', 
-                'ClockWidget', 
+                'MenuWidget',
+                'RetailProductWidget',
+                'WeatherWidget',
+                'ClockWidget',
                 'AnnouncementWidget',
                 'RssFeedWidget',
-                'CalendarWidget'
+                'CalendarWidget',
                 // Add other recognized widget types here
             ])) {
-            
-            $this->dispatch('openWidgetDataEditor', 
+            $this->dispatch(
+                'openWidgetDataEditor',
                 zoneId: null, // zoneId is null as we are editing content directly
-                widgetType: $this->content->content_data['widget_type'], 
+                widgetType: $this->content->content_data['widget_type'],
                 contentId: $this->content->id
             )->to('App.Livewire.Content.Widgets.WidgetDataEditorModal');
 
             $this->editContentModal = false; // Prevent this modal from showing fully
+
             // Reset is important if the modal was already open with different content
             // However, openModal is typically called on a fresh instance or when modal is closed.
             // If issues arise with stale data, uncomment the reset.
-            // $this->reset(); 
-            return; 
+            // $this->reset();
+            return;
         }
 
         // Proceed with loading data for standard content types if not delegated
-        $this->rules['type'] = 'required|string|in:' . implode(',', ContentType::values());
+        $this->rules['type'] = 'required|string|in:'.implode(',', ContentType::values());
 
         $this->loadContentData();
         $this->editContentModal = true;
@@ -158,27 +159,34 @@ final class ContentEdit extends Component
             switch ($this->type) {
                 case ContentType::IMAGE->value:
                     $this->url = $data['url'] ?? null;
+
                     break;
                 case ContentType::VIDEO->value:
                 case ContentType::URL->value:
                     $this->url = $data['url'] ?? null;
+
                     break;
                 case ContentType::HTML->value:
                 case ContentType::CUSTOM->value:
                     $this->html_content = $data['html'] ?? null;
+
                     break;
                 case ContentType::RSS->value:
                     $this->feed_url = $data['feed_url'] ?? null;
+
                     break;
                 case ContentType::WEATHER->value:
                     $this->location = $data['location'] ?? null;
+
                     break;
                 case ContentType::SOCIAL->value:
                     $this->platform = $data['platform'] ?? null;
                     $this->handle = $data['handle'] ?? null;
+
                     break;
                 case ContentType::CALENDAR->value:
                     $this->calendar_url = $data['calendar_url'] ?? null;
+
                     break;
             }
         }
@@ -205,10 +213,11 @@ final class ContentEdit extends Component
 
         if ($this->type === ContentType::PRODUCT_LIST->value || $this->type === ContentType::MENU->value) {
             $this->closeModal();
+
             return;
         }
-        
-        $this->rules['type'] = 'required|string|in:' . implode(',', ContentType::values());
+
+        $this->rules['type'] = 'required|string|in:'.implode(',', ContentType::values());
         $validated = $this->validate();
 
         $contentDataForUpdate = $this->content->content_data ?? [];
@@ -220,44 +229,51 @@ final class ContentEdit extends Component
                     $contentDataForUpdate['url'] = Storage::url($path);
                     $contentDataForUpdate['path'] = $path;
                 }
+
                 break;
             case ContentType::VIDEO->value:
             case ContentType::URL->value:
                 $contentDataForUpdate['url'] = $validated['url'] ?? $this->url;
+
                 break;
             case ContentType::HTML->value:
             case ContentType::CUSTOM->value:
                 $contentDataForUpdate['html'] = $validated['html_content'] ?? $this->html_content;
+
                 break;
             case ContentType::RSS->value:
                 $contentDataForUpdate['feed_url'] = $validated['feed_url'] ?? $this->feed_url;
+
                 break;
             case ContentType::WEATHER->value:
                 $contentDataForUpdate['location'] = $validated['location'] ?? $this->location;
+
                 break;
             case ContentType::SOCIAL->value:
                 $contentDataForUpdate['platform'] = $validated['platform'] ?? $this->platform;
                 $contentDataForUpdate['handle'] = $validated['handle'] ?? $this->handle;
+
                 break;
             case ContentType::CALENDAR->value:
                 $contentDataForUpdate['calendar_url'] = $validated['calendar_url'] ?? $this->calendar_url;
+
                 break;
         }
 
         $updateData = [
-            'name'        => $validated['name'],
-            'description' => $validated['description'],
-            'type'        => $validated['type'],
-            'screen_id'   => $validated['screen_id'],
-            'status'      => $validated['status'],
-            'duration'    => $validated['duration'],
-            'order'       => $validated['order'],
-            'start_date'  => $validated['start_date'],
-            'end_date'    => $validated['end_date'],
+            'name'         => $validated['name'],
+            'description'  => $validated['description'],
+            'type'         => $validated['type'],
+            'screen_id'    => $validated['screen_id'],
+            'status'       => $validated['status'],
+            'duration'     => $validated['duration'],
+            'order'        => $validated['order'],
+            'start_date'   => $validated['start_date'],
+            'end_date'     => $validated['end_date'],
             'content_data' => $contentDataForUpdate,
-            'settings'    => $validated['settings'] ?? $this->settings,
+            'settings'     => $validated['settings'] ?? $this->settings,
         ];
-        
+
         $this->content->update($updateData);
 
         $this->dispatch('content-updated');
@@ -265,13 +281,13 @@ final class ContentEdit extends Component
         session()->flash('message', 'Content updated successfully.');
         $this->resetFields();
     }
-    
+
     private function resetFields(): void
     {
         $this->reset([
             'name', 'description', 'type', 'screen_id', 'status', 'duration', 'order',
             'start_date', 'end_date', 'image_file', 'url', 'html_content', 'feed_url',
-            'location', 'platform', 'handle', 'calendar_url', 'custom_html', 'settings'
+            'location', 'platform', 'handle', 'calendar_url', 'custom_html', 'settings',
         ]);
         $this->content = null;
         $this->type = 'image';

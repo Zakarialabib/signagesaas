@@ -14,7 +14,7 @@ class TemplateSeeder extends Seeder
     public function run(): void
     {
         $templates = [
-            [ 
+            [
                 'name'        => 'Retail Promotion Display',
                 'description' => 'A dynamic template for showcasing product promotions and sales with eye-catching visuals.',
                 'category'    => TemplateCategory::RETAIL,
@@ -63,38 +63,38 @@ class TemplateSeeder extends Seeder
                     'type'  => 'fixed', // Using fixed type for percentage based zones
                     'zones' => [
                         [
-                            'id'             => 'header',
-                            'name'           => 'Header Area',
-                            'type'           => 'content',
-                            'x_percentage'   => 0, 'y_percentage' => 0, 'width_percentage' => 100, 'height_percentage' => 15,
+                            'id'                      => 'header',
+                            'name'                    => 'Header Area',
+                            'type'                    => 'content',
+                            'x_percentage'            => 0, 'y_percentage' => 0, 'width_percentage' => 100, 'height_percentage' => 15,
                             'content_type_suggestion' => 'image',
-                            'settings'       => ['background_color' => '#2d3748', 'padding' => '1rem']
+                            'settings'                => ['background_color' => '#2d3748', 'padding' => '1rem'],
                         ],
                         [
-                            'id'             => 'menu_left',
-                            'name'           => 'Menu (Left Column)',
-                            'type'           => 'widget',
-                            'widget_type'    => 'MenuWidget',
-                            'x_percentage'   => 5, 'y_percentage' => 18, 'width_percentage' => 43, 'height_percentage' => 70,
-                            'settings'       => ['background_color' => '#ffffff', 'padding' => '1rem', 'border-radius' => '0.5rem']
+                            'id'           => 'menu_left',
+                            'name'         => 'Menu (Left Column)',
+                            'type'         => 'widget',
+                            'widget_type'  => 'MenuWidget',
+                            'x_percentage' => 5, 'y_percentage' => 18, 'width_percentage' => 43, 'height_percentage' => 70,
+                            'settings'     => ['background_color' => '#ffffff', 'padding' => '1rem', 'border-radius' => '0.5rem'],
                         ],
                         [
-                            'id'             => 'menu_right',
-                            'name'           => 'Menu (Right Column)',
-                            'type'           => 'widget',
-                            'widget_type'    => 'MenuWidget',
-                            'x_percentage'   => 52, 'y_percentage' => 18, 'width_percentage' => 43, 'height_percentage' => 70,
-                            'settings'       => ['background_color' => '#ffffff', 'padding' => '1rem', 'border-radius' => '0.5rem']
+                            'id'           => 'menu_right',
+                            'name'         => 'Menu (Right Column)',
+                            'type'         => 'widget',
+                            'widget_type'  => 'MenuWidget',
+                            'x_percentage' => 52, 'y_percentage' => 18, 'width_percentage' => 43, 'height_percentage' => 70,
+                            'settings'     => ['background_color' => '#ffffff', 'padding' => '1rem', 'border-radius' => '0.5rem'],
                         ],
                         [
-                            'id'             => 'footer',
-                            'name'           => 'Footer Area',
-                            'type'           => 'content',
-                            'x_percentage'   => 0, 'y_percentage' => 90, 'width_percentage' => 100, 'height_percentage' => 10,
+                            'id'                      => 'footer',
+                            'name'                    => 'Footer Area',
+                            'type'                    => 'content',
+                            'x_percentage'            => 0, 'y_percentage' => 90, 'width_percentage' => 100, 'height_percentage' => 10,
                             'content_type_suggestion' => 'text',
-                            'settings'       => ['background_color' => '#2d3748', 'text_align' => 'center', 'padding' => '0.5rem']
-                        ]
-                    ]
+                            'settings'                => ['background_color' => '#2d3748', 'text_align' => 'center', 'padding' => '0.5rem'],
+                        ],
+                    ],
                 ],
                 'styles' => [
                     'font-family'      => 'Poppins, sans-serif',
@@ -119,39 +119,39 @@ class TemplateSeeder extends Seeder
                     'type'  => 'fixed',
                     'zones' => [
                         [
-                            'id'             => 'promo_header',
-                            'name'           => 'Promotion Header',
-                            'type'           => 'content',
-                            'x_percentage'   => 0, 'y_percentage' => 0, 'width_percentage' => 100, 'height_percentage' => 20,
+                            'id'                      => 'promo_header',
+                            'name'                    => 'Promotion Header',
+                            'type'                    => 'content',
+                            'x_percentage'            => 0, 'y_percentage' => 0, 'width_percentage' => 100, 'height_percentage' => 20,
                             'content_type_suggestion' => 'image',
-                            'settings'       => ['background_color' => '#e0e0e0', 'padding' => '1rem']
+                            'settings'                => ['background_color' => '#e0e0e0', 'padding' => '1rem'],
                         ],
                         [
-                            'id'             => 'product_grid_main',
-                            'name'           => 'Main Product Grid',
-                            'type'           => 'widget',
-                            'widget_type'    => 'ProductGridWidget',
-                            'x_percentage'   => 5, 'y_percentage' => 22, 'width_percentage' => 65, 'height_percentage' => 73,
-                            'settings'       => ['background_color' => '#ffffff', 'padding' => '1rem']
+                            'id'           => 'product_grid_main',
+                            'name'         => 'Main Product Grid',
+                            'type'         => 'widget',
+                            'widget_type'  => 'ProductGridWidget',
+                            'x_percentage' => 5, 'y_percentage' => 22, 'width_percentage' => 65, 'height_percentage' => 73,
+                            'settings'     => ['background_color' => '#ffffff', 'padding' => '1rem'],
                         ],
                         [
-                            'id'             => 'sidebar_featured_item',
-                            'name'           => 'Featured Item Sidebar',
-                            'type'           => 'widget',
-                            'widget_type'    => 'FeaturedProductWidget',
-                            'x_percentage'   => 75, 'y_percentage' => 22, 'width_percentage' => 20, 'height_percentage' => 73,
+                            'id'                      => 'sidebar_featured_item',
+                            'name'                    => 'Featured Item Sidebar',
+                            'type'                    => 'widget',
+                            'widget_type'             => 'FeaturedProductWidget',
+                            'x_percentage'            => 75, 'y_percentage' => 22, 'width_percentage' => 20, 'height_percentage' => 73,
                             'content_type_suggestion' => 'image',
-                            'settings'       => ['background_color' => '#f0f0f0', 'padding' => '1rem']
+                            'settings'                => ['background_color' => '#f0f0f0', 'padding' => '1rem'],
                         ],
                         [
-                            'id'             => 'footer_banner',
-                            'name'           => 'Footer Banner',
-                            'type'           => 'content',
-                            'x_percentage'   => 0, 'y_percentage' => 95, 'width_percentage' => 100, 'height_percentage' => 5,
+                            'id'                      => 'footer_banner',
+                            'name'                    => 'Footer Banner',
+                            'type'                    => 'content',
+                            'x_percentage'            => 0, 'y_percentage' => 95, 'width_percentage' => 100, 'height_percentage' => 5,
                             'content_type_suggestion' => 'text',
-                            'settings'       => ['background_color' => '#333333', 'color' => '#ffffff', 'text_align' => 'center', 'padding' => '0.5rem']
-                        ]
-                    ]
+                            'settings'                => ['background_color' => '#333333', 'color' => '#ffffff', 'text_align' => 'center', 'padding' => '0.5rem'],
+                        ],
+                    ],
                 ],
                 'styles' => [
                     'font-family'      => 'Roboto, sans-serif',
@@ -245,9 +245,20 @@ class TemplateSeeder extends Seeder
             ],
         ];
 
-        foreach ($templates as $template) {
-            Template::create($template);
+        if (empty($templates)) {
+            $this->command->info('No templates defined in the seeder.');
+
+            return;
         }
+
+        $this->command->getOutput()->progressStart(count($templates));
+
+        foreach ($templates as $templateData) {
+            Template::create($templateData);
+            $this->command->getOutput()->progressAdvance();
+        }
+
+        $this->command->getOutput()->progressFinish();
 
         // Create templates with version history and variations
         Template::factory()

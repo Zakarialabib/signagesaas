@@ -19,17 +19,17 @@ final class LivePreview extends Component
         'currentZone' => null,
         'timeLeft'    => 0,
     ];
-    
+
     public array $previewSettings = [
         'transitionSpeed' => 500,
-        'autoAdvance' => true,
-        'showControls' => true,
-        'loopPlayback' => true,
+        'autoAdvance'     => true,
+        'showControls'    => true,
+        'loopPlayback'    => true,
     ];
 
     protected $listeners = [
-        'refresh-preview' => '$refresh',
-        'content-updated' => 'handleContentUpdate',
+        'refresh-preview'          => '$refresh',
+        'content-updated'          => 'handleContentUpdate',
         'preview-settings-changed' => 'updatePreviewSettings',
     ];
 
@@ -73,9 +73,10 @@ final class LivePreview extends Component
         }
     }
 
-    public function toggleQuickPreview(): void 
+    public function toggleQuickPreview(): void
     {
-        $this->isQuickPreview = !$this->isQuickPreview;
+        $this->isQuickPreview = ! $this->isQuickPreview;
+
         if ($this->isQuickPreview) {
             $this->previewSettings['showControls'] = false;
             $this->isPlaying = true;
@@ -88,6 +89,7 @@ final class LivePreview extends Component
     public function updatePreviewSettings(array $settings): void
     {
         $this->previewSettings = array_merge($this->previewSettings, $settings);
+
         if ($this->isPlaying) {
             $this->startPlayback(); // Restart playback with new settings
         }
@@ -95,7 +97,7 @@ final class LivePreview extends Component
 
     private function startPlayback(): void
     {
-        if (!$this->isPlaying || empty($this->zoneContents)) {
+        if ( ! $this->isPlaying || empty($this->zoneContents)) {
             return;
         }
 
@@ -114,20 +116,21 @@ final class LivePreview extends Component
 
     public function advanceZone(): void
     {
-        if (!$this->isPlaying || empty($this->zoneContents)) {
+        if ( ! $this->isPlaying || empty($this->zoneContents)) {
             return;
         }
 
         $zones = array_keys($this->zoneContents);
         $currentIndex = array_search($this->playback['currentZone'], $zones);
-        
+
         // If we're at the end and looping is enabled, go back to start
         if ($currentIndex === count($zones) - 1 && $this->previewSettings['loopPlayback']) {
             $nextZone = $zones[0];
-        } 
+        }
         // If we're at the end and looping is disabled, stop playback
         elseif ($currentIndex === count($zones) - 1) {
             $this->isPlaying = false;
+
             return;
         }
         // Otherwise, move to next zone
@@ -149,7 +152,7 @@ final class LivePreview extends Component
     public function getZoneStyle(array $zone): string
     {
         $transition = $this->isQuickPreview ? "transition: all {$this->previewSettings['transitionSpeed']}ms ease-in-out;" : '';
-        
+
         return "left: {$zone['x']}%; 
                 top: {$zone['y']}%; 
                 width: {$zone['width']}%; 
@@ -163,7 +166,7 @@ final class LivePreview extends Component
     public function render()
     {
         return view('livewire.content.templates.components.live-preview', [
-            'showControls' => $this->previewSettings['showControls'] && !$this->isQuickPreview
+            'showControls' => $this->previewSettings['showControls'] && ! $this->isQuickPreview,
         ]);
     }
 }

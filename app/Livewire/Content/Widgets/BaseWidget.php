@@ -7,6 +7,7 @@ namespace App\Livewire\Content\Widgets;
 use Livewire\Component;
 use Livewire\Attributes\Locked;
 use Illuminate\Support\Facades\Log;
+use Exception;
 
 abstract class BaseWidget extends Component
 {
@@ -46,7 +47,7 @@ abstract class BaseWidget extends Component
             $this->isLoading = true;
             $this->error = null;
             $this->loadData();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->handleError($e);
         } finally {
             $this->isLoading = false;
@@ -55,12 +56,12 @@ abstract class BaseWidget extends Component
 
     abstract protected function loadData(): void;
 
-    protected function handleError(\Exception $e): void
+    protected function handleError(Exception $e): void
     {
         $this->error = $e->getMessage();
-        Log::error("Widget Error [{$this->category}]: " . $e->getMessage(), [
+        Log::error("Widget Error [{$this->category}]: ".$e->getMessage(), [
             'exception' => $e,
-            'settings' => $this->settings,
+            'settings'  => $this->settings,
         ]);
     }
 
@@ -77,9 +78,9 @@ abstract class BaseWidget extends Component
     public function placeholder(): string
     {
         return view('livewire.content.widgets.placeholder-widget', [
-            'title' => $this->title,
+            'title'    => $this->title,
             'category' => $this->category,
-            'icon' => $this->icon,
+            'icon'     => $this->icon,
         ])->render();
     }
-} 
+}

@@ -25,34 +25,30 @@ final class ScreenPreview extends Component
         try {
             $this->showPreviewModal = true;
             $this->screen = Screen::with([
-                'contents' => fn($query) => $query->where('status', 'active')->orderBy('order')
+                'contents' => fn ($query) => $query->where('status', 'active')->orderBy('order'),
             ])->findOrFail($id);
 
             $this->authorize('view', $this->screen);
         } catch (Exception $e) {
             Log::error('Error loading screen for preview', [
                 'screen_id' => $id,
-                'error' => $e->getMessage()
+                'error'     => $e->getMessage(),
             ]);
-            
-            session()->flash('flash.banner', 'Error loading screen preview: ' . $e->getMessage());
+
+            session()->flash('flash.banner', 'Error loading screen preview: '.$e->getMessage());
             session()->flash('flash.bannerStyle', 'danger');
             $this->showPreviewModal = false;
         }
     }
-    
-    /**
-     * Close the preview modal
-     */
+
+    /** Close the preview modal */
     public function closeModal(): void
     {
         $this->showPreviewModal = false;
         $this->screen = null;
     }
-    
-    /**
-     * Check if the screen has active content
-     */
+
+    /** Check if the screen has active content */
     public function hasContent(): bool
     {
         return $this->screen && $this->screen->contents->where('status', 'active')->count() > 0;

@@ -20,9 +20,6 @@ use App\Livewire\Settings\ProfileSettings;
 use App\Livewire\Settings\SubscriptionManager;
 use App\Livewire\Settings\TenantSettingsManager;
 use App\Livewire\Settings\UserManager;
-use App\Livewire\Content\Pages\TvDisplay;
-use App\Livewire\Content\Pages\WidgetPage;
-use App\Enums\TemplateCategory;
 use App\Http\Controllers\ScreenPreviewController;
 use App\Http\Controllers\TenantImpersonationController;
 

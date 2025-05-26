@@ -10,6 +10,7 @@ use App\Tenant\Models\Content;
 use App\Tenant\Models\Screen;
 use App\Tenant\Models\Tenant;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Collection;
 
 final class ContentFactory extends Factory
 {
@@ -54,6 +55,11 @@ final class ContentFactory extends Factory
                 ContentType::SOCIAL  => $this->generateSocialFeedData(),
                 default              => [],
             };
+        })->afterCreating(function (Content $content) {
+            // Placeholder for afterCreating logic, e.g., attaching to screens from a state
+            if ($content->wasRecentlyCreated && isset($this->screensToAttach)) {
+                $content->screens()->attach($this->screensToAttach);
+            }
         });
     }
 
@@ -197,6 +203,34 @@ final class ContentFactory extends Factory
         return $this->state([
             'order' => $order,
         ]);
+    }
+
+    protected ?Collection $screensToAttach = null;
+
+    public function withScreens(int $count = 1, ?Tenant $tenant = null): self
+    {
+        return $this->afterCreating(function (Content $content) use ($count, $tenant) {
+            $screens = collect();
+
+            if ($tenant) {
+                // Create screens for the specific tenant or use existing ones
+                $screens = Screen::factory()->count($count)->forTenant($tenant)->create();
+            } else {
+                // Create screens (tenant might be derived from content or default)
+                // Or use existing screens if that makes sense for the use case
+                $screens = Screen::factory()->count($count)->create(); // Assumes ScreenFactory handles tenant if needed
+            }
+            $content->screens()->attach($screens->pluck('id')->all());
+        });
+    }
+
+    // Add a way to pass screen IDs to attach if they are already known
+    public function attachToScreens(array|Collection $screenIds): self
+    {
+        // This state will store the screen IDs. The afterCreating hook in configure() will handle attaching.
+        $this->screensToAttach = collect($screenIds);
+
+        return $this;
     }
 
     private function generateImageData(): array

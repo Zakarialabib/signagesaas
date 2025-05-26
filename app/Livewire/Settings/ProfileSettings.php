@@ -94,7 +94,8 @@ final class ProfileSettings extends Component
 
         // Mark onboarding step as complete
         $onboardingProgress = OnboardingProgress::firstOrCreate(['tenant_id' => $user->tenant_id]);
-        if (!$onboardingProgress->profile_completed) {
+
+        if ( ! $onboardingProgress->profile_completed) {
             app(OnboardingProgressService::class)->completeStep($onboardingProgress, 'profile_completed');
         }
 

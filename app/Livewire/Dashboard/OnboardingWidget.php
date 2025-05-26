@@ -115,7 +115,7 @@ final class OnboardingWidget extends Component
                 'description' => 'Use pre-built widget types like Menus or Product Showcases and add your own data.',
                 'completed'   => $this->onboardingProgress->first_widget_content_created,
                 'route'       => 'tenant.content.index', // Assuming 'content.index' is the route for ContentManager
-                'icon'        => 'heroicon-o-puzzle-piece', 
+                'icon'        => 'heroicon-o-puzzle-piece',
                 'examples'    => OnboardingProgress::$stepExamples['first_widget_content_created'],
             ],
             [
@@ -124,26 +124,26 @@ final class OnboardingWidget extends Component
                 'description' => 'Assign your customized widget content to a zone in your screen templates.',
                 'completed'   => $this->onboardingProgress->widget_content_assigned_to_template,
                 'route'       => 'tenant.templates.index', // Assuming 'templates.index' is for TemplateManager
-                'icon'        => 'heroicon-o-squares-plus', 
+                'icon'        => 'heroicon-o-squares-plus',
                 'examples'    => OnboardingProgress::$stepExamples['widget_content_assigned_to_template'],
             ],
         ]);
-//         $this->steps = collect(OnboardingStep::cases())->map(function (OnboardingStep $stepEnum) {
-//             return [
-//                 'key'         => $stepEnum->value,
-//                 'title'       => $stepEnum->getTitle(),
-//                 'description' => $stepEnum->getDescription(),
-//                 'completed'   => $this->onboardingProgress?->{$stepEnum->value} ?? false,
-//                 'route'       => $stepEnum->getRouteName(),
-//                 'icon'        => $stepEnum->getIconName(),
-//                 'cardData'    => $stepEnum->getCardData(), // Used by modal and potentially cards
-//             ];
-//         });
+        //         $this->steps = collect(OnboardingStep::cases())->map(function (OnboardingStep $stepEnum) {
+        //             return [
+        //                 'key'         => $stepEnum->value,
+        //                 'title'       => $stepEnum->getTitle(),
+        //                 'description' => $stepEnum->getDescription(),
+        //                 'completed'   => $this->onboardingProgress?->{$stepEnum->value} ?? false,
+        //                 'route'       => $stepEnum->getRouteName(),
+        //                 'icon'        => $stepEnum->getIconName(),
+        //                 'cardData'    => $stepEnum->getCardData(), // Used by modal and potentially cards
+        //             ];
+        //         });
     }
 
     public function markStepComplete(string $key): void
     {
-        if (!$this->onboardingProgress || !property_exists($this->onboardingProgress, $key) || $this->onboardingProgress->{$key} === true) {
+        if ( ! $this->onboardingProgress || ! property_exists($this->onboardingProgress, $key) || $this->onboardingProgress->{$key} === true) {
             return;
         }
 
@@ -155,38 +155,43 @@ final class OnboardingWidget extends Component
 
     public function getProgress(): int
     {
-        if (!$this->loaded || !$this->onboardingProgress) {
+        if ( ! $this->loaded || ! $this->onboardingProgress) {
             return 0;
         }
+
         return $this->onboardingProgress->getCompletedStepsCount();
     }
 
     public function getTotalSteps(): int
     {
-        if (!$this->loaded) { // No need for onboardingProgress here as it relies on enum
+        if ( ! $this->loaded) { // No need for onboardingProgress here as it relies on enum
             return 0;
         }
+
         return count(OnboardingStep::getRequiredSteps());
     }
 
     public function getProgressPercentage(): int
     {
-        if (!$this->loaded || !$this->onboardingProgress) {
+        if ( ! $this->loaded || ! $this->onboardingProgress) {
             return 0;
         }
         $totalRequired = $this->getTotalSteps();
+
         if ($totalRequired === 0) {
             return 100; // Or 0, depending on desired behavior if no steps are required
         }
         $completed = $this->getProgress();
+
         return (int) (($completed / $totalRequired) * 100);
     }
 
     public function isComplete(): bool
     {
-        if (!$this->loaded || !$this->onboardingProgress) {
+        if ( ! $this->loaded || ! $this->onboardingProgress) {
             return false;
         }
+
         return $this->onboardingProgress->isComplete(OnboardingStep::getRequiredSteps());
     }
 
@@ -194,7 +199,8 @@ final class OnboardingWidget extends Component
     {
         // Ensure getRequiredSteps() returns an array of strings
         $requiredSteps = $this->onboardingProgress->getRequiredSteps();
-        if (!is_array($requiredSteps)) {
+
+        if ( ! is_array($requiredSteps)) {
             // Handle error or return null, depending on desired behavior
             return null;
         }
@@ -203,14 +209,14 @@ final class OnboardingWidget extends Component
             if ( ! $step['completed'] && in_array($step['key'], $requiredSteps, true)) {
                 return $step;
             }
-//         if (!$this->loaded) {
-//             return null;
+            //         if (!$this->loaded) {
+            //             return null;
         }
         // Filter steps to only include required ones, then find the first incomplete
-        $requiredStepKeys = array_map(fn(OnboardingStep $step) => $step->value, OnboardingStep::getRequiredSteps());
+        $requiredStepKeys = array_map(fn (OnboardingStep $step) => $step->value, OnboardingStep::getRequiredSteps());
 
         return $this->steps
-            ->filter(fn($step) => in_array($step['key'], $requiredStepKeys) && !$step['completed'])
+            ->filter(fn ($step) => in_array($step['key'], $requiredStepKeys) && ! $step['completed'])
             ->first();
     }
 
@@ -221,7 +227,7 @@ final class OnboardingWidget extends Component
 
     public function getContextStep(): ?array
     {
-        if (!$this->loaded || !$this->contextStepKey) {
+        if ( ! $this->loaded || ! $this->contextStepKey) {
             return null;
         }
         $contextStepData = $this->steps->firstWhere('key', $this->contextStepKey);
@@ -230,6 +236,7 @@ final class OnboardingWidget extends Component
         if ($contextStepData && ($this->onboardingProgress?->{$this->contextStepKey} === false)) {
             return $contextStepData;
         }
+
         return null;
     }
 

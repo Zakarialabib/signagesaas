@@ -46,4 +46,4 @@ final class OnboardingProgressPolicy
     {
         return $user->isSuperAdmin(); // Example: only super admins can force delete
     }
-} 
+}

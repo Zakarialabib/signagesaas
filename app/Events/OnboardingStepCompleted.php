@@ -11,7 +11,9 @@ use Illuminate\Queue\SerializesModels;
 
 class OnboardingStepCompleted
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     public OnboardingProgress $onboardingProgress;
     public string $step;
@@ -23,4 +25,4 @@ class OnboardingStepCompleted
         $this->step = $step;
         $this->userId = $userId;
     }
-} 
+}

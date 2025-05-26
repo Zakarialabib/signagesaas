@@ -18,6 +18,14 @@ class ContentSeeder extends Seeder
         $templates = Template::all();
         $screens = Screen::all();
 
+        if ($templates->isEmpty()) {
+            $this->command->info('No templates found to seed content for.');
+
+            return;
+        }
+
+        $this->command->getOutput()->progressStart($templates->count());
+
         // Create content for each template
         $templates->each(function (Template $template) use ($screens) {
             // Create 2-4 content items for each template
@@ -55,8 +63,12 @@ class ContentSeeder extends Seeder
                     ],
                 ]);
             }
+            $this->command->getOutput()->progressAdvance();
         });
 
+        $this->command->getOutput()->progressFinish();
+
+        $this->command->info('\nCreating special content items...');
         // Create some special content items
         $this->createSpecialContent($templates, $screens);
     }
@@ -92,50 +104,50 @@ class ContentSeeder extends Seeder
                 ],
             ],
             'retail' => [
-                'title' => 'Grand Opening Sale!', // Example title
+                'title'    => 'Grand Opening Sale!', // Example title
                 'products' => [
                     [
-                        'name' => 'Comfy Cotton T-Shirt',
-                        'price' => '24.99',
-                        'sale_price' => '19.99',
-                        'image' => 'images/retail/tshirt_blue.jpg', // Example path
-                        'description' => 'Soft, breathable 100% cotton t-shirt available in various colors.',
-                        'promotion_badge' => '20% OFF'
+                        'name'            => 'Comfy Cotton T-Shirt',
+                        'price'           => '24.99',
+                        'sale_price'      => '19.99',
+                        'image'           => 'images/retail/tshirt_blue.jpg', // Example path
+                        'description'     => 'Soft, breathable 100% cotton t-shirt available in various colors.',
+                        'promotion_badge' => '20% OFF',
                     ],
                     [
-                        'name' => 'Wireless Noise-Cancelling Headphones',
-                        'price' => '199.00',
-                        'sale_price' => '149.00',
-                        'image' => 'images/retail/headphones_noise_cancelling.jpg',
-                        'description' => 'Immersive sound experience with active noise cancellation and 20-hour battery life.',
-                        'promotion_badge' => 'SAVE $50'
+                        'name'            => 'Wireless Noise-Cancelling Headphones',
+                        'price'           => '199.00',
+                        'sale_price'      => '149.00',
+                        'image'           => 'images/retail/headphones_noise_cancelling.jpg',
+                        'description'     => 'Immersive sound experience with active noise cancellation and 20-hour battery life.',
+                        'promotion_badge' => 'SAVE $50',
                     ],
                     [
-                        'name' => 'Smart Fitness Tracker Watch',
-                        'price' => '120.00',
-                        'sale_price' => null, // Not on sale
-                        'image' => 'images/retail/fitness_tracker_watch.jpg',
-                        'description' => 'Track your steps, heart rate, and sleep patterns. Multiple sport modes.',
-                        'promotion_badge' => null
+                        'name'            => 'Smart Fitness Tracker Watch',
+                        'price'           => '120.00',
+                        'sale_price'      => null, // Not on sale
+                        'image'           => 'images/retail/fitness_tracker_watch.jpg',
+                        'description'     => 'Track your steps, heart rate, and sleep patterns. Multiple sport modes.',
+                        'promotion_badge' => null,
                     ],
                     [
-                        'name' => 'Organic Blend Coffee Beans',
-                        'price' => '18.50',
-                        'sale_price' => '15.00',
-                        'image' => 'images/retail/coffee_beans_organic.jpg',
-                        'description' => 'Premium Arabica beans, ethically sourced and locally roasted.',
-                        'promotion_badge' => 'SPECIAL OFFER'
+                        'name'            => 'Organic Blend Coffee Beans',
+                        'price'           => '18.50',
+                        'sale_price'      => '15.00',
+                        'image'           => 'images/retail/coffee_beans_organic.jpg',
+                        'description'     => 'Premium Arabica beans, ethically sourced and locally roasted.',
+                        'promotion_badge' => 'SPECIAL OFFER',
                     ],
                     [
-                        'name' => 'Yoga Mat Premium',
-                        'price' => '45.00',
-                        'sale_price' => null,
-                        'image' => 'images/retail/yoga_mat_premium.jpg',
-                        'description' => 'Eco-friendly, non-slip yoga mat for all your fitness needs.',
-                        'promotion_badge' => 'NEW ARRIVAL'
-                    ]
+                        'name'            => 'Yoga Mat Premium',
+                        'price'           => '45.00',
+                        'sale_price'      => null,
+                        'image'           => 'images/retail/yoga_mat_premium.jpg',
+                        'description'     => 'Eco-friendly, non-slip yoga mat for all your fitness needs.',
+                        'promotion_badge' => 'NEW ARRIVAL',
+                    ],
                 ],
-                'footer_promo_text' => 'All offers valid while supplies last. Visit us at City Center Mall!' // Example footer
+                'footer_promo_text' => 'All offers valid while supplies last. Visit us at City Center Mall!', // Example footer
             ],
             default => [
                 'title'   => 'Welcome',

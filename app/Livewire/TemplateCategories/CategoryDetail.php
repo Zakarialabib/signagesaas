@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\TemplateCategories;
 
 use Livewire\Component;
@@ -19,18 +21,18 @@ class CategoryDetail extends Component
         } else {
             $this->category = TemplateCategory::from($category);
         }
-        
+
         $this->templates = Template::where('category', $this->category->value)
             // ->where('is_active', true)
             // ->orderBy('sort_order')
             ->get();
-            
+
         $this->relatedCategories = $this->getRelatedCategories();
     }
 
     protected function getRelatedCategories(): array
     {
-        return match($this->category) {
+        return match ($this->category) {
             TemplateCategory::RESTAURANT => [
                 TemplateCategory::MENU,
                 TemplateCategory::HOSPITALITY,
@@ -56,4 +58,4 @@ class CategoryDetail extends Component
     {
         return view('livewire.template-categories.category-detail');
     }
-} 
+}

@@ -25,7 +25,7 @@ final class Home extends Component
             ->where('is_public', true)
             ->orderBy('sort_order')
             ->get();
-        // unthorize to get to home if authenticated redirect to dashboard instead 
+        // unthorize to get to home if authenticated redirect to dashboard instead
     }
 
     public function setBillingCycle(string $cycle): void

@@ -150,10 +150,14 @@
                 <a href="{{ route('login') }}" class="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-100">
                     {{ __('Login') }}
                 </a>
+                {{-- if we are in tenant no need to show that --}}
+
                 <a href="{{ route('register') }}"
                     class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                     {{ __('Free Trial') }}
                 </a>
+                {{-- @endif --}}
+                
             @else
                 <a href="{{ route('dashboard') }}" class="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-100">
                     {{ __('Dashboard') }} <span aria-hidden="true">&rarr;</span>

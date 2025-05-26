@@ -26,11 +26,11 @@ final class ProductListEditor extends Component
 
     // Rules for individual items within the $items array
     #[Rule([
-        'items.*.name' => 'required|string|max:255',
-        'items.*.price' => 'nullable|string|max:50', // Flexible for currency symbols, /mo, etc.
+        'items.*.name'        => 'required|string|max:255',
+        'items.*.price'       => 'nullable|string|max:50', // Flexible for currency symbols, /mo, etc.
         'items.*.description' => 'nullable|string|max:1000',
-        'items.*.category' => 'nullable|string|max:100',
-        'items.*.image_url' => 'nullable|url|max:2048',
+        'items.*.category'    => 'nullable|string|max:100',
+        'items.*.image_url'   => 'nullable|url|max:2048',
     ])]
     public array $itemRules = []; // This is a placeholder for the attribute, actual rules are above.
 
@@ -38,7 +38,8 @@ final class ProductListEditor extends Component
     {
         if ($contentId) {
             $this->content = Content::findOrFail($contentId);
-            if (!in_array($this->content->type, [ContentType::PRODUCT_LIST, ContentType::MENU])) {
+
+            if ( ! in_array($this->content->type, [ContentType::PRODUCT_LIST, ContentType::MENU])) {
                 abort(403, 'Invalid content type for this editor.');
             }
             $this->listTitle = $this->content->content_data['list_title'] ?? '';
@@ -51,11 +52,11 @@ final class ProductListEditor extends Component
     public function addItem(): void
     {
         $this->items[] = [
-            'name' => '',
-            'price' => '',
+            'name'        => '',
+            'price'       => '',
             'description' => '',
-            'category' => '',
-            'image_url' => '',
+            'category'    => '',
+            'image_url'   => '',
         ];
     }
 
@@ -74,28 +75,29 @@ final class ProductListEditor extends Component
         $contentType = $this->content?->type ?? ContentType::PRODUCT_LIST;
 
         $data = [
-            'tenant_id' => tenant('id') ?? Auth::user()->currentTenant->id,
-            'name' => $this->listTitle ?: ($contentType === ContentType::MENU ? 'Untitled Menu' : 'Untitled Product List'),
-            'type' => $contentType,
+            'tenant_id'    => tenant('id') ?? Auth::user()->currentTenant->id,
+            'name'         => $this->listTitle ?: ($contentType === ContentType::MENU ? 'Untitled Menu' : 'Untitled Product List'),
+            'type'         => $contentType,
             'content_data' => [
                 'list_title' => $this->listTitle,
-                'items' => $this->items,
+                'items'      => $this->items,
             ],
             'status' => $this->content?->status ?? \App\Enums\ContentStatus::DRAFT,
         ];
 
-        $isNewContent = !$this->content;
+        $isNewContent = ! $this->content;
 
         if ($this->content) {
             $this->content->update($data);
-            session()->flash('message', $contentType->label() . ' updated successfully.');
+            session()->flash('message', $contentType->label().' updated successfully.');
         } else {
             $this->content = Content::create($data);
-            session()->flash('message', $contentType->label() . ' created successfully.');
-            
+            session()->flash('message', $contentType->label().' created successfully.');
+
             if ($isNewContent && $this->content->tenant_id) {
                 $onboardingProgress = OnboardingProgress::firstOrCreate(['tenant_id' => $this->content->tenant_id]);
-                if (!$onboardingProgress->first_content_uploaded) {
+
+                if ( ! $onboardingProgress->first_content_uploaded) {
                     app(OnboardingProgressService::class)->completeStep($onboardingProgress, OnboardingStep::FIRST_CONTENT_UPLOADED->value);
                 }
             }
@@ -110,4 +112,4 @@ final class ProductListEditor extends Component
     {
         return view('livewire.content.product-list-editor');
     }
-} 
+}

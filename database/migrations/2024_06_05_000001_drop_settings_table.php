@@ -10,7 +10,6 @@ return new class () extends Migration {
     /** Run the migration. */
     public function up(): void
     {
-
         if ( ! Schema::hasTable('settings')) {
             // Recreate the settings table if it doesn't exist
             Schema::create('settings', function (Blueprint $table) {

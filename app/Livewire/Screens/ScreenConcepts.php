@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\Attributes\Layout as LivewireLayout;
 use Livewire\Attributes\Title;
+use Exception;
 
 #[LivewireLayout('layouts.app')]
 #[Title('Screen Layouts & Zones')]
@@ -37,19 +38,15 @@ final class ScreenConcepts extends Component
      */
     public array $zones = [];
 
-    /**
-     * The selected layout ID (string|null).
-     */
+    /** The selected layout ID (string|null). */
     public ?string $selectedLayoutId = null;
 
-    /**
-     * Mount the component and load layouts.
-     */
+    /** Mount the component and load layouts. */
     public function mount(?string $layoutId = null): void
     {
         $this->authorize('viewAny', Layout::class);
         $this->loadLayouts();
-        
+
         if ($layoutId) {
             $this->selectLayout($layoutId);
         } elseif ($this->layouts->count() > 0) {
@@ -60,9 +57,7 @@ final class ScreenConcepts extends Component
         }
     }
 
-    /**
-     * Load layouts with optimization for performance
-     */
+    /** Load layouts with optimization for performance */
     private function loadLayouts(): void
     {
         $this->layouts = Layout::with(['zones' => function ($query) {
@@ -70,9 +65,7 @@ final class ScreenConcepts extends Component
         }])->get();
     }
 
-    /**
-     * Create a default layout if none exists
-     */
+    /** Create a default layout if none exists */
     private function createDefaultLayout(): void
     {
         try {
@@ -112,15 +105,13 @@ final class ScreenConcepts extends Component
                 $this->loadLayouts();
                 $this->selectLayout($layout->id);
             });
-        } catch (\Exception $e) {
-            session()->flash('flash.banner', 'Error creating default layout: ' . $e->getMessage());
+        } catch (Exception $e) {
+            session()->flash('flash.banner', 'Error creating default layout: '.$e->getMessage());
             session()->flash('flash.bannerStyle', 'danger');
         }
     }
 
-    /**
-     * Select a layout by ID and load its zones.
-     */
+    /** Select a layout by ID and load its zones. */
     public function selectLayout(string $layoutId): void
     {
         try {
@@ -128,28 +119,27 @@ final class ScreenConcepts extends Component
             $this->selectedLayout = Layout::with(['zones' => function ($query) {
                 $query->orderBy('order');
             }])->find($layoutId);
-            
-            if (!$this->selectedLayout) {
-                throw new \Exception("Layout not found");
+
+            if ( ! $this->selectedLayout) {
+                throw new Exception('Layout not found');
             }
-            
+
             $this->zones = $this->selectedLayout->zones->map(function ($zone) {
                 return $zone->toArray();
             })->toArray() ?? [];
-        } catch (\Exception $e) {
-            session()->flash('flash.banner', 'Error loading layout: ' . $e->getMessage());
+        } catch (Exception $e) {
+            session()->flash('flash.banner', 'Error loading layout: '.$e->getMessage());
             session()->flash('flash.bannerStyle', 'danger');
         }
     }
 
-    /**
-     * Add a new zone to the current layout (not yet persisted).
-     */
+    /** Add a new zone to the current layout (not yet persisted). */
     public function addZone(): void
     {
-        if (!$this->selectedLayout) {
+        if ( ! $this->selectedLayout) {
             session()->flash('flash.banner', 'Please select a layout first.');
             session()->flash('flash.bannerStyle', 'danger');
+
             return;
         }
 
@@ -165,9 +155,7 @@ final class ScreenConcepts extends Component
         ];
     }
 
-    /**
-     * Update a zone's data by index.
-     */
+    /** Update a zone's data by index. */
     public function updateZone(int $index, array $zoneData): void
     {
         if (isset($this->zones[$index])) {
@@ -175,20 +163,19 @@ final class ScreenConcepts extends Component
         }
     }
 
-    /**
-     * Save the current layout's zones to the database.
-     */
+    /** Save the current layout's zones to the database. */
     public function saveLayout(): void
     {
-        if (!$this->selectedLayout) {
+        if ( ! $this->selectedLayout) {
             session()->flash('flash.banner', 'Please select or create a layout first.');
             session()->flash('flash.bannerStyle', 'danger');
+
             return;
         }
 
         try {
             DB::transaction(function () {
-                if (!$this->selectedLayout) {
+                if ( ! $this->selectedLayout) {
                     $this->selectedLayout = Layout::create([
                         'tenant_id'    => tenant('id'),
                         'name'         => 'New Layout',
@@ -198,34 +185,32 @@ final class ScreenConcepts extends Component
                     ]);
                     $this->selectedLayoutId = $this->selectedLayout->id;
                 }
-                
+
                 $this->selectedLayout->zones()->delete();
-                
+
                 foreach ($this->zones as $index => $zone) {
                     // Ensure order is properly set
                     $zone['order'] = $index;
                     $this->selectedLayout->zones()->create($zone);
                 }
-                
+
                 $this->selectedLayout->refresh();
                 $this->zones = $this->selectedLayout->zones->map(function ($zone) {
                     return $zone->toArray();
                 })->toArray();
-                
+
                 $this->loadLayouts();
-                
+
                 session()->flash('flash.banner', 'Layout saved successfully.');
                 session()->flash('flash.bannerStyle', 'success');
             });
-        } catch (\Exception $e) {
-            session()->flash('flash.banner', 'Error saving layout: ' . $e->getMessage());
+        } catch (Exception $e) {
+            session()->flash('flash.banner', 'Error saving layout: '.$e->getMessage());
             session()->flash('flash.bannerStyle', 'danger');
         }
     }
 
-    /**
-     * Create a new empty layout.
-     */
+    /** Create a new empty layout. */
     public function createNewLayout(): void
     {
         try {
@@ -237,10 +222,10 @@ final class ScreenConcepts extends Component
                     'aspect_ratio' => '16:9',
                     'data'         => [],
                 ]);
-                
+
                 $this->loadLayouts();
                 $this->selectLayout($layout->id);
-                
+
                 // Start with an empty main zone
                 $this->zones = [
                     [
@@ -254,18 +239,16 @@ final class ScreenConcepts extends Component
                         'data'   => [],
                     ],
                 ];
-                
+
                 $this->saveLayout();
             });
-        } catch (\Exception $e) {
-            session()->flash('flash.banner', 'Error creating layout: ' . $e->getMessage());
+        } catch (Exception $e) {
+            session()->flash('flash.banner', 'Error creating layout: '.$e->getMessage());
             session()->flash('flash.bannerStyle', 'danger');
         }
     }
 
-    /**
-     * Render the unified screen concepts view.
-     */
+    /** Render the unified screen concepts view. */
     public function render(): View
     {
         return view('livewire.screens.screen-concepts', [

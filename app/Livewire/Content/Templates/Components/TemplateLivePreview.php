@@ -19,8 +19,8 @@ final class TemplateLivePreview extends Component
     {
         $this->template = $template;
         $this->layout = $template->layout ?? [
-            'zones' => [],
-            'width' => 1920,
+            'zones'  => [],
+            'width'  => 1920,
             'height' => 1080,
         ];
     }
@@ -31,7 +31,7 @@ final class TemplateLivePreview extends Component
         $this->template->save();
 
         $this->dispatch('notify', [
-            'type' => 'success',
+            'type'    => 'success',
             'message' => 'Zones updated successfully.',
         ]);
     }

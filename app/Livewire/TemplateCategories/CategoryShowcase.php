@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\TemplateCategories;
 
 use Livewire\Component;
@@ -44,4 +46,4 @@ class CategoryShowcase extends Component
     {
         return view('livewire.template-categories.category-showcase');
     }
-} 
+}

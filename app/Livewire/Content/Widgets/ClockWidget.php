@@ -6,6 +6,7 @@ namespace App\Livewire\Content\Widgets;
 
 use Livewire\Component;
 use Carbon\Carbon;
+use Exception;
 
 class ClockWidget extends Component
 {
@@ -32,13 +33,15 @@ class ClockWidget extends Component
         try {
             $now = Carbon::now($this->timezone);
             $this->currentTime = $now->format($this->format);
+
             if ($this->showDate) {
                 $this->currentDate = $now->format($this->dateFormat);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Handle invalid timezone
             $now = Carbon::now('UTC');
-            $this->currentTime = $now->format($this->format) . ' (UTC TZ Error)';
+            $this->currentTime = $now->format($this->format).' (UTC TZ Error)';
+
             if ($this->showDate) {
                 $this->currentDate = $now->format($this->dateFormat);
             }

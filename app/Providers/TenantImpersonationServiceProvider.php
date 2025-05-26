@@ -15,7 +15,6 @@ class TenantImpersonationServiceProvider extends ServiceProvider
     /** Register services. */
     public function register(): void
     {
-
     }
 
     /** Bootstrap services. */

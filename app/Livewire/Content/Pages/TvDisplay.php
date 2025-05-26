@@ -7,7 +7,6 @@ namespace App\Livewire\Content\Pages;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
-use App\Enums\TemplateCategory;
 use Illuminate\Support\Facades\Cache;
 
 #[Layout('layouts.tv')]
@@ -26,7 +25,7 @@ final class TvDisplay extends Component
     {
         // Load configuration from cache or database
         $this->layoutConfig = Cache::get('signage_layout', $this->getDefaultLayout());
-        
+
         // Initialize time
         $this->updateTime();
     }
@@ -36,93 +35,93 @@ final class TvDisplay extends Component
         return [
             'grid' => [
                 'columns' => 12,
-                'rows' => 8,
-                'gap' => '4',
+                'rows'    => 8,
+                'gap'     => '4',
             ],
             'widgets' => [
                 [
-                    'id' => 'main_announcement',
+                    'id'        => 'main_announcement',
                     'component' => 'content.widgets.announcement-widget',
-                    'position' => [
+                    'position'  => [
                         'col' => [1, 9],
-                        'row' => [1, 5]
+                        'row' => [1, 5],
                     ],
                     'settings' => [
-                        'title' => 'Welcome to Our Company HQ!',
-                        'message' => 'We are excited to have you here. Check out the latest updates and events happening this week. Don\'t forget the team lunch on Friday!',
+                        'title'           => 'Welcome to Our Company HQ!',
+                        'message'         => 'We are excited to have you here. Check out the latest updates and events happening this week. Don\'t forget the team lunch on Friday!',
                         'backgroundColor' => '#0F172A',
-                        'textColor' => '#E2E8F0',
-                        'titleColor' => '#38BDF8',
-                        'animation' => 'slide-up'
+                        'textColor'       => '#E2E8F0',
+                        'titleColor'      => '#38BDF8',
+                        'animation'       => 'slide-up',
                     ],
-                    'priority' => 1
+                    'priority' => 1,
                 ],
                 [
-                    'id' => 'weather_london',
+                    'id'        => 'weather_london',
                     'component' => 'content.widgets.weather-widget',
-                    'position' => [
+                    'position'  => [
                         'col' => [10, 12],
-                        'row' => [1, 3]
+                        'row' => [1, 3],
                     ],
                     'settings' => [
-                        'apiKey' => config('services.openweathermap.key', env('OPENWEATHERMAP_API_KEY')),
-                        'location' => 'London, UK',
+                        'apiKey'          => config('services.openweathermap.key', env('OPENWEATHERMAP_API_KEY')),
+                        'location'        => 'London, UK',
                         'refreshInterval' => 600,
-                        'animation' => 'fade'
+                        'animation'       => 'fade',
                     ],
-                    'priority' => 2
+                    'priority' => 2,
                 ],
                 [
-                    'id' => 'clock_local',
+                    'id'        => 'clock_local',
                     'component' => 'content.widgets.clock-widget',
-                    'position' => [
+                    'position'  => [
                         'col' => [10, 12],
-                        'row' => [4, 6]
+                        'row' => [4, 6],
                     ],
                     'settings' => [
-                        'timezone' => 'Europe/London',
+                        'timezone'    => 'Europe/London',
                         'showSeconds' => true,
-                        'format' => 'H:i:s',
-                        'showDate' => true,
-                        'dateFormat' => 'l, F jS',
-                        'animation' => 'zoom'
+                        'format'      => 'H:i:s',
+                        'showDate'    => true,
+                        'dateFormat'  => 'l, F jS',
+                        'animation'   => 'zoom',
                     ],
-                    'priority' => 3
+                    'priority' => 3,
                 ],
                 [
-                    'id' => 'news_feed',
+                    'id'        => 'news_feed',
                     'component' => 'content.widgets.rss-feed-widget',
-                    'position' => [
+                    'position'  => [
                         'col' => [10, 12],
-                        'row' => [6, 8]
+                        'row' => [6, 8],
                     ],
                     'settings' => [
-                        'feedUrl' => 'https://feeds.bbci.co.uk/news/world/rss.xml',
-                        'itemCount' => 3,
+                        'feedUrl'         => 'https://feeds.bbci.co.uk/news/world/rss.xml',
+                        'itemCount'       => 3,
                         'refreshInterval' => 900,
-                        'animation' => 'slide-left'
+                        'animation'       => 'slide-left',
                     ],
-                    'priority' => 4
+                    'priority' => 4,
                 ],
                 [
-                    'id' => 'custom_message',
+                    'id'        => 'custom_message',
                     'component' => 'content.widgets.custom-text-widget',
-                    'position' => [
+                    'position'  => [
                         'col' => [1, 12],
-                        'row' => [6, 8]
+                        'row' => [6, 8],
                     ],
                     'settings' => [
-                        'text' => "Follow us on @OurCompany • #Innovation • #FutureTech",
-                        'fontSize' => '1.5rem',
-                        'textColor' => '#CBD5E1',
+                        'text'            => 'Follow us on @OurCompany • #Innovation • #FutureTech',
+                        'fontSize'        => '1.5rem',
+                        'textColor'       => '#CBD5E1',
                         'backgroundColor' => '#1E293B',
-                        'textAlign' => 'center',
-                        'padding' => '20px',
-                        'animation' => 'marquee'
+                        'textAlign'       => 'center',
+                        'padding'         => '20px',
+                        'animation'       => 'marquee',
                     ],
-                    'priority' => 5
-                ]
-            ]
+                    'priority' => 5,
+                ],
+            ],
         ];
     }
 
@@ -142,10 +141,10 @@ final class TvDisplay extends Component
     public function render(): \Illuminate\View\View
     {
         return view('livewire.content.pages.tv-display', [
-            'layoutConfig' => $this->layoutConfig,
-            'isEditMode' => $this->isEditMode,
-            'currentTime' => $this->currentTime,
-            'currentDate' => $this->currentDate,
+            'layoutConfig'    => $this->layoutConfig,
+            'isEditMode'      => $this->isEditMode,
+            'currentTime'     => $this->currentTime,
+            'currentDate'     => $this->currentDate,
             'refreshInterval' => $this->refreshInterval,
         ]);
     }

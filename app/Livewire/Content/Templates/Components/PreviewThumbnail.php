@@ -25,8 +25,8 @@ final class PreviewThumbnail extends Component
     public function getSizeClasses(): string
     {
         return match ($this->size) {
-            'sm' => 'h-24 w-24',
-            'lg' => 'h-48 w-48',
+            'sm'    => 'h-24 w-24',
+            'lg'    => 'h-48 w-48',
             default => 'h-32 w-32'
         };
     }

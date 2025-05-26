@@ -147,33 +147,33 @@ final class OnboardingProgress extends Model
             'Set up automated performance alerts and weekly digest reports',
         ],
         'first_widget_content_created' => [
-            "Navigate to Content > Content Library.",
+            'Navigate to Content > Content Library.',
             "Click 'Add Widget Content'.",
             "Choose a widget type like 'Digital Menu Board' or 'Retail Product Showcase'.",
-            "Fill in the specific details and save your new widget content."
+            'Fill in the specific details and save your new widget content.',
         ],
         'widget_content_assigned_to_template' => [
-            "Go to Templates and open a template in the Configurator.",
-            "Select a zone, or add a new one.",
+            'Go to Templates and open a template in the Configurator.',
+            'Select a zone, or add a new one.',
             "Set the zone's 'Type' to 'Widget' and choose the specific 'Widget Type' (e.g., Menu Widget).",
-            "Click 'Assign Content' and select your widget content, or create new content for the zone."
+            "Click 'Assign Content' and select your widget content, or create new content for the zone.",
         ],
     ];
 
     protected $casts = [
-        'profile_completed'       => 'boolean',
-        'first_device_registered' => 'boolean',
-        'first_content_uploaded'  => 'boolean',
-        'first_screen_created'    => 'boolean',
-        'first_schedule_created'  => 'boolean',
-        'first_user_invited'      => 'boolean',
-        'subscription_setup'      => 'boolean',
-        'viewed_analytics'        => 'boolean',
-        'first_widget_content_created' => 'boolean',
+        'profile_completed'                   => 'boolean',
+        'first_device_registered'             => 'boolean',
+        'first_content_uploaded'              => 'boolean',
+        'first_screen_created'                => 'boolean',
+        'first_schedule_created'              => 'boolean',
+        'first_user_invited'                  => 'boolean',
+        'subscription_setup'                  => 'boolean',
+        'viewed_analytics'                    => 'boolean',
+        'first_widget_content_created'        => 'boolean',
         'widget_content_assigned_to_template' => 'boolean',
-        'custom_steps'            => 'array',
-        'completed_at'            => 'datetime',
-        'first_widget_content_created' => 'boolean',
+        'custom_steps'                        => 'array',
+        'completed_at'                        => 'datetime',
+        'first_widget_content_created'        => 'boolean',
         'widget_content_assigned_to_template' => 'boolean',
     ];
 
@@ -181,11 +181,12 @@ final class OnboardingProgress extends Model
     {
         static::creating(function ($model) {
             foreach (OnboardingStep::cases() as $step) {
-                if (!isset($model->{$step->value})) {
+                if ( ! isset($model->{$step->value})) {
                     $model->{$step->value} = false;
                 }
             }
-            if (!isset($model->custom_steps)) {
+
+            if ( ! isset($model->custom_steps)) {
                 $model->custom_steps = [];
             }
         });
@@ -196,8 +197,10 @@ final class OnboardingProgress extends Model
         if (property_exists($this, $stepKey) && is_bool($this->{$stepKey})) {
             $this->{$stepKey} = $completed;
             $this->checkForCompletion();
+
             return $this->save();
         }
+
         return $this->markCustomStep($stepKey, $completed);
     }
 
@@ -264,11 +267,13 @@ final class OnboardingProgress extends Model
     public function isComplete(?array $requiredStepsOverride = null): bool
     {
         $requiredSteps = $requiredStepsOverride ?? OnboardingStep::getRequiredSteps();
+
         foreach ($requiredSteps as $stepEnum) {
-            if (!$this->{$stepEnum->value}) {
+            if ( ! $this->{$stepEnum->value}) {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -288,7 +293,7 @@ final class OnboardingProgress extends Model
             'first_widget_content_created',
             'widget_content_assigned_to_template',
         ];
-//         return OnboardingStep::getRequiredSteps();
+        //         return OnboardingStep::getRequiredSteps();
     }
 
     public function getCompletedStepsCount(): int
@@ -308,6 +313,7 @@ final class OnboardingProgress extends Model
     public function getCompletionPercentage(): float
     {
         $totalSteps = count(OnboardingStep::getRequiredSteps());
+
         if ($totalSteps === 0) {
             return 100.0;
         }

@@ -123,7 +123,8 @@ final class ScheduleCreate extends Component
 
         // Mark onboarding step as complete
         $onboardingProgress = OnboardingProgress::firstOrCreate(['tenant_id' => $schedule->tenant_id]);
-        if (!$onboardingProgress->first_schedule_created) {
+
+        if ( ! $onboardingProgress->first_schedule_created) {
             app(OnboardingProgressService::class)->completeStep($onboardingProgress, 'first_schedule_created');
         }
 

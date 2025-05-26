@@ -198,7 +198,8 @@ final class ContentCreate extends Component
 
         // Mark onboarding step as complete
         $onboardingProgress = OnboardingProgress::firstOrCreate(['tenant_id' => $content->tenant_id]);
-        if (!$onboardingProgress->first_content_uploaded) {
+
+        if ( ! $onboardingProgress->first_content_uploaded) {
             app(OnboardingProgressService::class)->completeStep($onboardingProgress, \App\Enums\OnboardingStep::FIRST_CONTENT_UPLOADED->value);
         }
 

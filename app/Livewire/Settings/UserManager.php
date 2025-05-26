@@ -181,7 +181,8 @@ final class UserManager extends Component
 
                 // Mark onboarding step as complete
                 $onboardingProgress = OnboardingProgress::firstOrCreate(['tenant_id' => tenant('id')]);
-                if (!$onboardingProgress->first_user_invited) {
+
+                if ( ! $onboardingProgress->first_user_invited) {
                     app(OnboardingProgressService::class)->completeStep($onboardingProgress, 'first_user_invited');
                 }
 

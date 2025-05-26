@@ -20,64 +20,46 @@ final class ScreenManager extends Component
 {
     use WithPagination;
 
-    /**
-     * Search term for filtering screens
-     */
+    /** Search term for filtering screens */
     #[Validate('nullable|string|max:255')]
     public ?string $search = null;
 
-    /**
-     * Filter screens by status
-     */
+    /** Filter screens by status */
     #[Validate('nullable|string|in:active,inactive,all')]
     public string $statusFilter = 'all';
 
-    /**
-     * Filter screens by orientation
-     */
+    /** Filter screens by orientation */
     #[Validate('nullable|string|in:landscape,portrait,all')]
     public string $orientationFilter = 'all';
 
-    /**
-     * Currently selected screen
-     */
+    /** Currently selected screen */
     #[Locked]
     public ?Screen $selectedScreen = null;
 
-    /**
-     * Controls visibility of delete confirmation modal
-     */
+    /** Controls visibility of delete confirmation modal */
     public bool $deleteScreenModal = false;
 
-    /**
-     * ID of screen marked for deletion
-     */
+    /** ID of screen marked for deletion */
     #[Locked]
     public ?string $screenToDelete = null;
 
-    /**
-     * Mount the component and check authorization
-     */
+    /** Mount the component and check authorization */
     public function mount(): void
     {
         $this->authorize('viewAny', Screen::class);
     }
 
-    /**
-     * Mark search input for debounce to reduce server calls
-     */
+    /** Mark search input for debounce to reduce server calls */
     protected function queryString(): array
     {
         return [
-            'search' => ['except' => '', 'as' => 'q'],
-            'statusFilter' => ['except' => 'all', 'as' => 'status'],
+            'search'            => ['except' => '', 'as' => 'q'],
+            'statusFilter'      => ['except' => 'all', 'as' => 'status'],
             'orientationFilter' => ['except' => 'all', 'as' => 'orientation'],
         ];
     }
 
-    /**
-     * Get filtered screens query
-     */
+    /** Get filtered screens query */
     protected function getScreensQuery(): Builder
     {
         $query = Screen::query()
@@ -89,9 +71,9 @@ final class ScreenManager extends Component
         if ($this->search) {
             $query->where(function ($q) {
                 $q->where('name', 'like', "%{$this->search}%")
-                  ->orWhereHas('device', function ($q) {
-                      $q->where('name', 'like', "%{$this->search}%");
-                  });
+                    ->orWhereHas('device', function ($q) {
+                        $q->where('name', 'like', "%{$this->search}%");
+                    });
             });
         }
 
@@ -108,9 +90,7 @@ final class ScreenManager extends Component
         return $query->latest();
     }
 
-    /**
-     * Render the screen manager view
-     */
+    /** Render the screen manager view */
     public function render(): View
     {
         return view('livewire.screens.screen-manager', [
@@ -118,9 +98,7 @@ final class ScreenManager extends Component
         ]);
     }
 
-    /**
-     * Reset the pagination when filters change
-     */
+    /** Reset the pagination when filters change */
     public function updatedSearch(): void
     {
         $this->resetPage();
@@ -136,17 +114,13 @@ final class ScreenManager extends Component
         $this->resetPage();
     }
 
-    /**
-     * Refresh the screens list
-     */
+    /** Refresh the screens list */
     public function refreshScreens(): void
     {
         $this->resetPage();
     }
 
-    /**
-     * Open the delete confirmation modal
-     */
+    /** Open the delete confirmation modal */
     #[On('confirmDeleteScreen')]
     public function openModal(string $id): void
     {
@@ -154,9 +128,7 @@ final class ScreenManager extends Component
         $this->deleteScreenModal = true;
     }
 
-    /**
-     * Handle screen created/updated events
-     */
+    /** Handle screen created/updated events */
     #[On('screen-created')]
     #[On('screen-updated')]
     public function handleScreenChange(): void
@@ -167,12 +139,10 @@ final class ScreenManager extends Component
         // Banner is handled by the event-triggering component
     }
 
-    /**
-     * Delete a screen and its associated content
-     */
+    /** Delete a screen and its associated content */
     public function deleteScreen(): void
     {
-        if (!$this->screenToDelete) {
+        if ( ! $this->screenToDelete) {
             return;
         }
 
@@ -194,18 +164,14 @@ final class ScreenManager extends Component
         $this->refreshScreens();
     }
 
-    /**
-     * Cancel the screen deletion
-     */
+    /** Cancel the screen deletion */
     public function cancelDelete(): void
     {
         $this->screenToDelete = null;
         $this->deleteScreenModal = false;
     }
 
-    /**
-     * Close all modals
-     */
+    /** Close all modals */
     private function closeAllModals(): void
     {
         $this->deleteScreenModal = false;

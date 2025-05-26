@@ -156,7 +156,8 @@ final class DeviceManager extends Component
 
                 // Mark onboarding step as complete
                 $onboardingProgress = OnboardingProgress::firstOrCreate(['tenant_id' => tenant('id')]);
-                if (!$onboardingProgress->first_device_registered) {
+
+                if ( ! $onboardingProgress->first_device_registered) {
                     app(OnboardingProgressService::class)->completeStep($onboardingProgress, 'first_device_registered');
                 }
 

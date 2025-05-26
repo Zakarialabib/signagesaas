@@ -72,7 +72,8 @@ final class UsageAnalytics extends Component
 
         // Mark onboarding step as complete
         $onboardingProgress = OnboardingProgress::firstOrCreate(['tenant_id' => tenant('id')]);
-        if (!$onboardingProgress->viewed_analytics) {
+
+        if ( ! $onboardingProgress->viewed_analytics) {
             app(OnboardingProgressService::class)->completeStep($onboardingProgress, 'viewed_analytics');
         }
 
