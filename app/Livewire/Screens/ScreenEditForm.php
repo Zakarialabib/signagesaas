@@ -112,7 +112,7 @@ final class ScreenEditForm extends Component
         }
     }
 
-    public function updateScreen(): void
+    public function save(): void
     {
         if ( ! $this->screen) {
             return;

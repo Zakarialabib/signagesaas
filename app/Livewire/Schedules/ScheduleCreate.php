@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Livewire\Schedules;
 
 use App\Enums\ScheduleStatus;
+use App\Services\OnboardingProgressService;
 use App\Tenant\Models\Content;
+use App\Tenant\Models\OnboardingProgress;
 use App\Tenant\Models\Schedule;
 use App\Tenant\Models\Screen;
 use Illuminate\Support\Collection;
@@ -117,6 +119,12 @@ final class ScheduleCreate extends Component
                 ->toArray();
 
             $schedule->contents()->attach($contentData);
+        }
+
+        // Mark onboarding step as complete
+        $onboardingProgress = OnboardingProgress::firstOrCreate(['tenant_id' => $schedule->tenant_id]);
+        if (!$onboardingProgress->first_schedule_created) {
+            app(OnboardingProgressService::class)->completeStep($onboardingProgress, 'first_schedule_created');
         }
 
         $this->dispatch('schedule-created');

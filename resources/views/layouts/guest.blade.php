@@ -31,12 +31,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
-
-    <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @livewireStyles
-    @livewireScripts
-
+   
     <!-- RTL Styles -->
     @if (app()->getLocale() === 'ar')
         <style>
@@ -47,6 +42,18 @@
         </style>
     @endif
 
+
+    @vite('resources/css/app.css')
+    @stack('styles')
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
+    @livewireStyles
+    @vite('resources/js/app.js')
+    @livewireScriptConfig
+    @stack('scripts')
 </head>
 
 <body class="font-sans antialiased bg-white dark:bg-gray-900">

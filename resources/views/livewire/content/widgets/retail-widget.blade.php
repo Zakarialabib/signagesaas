@@ -9,9 +9,22 @@
         {{-- Content Side: Tabs + Active Template --}}
         <div class="flex-grow flex flex-col p-4 overflow-y-auto">
             {{-- Loading Indicator --}}
-            <div wire:loading.flex wire:target="setView,loadData" class="absolute inset-x-0 top-0 bg-white bg-opacity-75 dark:bg-gray-800 dark:bg-opacity-75 flex items-center justify-center z-50 p-4">
-                <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
-                <span class="ml-2 text-gray-700 dark:text-gray-200">Loading Products...</span>
+            <div wire:loading.flex wire:target="setView,loadData"
+                class="fixed inset-0 bg-white bg-opacity-75 dark:bg-gray-900 dark:bg-opacity-75 flex items-center justify-center z-50 p-4">
+                <div class="flex flex-col items-center">
+                    <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mb-3"></div>
+                    <span class="text-gray-700 dark:text-gray-300 font-medium">
+                        @if ($isLoading)
+                            Loading
+                            {{ $activeView === 'modern-grid' ? 'Modern Grid' : $availableViews[$activeView]['name'] }}...
+                        @else
+                            Processing your request...
+                        @endif
+                    </span>
+                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mt-3">
+                        <div class="bg-blue-500 h-2.5 rounded-full animate-pulse" style="width: 70%"></div>
+                    </div>
+                </div>
             </div>
 
             {{-- Error Message --}}

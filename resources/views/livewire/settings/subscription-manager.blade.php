@@ -2,6 +2,36 @@
     {{-- Subscription Management UI will go here --}}
     <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">Subscription Management</h2>
 
+    {{-- Onboarding Info for Subscription Setup --}}
+    @php
+        $subscriptionStep = App\Enums\OnboardingStep::SUBSCRIPTION_SETUP;
+        $onboardingProgress = App\Tenant\Models\OnboardingProgress::firstOrCreate(['tenant_id' => tenant('id')]);
+        $isSubscriptionStepComplete = $onboardingProgress->{$subscriptionStep->value} ?? false;
+    @endphp
+
+    @if (!$isSubscriptionStepComplete)
+        <div class="mt-4 mb-6 p-4 bg-indigo-50 dark:bg-indigo-900/30 border-l-4 border-indigo-400 dark:border-indigo-500 rounded-md shadow-sm">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <x-heroicon-o-information-circle class="h-6 w-6 text-indigo-400 dark:text-indigo-300" />
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-md font-semibold text-indigo-700 dark:text-indigo-200">{{ $subscriptionStep->getTitle() }}</h3>
+                    <div class="mt-2 text-sm text-indigo-600 dark:text-indigo-300">
+                        <p class="mb-2">{{ $subscriptionStep->getDescription() }}</p>
+                        @if(!empty($subscriptionStep->getCardData()['features']))
+                            <ul class="list-disc pl-5 space-y-1">
+                                @foreach ($subscriptionStep->getCardData()['features'] as $feature)
+                                    <li>{!! $feature !!}</li>
+                                @endforeach
+                            </ul>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
     @if (session()->has('message'))
         <div class="mt-4 p-4 bg-green-100 dark:bg-green-900 border border-green-200 dark:border-green-700 text-green-700 dark:text-green-200 rounded-md">
             {{ session('message') }}
@@ -12,7 +42,7 @@
         @if ($subscription && $subscription->plan)
             <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-gray-100">Current Plan: {{ $subscription->plan->name }}</h3>
             <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                Billing Cycle: {{ ucfirst($subscription->billing_cycle) }}
+                Billing Cycle: {{ $subscription->billing_cycle }}
                 @if ($subscription->current_period_ends_at)
                     | Renews on: {{ $subscription->current_period_ends_at->format('M d, Y') }}
                 @endif

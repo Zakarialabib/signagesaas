@@ -56,7 +56,7 @@
                 <div>
                     <h3 class="text-xl font-semibold leading-7 text-white">{{ $title }}</h3>
                     @if($industry)
-                    <span class="inline-flex items-center rounded-full bg-gray-800/70 px-2 py-0.5 text-xs font-medium text-{{ $themeColor }}-300 mt-1">
+                    <span class="inline-flex items-center rounded-full bg-{{ $themeColor }}-800/70 px-2 py-0.5 text-xs font-medium text-{{ $themeColor }}-300 mt-1">
                         {{ $industry }}
                     </span>
                     @endif

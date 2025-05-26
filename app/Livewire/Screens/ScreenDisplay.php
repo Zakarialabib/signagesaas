@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-#[Layout('layouts.fullscreen')]
+// #[Layout('layouts.fullscreen')]
 final class ScreenDisplay extends Component
 {
     /**

@@ -7,7 +7,9 @@ namespace App\Livewire\Content\Widgets;
 use App\Enums\ContentStatus;
 use App\Enums\ContentType;
 use App\Models\Tenant; // Assuming Tenant model is in App\Models
+use App\Services\OnboardingProgressService;
 use App\Tenant\Models\Content;
+use App\Tenant\Models\OnboardingProgress;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Component;
@@ -112,6 +114,12 @@ class WidgetDataEditorModal extends Component
             }
         } else {
             $content = Content::create($contentDetails);
+
+            // Mark onboarding step as complete
+            $onboardingProgress = OnboardingProgress::firstOrCreate(['tenant_id' => $currentTenant->id]);
+            if (!$onboardingProgress->first_widget_content_created) {
+                app(OnboardingProgressService::class)->completeStep($onboardingProgress, 'first_widget_content_created');
+            }
         }
 
         // Dispatch to TemplateConfigurator or any other listener

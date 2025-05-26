@@ -14,6 +14,8 @@ enum OnboardingStep: string
     case FIRST_USER_INVITED = 'first_user_invited';
     case SUBSCRIPTION_SETUP = 'subscription_setup';
     case VIEWED_ANALYTICS = 'viewed_analytics';
+    case FIRST_WIDGET_CONTENT_CREATED = 'first_widget_content_created';
+    case WIDGET_CONTENT_ASSIGNED_TO_TEMPLATE = 'widget_content_assigned_to_template';
 
     public static function values(): array
     {
@@ -24,13 +26,15 @@ enum OnboardingStep: string
     {
         return match ($this) {
             self::PROFILE_COMPLETED       => 'Complete Your Profile',
-            self::FIRST_DEVICE_REGISTERED => 'Understanding Devices',
-            self::FIRST_CONTENT_UPLOADED  => 'Content & Templates Guide',
-            self::FIRST_SCREEN_CREATED    => 'Working with Screens',
-            self::FIRST_SCHEDULE_CREATED  => 'Creating Schedules',
-            self::FIRST_USER_INVITED      => 'Team Management',
-            self::SUBSCRIPTION_SETUP      => 'Subscription Overview',
-            self::VIEWED_ANALYTICS        => 'Analytics & Reporting',
+            self::FIRST_DEVICE_REGISTERED => 'Register Your First Device',
+            self::FIRST_CONTENT_UPLOADED  => 'Upload Your First Content',
+            self::FIRST_SCREEN_CREATED    => 'Create Your First Screen',
+            self::FIRST_SCHEDULE_CREATED  => 'Create Your First Schedule',
+            self::FIRST_USER_INVITED      => 'Invite Team Members',
+            self::SUBSCRIPTION_SETUP      => 'Review Your Subscription',
+            self::VIEWED_ANALYTICS        => 'View Analytics',
+            self::FIRST_WIDGET_CONTENT_CREATED => 'Create Your First Widget Content',
+            self::WIDGET_CONTENT_ASSIGNED_TO_TEMPLATE => 'Assign Widget to Template',
         };
     }
 
@@ -38,13 +42,47 @@ enum OnboardingStep: string
     {
         return match ($this) {
             self::PROFILE_COMPLETED       => 'Set up your organization profile with logo and contact information.',
-            self::FIRST_DEVICE_REGISTERED => 'Learn about digital signage devices and how to set them up for optimal performance.',
-            self::FIRST_CONTENT_UPLOADED  => 'Discover how to create, manage, and organize your digital signage content using our powerful template system.',
-            self::FIRST_SCREEN_CREATED    => 'Understand how screens work and their relationship with physical devices and content.',
-            self::FIRST_SCHEDULE_CREATED  => 'Learn to schedule content playback and create dynamic playlists for your screens.',
-            self::FIRST_USER_INVITED      => 'Set up your team and manage their roles and permissions.',
-            self::SUBSCRIPTION_SETUP      => 'Review and optimize your subscription plan for your digital signage needs.',
-            self::VIEWED_ANALYTICS        => 'Track performance and gather insights about your digital signage network.',
+            self::FIRST_DEVICE_REGISTERED => 'Add a digital signage device to your account.',
+            self::FIRST_CONTENT_UPLOADED  => 'Add images, videos, or create content using our editor.',
+            self::FIRST_SCREEN_CREATED    => 'Define a screen layout with zones for your content.',
+            self::FIRST_SCHEDULE_CREATED  => 'Schedule when your content should play on your screens.',
+            self::FIRST_USER_INVITED      => 'Add colleagues who will help manage your digital signage.',
+            self::SUBSCRIPTION_SETUP      => 'Make sure your plan meets your digital signage needs.',
+            self::VIEWED_ANALYTICS        => 'Check out how your digital signage is performing.',
+            self::FIRST_WIDGET_CONTENT_CREATED => 'Design reusable content blocks for your templates.',
+            self::WIDGET_CONTENT_ASSIGNED_TO_TEMPLATE => 'Incorporate your widget content into a screen template.',
+        };
+    }
+
+    public function getRouteName(): string
+    {
+        return match ($this) {
+            self::PROFILE_COMPLETED       => 'settings.profile',
+            self::FIRST_DEVICE_REGISTERED => 'devices.index',
+            self::FIRST_CONTENT_UPLOADED  => 'content.index',
+            self::FIRST_SCREEN_CREATED    => 'screens.index',
+            self::FIRST_SCHEDULE_CREATED  => 'schedules.index',
+            self::FIRST_USER_INVITED      => 'settings.users',
+            self::SUBSCRIPTION_SETUP      => 'settings.subscription',
+            self::VIEWED_ANALYTICS        => 'dashboard.analytics',
+            self::FIRST_WIDGET_CONTENT_CREATED => 'content.widgets',
+            self::WIDGET_CONTENT_ASSIGNED_TO_TEMPLATE => 'templates.index',
+        };
+    }
+
+    public function getIconName(): string
+    {
+        return match ($this) {
+            self::PROFILE_COMPLETED       => 'user-circle',
+            self::FIRST_DEVICE_REGISTERED => 'device-tablet',
+            self::FIRST_CONTENT_UPLOADED  => 'photo',
+            self::FIRST_SCREEN_CREATED    => 'desktop-computer',
+            self::FIRST_SCHEDULE_CREATED  => 'calendar',
+            self::FIRST_USER_INVITED      => 'users',
+            self::SUBSCRIPTION_SETUP      => 'credit-card',
+            self::VIEWED_ANALYTICS        => 'chart-bar',
+            self::FIRST_WIDGET_CONTENT_CREATED => 'puzzle',
+            self::WIDGET_CONTENT_ASSIGNED_TO_TEMPLATE => 'document-duplicate',
         };
     }
 
@@ -54,8 +92,9 @@ enum OnboardingStep: string
             self::PROFILE_COMPLETED,
             self::FIRST_DEVICE_REGISTERED,
             self::FIRST_CONTENT_UPLOADED,
+            self::FIRST_WIDGET_CONTENT_CREATED,
             self::FIRST_SCREEN_CREATED,
-            self::FIRST_SCHEDULE_CREATED,
+            self::WIDGET_CONTENT_ASSIGNED_TO_TEMPLATE,
         ];
     }
 
@@ -65,153 +104,171 @@ enum OnboardingStep: string
             self::PROFILE_COMPLETED => [
                 'imagePath' => 'images/onboarding/profile.svg',
                 'features'  => [
-                    'Upload your company logo (400x400px recommended)',
-                    'Set organization name and contact details',
-                    'Configure timezone and regional settings',
-                    'Customize your branding colors and theme',
+                    'Upload your company logo (400x400px recommended).',
+                    'Set organization name and contact details.',
+                    'Configure timezone and regional settings.',
+                    'Customize your branding colors and theme (if applicable).',
                 ],
                 'tips' => [
-                    'Use a high-quality PNG or SVG logo for best results',
-                    'Keep organization details updated for accurate reporting',
-                    'Add multiple contact points for better team coordination',
+                    'Use a high-quality PNG or SVG logo.',
+                    'Keep organization details updated for accurate reporting.',
                 ],
                 'bestPractices' => [
-                    'Complete all profile sections for a professional appearance',
-                    'Review and update information quarterly',
-                    'Include emergency contact information',
+                    'Complete all profile sections.',
+                    'Review and update information quarterly.',
                 ],
             ],
             self::FIRST_DEVICE_REGISTERED => [
                 'imagePath' => 'images/onboarding/device.svg',
                 'features'  => [
-                    'Support for various display devices',
-                    'Easy device registration process',
-                    'Remote device management',
-                    'Health monitoring and alerts',
+                    'Register various types of display devices (Android, Windows, Raspberry Pi).',
+                    'Assign a unique name and location to each device.',
+                    'Note the hardware ID for specific device types if prompted.',
+                    'Devices will initially appear as "inactive" until they connect.',
                 ],
                 'tips' => [
-                    'Keep devices on a stable network connection',
-                    'Use unique identifiers for easy device management',
-                    'Install updates promptly for best performance',
+                    'Ensure devices have a stable network connection.',
+                    'Use clear, unique names for easy identification.',
                 ],
                 'bestPractices' => [
-                    'Maintain a device inventory document',
-                    'Set up monitoring alerts for device status',
-                    'Plan for device maintenance and updates',
+                    'Maintain a physical inventory of your devices.',
+                    'Regularly check device status in the dashboard.',
                 ],
             ],
             self::FIRST_CONTENT_UPLOADED => [
                 'imagePath' => 'images/onboarding/content.svg',
                 'features'  => [
-                    'Support for multiple content types',
-                    'Dynamic template system',
-                    'Content approval workflow',
-                    'Media library management',
+                    'Upload images, videos, or link to external URLs.',
+                    'Create rich text or HTML content directly in the editor.',
+                    'Organize content with names and descriptions.',
+                    'Assign content to a screen for it to be scheduled and displayed.',
                 ],
                 'tips' => [
-                    'Organize content into logical categories',
-                    'Use templates for consistent branding',
-                    'Optimize media files for faster loading',
+                    'Optimize image and video file sizes for faster loading on devices.',
+                    'Use descriptive names for content items.',
                 ],
                 'bestPractices' => [
-                    'Implement a content review process',
-                    'Maintain content freshness with regular updates',
-                    'Archive outdated content periodically',
+                    'Group related content or create a content calendar.',
+                    'Regularly review and archive outdated content.',
+                ],
+            ],
+            self::FIRST_WIDGET_CONTENT_CREATED => [
+                'imagePath' => 'images/onboarding/widget-content.svg',
+                'features' => [
+                    'Create reusable blocks of content like menus, product lists, or custom HTML modules.',
+                    'Define the structure and data for your widget.',
+                    'Save widget content to be used across multiple templates and screens.',
+                    'Update widget content once, and it reflects everywhere it\'s used.',
+                ],
+                'tips' => [
+                    'Think modularly: what content pieces can be reused?',
+                    'Keep widget data focused and well-structured.',
+                ],
+                'bestPractices' => [
+                    'Use consistent naming conventions for widget content.',
+                    'Preview widgets in templates to ensure correct display.',
                 ],
             ],
             self::FIRST_SCREEN_CREATED => [
                 'imagePath' => 'images/onboarding/screen.svg',
                 'features'  => [
-                    'Flexible screen layouts',
-                    'Multi-zone content support',
-                    'Screen grouping capabilities',
-                    'Preview and testing tools',
+                    'Define a "screen" which represents a display configuration.',
+                    'Associate a screen with a physical device.',
+                    'Set screen resolution and orientation.',
+                    'Screens are containers for layouts and content scheduling.',
                 ],
                 'tips' => [
-                    'Group related screens for easier management',
-                    'Test layouts before deployment',
-                    'Consider viewing distance in design',
+                    'Screen names should be descriptive (e.g., "Lobby Display Left").',
+                    'Ensure resolution matches the target device capabilities.',
                 ],
                 'bestPractices' => [
-                    'Document screen locations and specifications',
-                    'Regular testing of screen displays',
-                    'Plan for screen maintenance schedule',
+                    'Plan your screen layouts before creating them.',
+                    'Group screens by location or purpose if you have many.',
+                ],
+            ],
+            self::WIDGET_CONTENT_ASSIGNED_TO_TEMPLATE => [
+                'imagePath' => 'images/onboarding/template-assign.svg',
+                'features' => [
+                    'Open a template in the Template Configurator.',
+                    'Add or select a zone designated for widget content.',
+                    'Choose your previously created widget content to assign to the zone.',
+                    'Preview the template to see the widget in action.',
+                ],
+                'tips' => [
+                    'Ensure the zone dimensions are appropriate for the widget content.',
+                    'Some widgets might have specific zone type requirements.',
+                ],
+                'bestPractices' => [
+                    'Use templates to maintain consistency across multiple screens.',
+                    'Test widget assignments on different screen resolutions if applicable.',
                 ],
             ],
             self::FIRST_SCHEDULE_CREATED => [
                 'imagePath' => 'images/onboarding/schedule.svg',
                 'features'  => [
-                    'Flexible scheduling options',
-                    'Recurring schedule support',
-                    'Priority-based playback',
-                    'Schedule templates',
+                    'Create schedules to control when content plays on specific screens.',
+                    'Define start/end dates and times for playback.',
+                    'Select specific days of the week for recurring schedules.',
+                    'Assign one or more content items to a schedule.',
                 ],
                 'tips' => [
-                    'Plan content rotation frequency',
-                    'Use schedule templates for efficiency',
-                    'Set appropriate content durations',
+                    'Use clear names for schedules (e.g., "Weekday Morning Ads").',
+                    'Double-check timezones if managing devices in different locations.',
                 ],
                 'bestPractices' => [
-                    'Regular schedule review and updates',
-                    'Document scheduling strategies',
-                    'Monitor playback reports',
+                    'Plan your content playback strategy before creating many schedules.',
+                    'Regularly review active schedules to ensure they are current.',
                 ],
             ],
             self::FIRST_USER_INVITED => [
                 'imagePath' => 'images/onboarding/team.svg',
                 'features'  => [
-                    'Role-based access control',
-                    'Team collaboration tools',
-                    'Activity logging',
-                    'User permissions management',
+                    'Invite colleagues to help manage your digital signage.',
+                    'Assign roles to users (e.g., Admin, Editor, Viewer).',
+                    'Control permissions based on roles.',
+                    'Users will receive an email invitation to set up their account.',
                 ],
                 'tips' => [
-                    'Define clear user roles',
-                    'Set up approval workflows',
-                    'Train team members on system use',
+                    'Use the principle of least privilege when assigning roles.',
+                    'Ensure email addresses are correct for invitations.',
                 ],
                 'bestPractices' => [
-                    'Regular permission audits',
-                    'Document user roles and responsibilities',
-                    'Maintain training documentation',
+                    'Regularly review user access and roles.',
+                    'Educate team members on their responsibilities within the system.',
                 ],
             ],
             self::SUBSCRIPTION_SETUP => [
                 'imagePath' => 'images/onboarding/subscription.svg',
                 'features'  => [
-                    'Flexible plan options',
-                    'Usage monitoring',
-                    'Automatic billing',
-                    'Plan comparison tools',
+                    'Review available subscription plans and their features.',
+                    'Understand limits for devices, users, storage, etc.',
+                    'Select a plan that matches your current and anticipated needs.',
+                    'Set up your billing information if upgrading from a trial or free tier.',
                 ],
                 'tips' => [
-                    'Review usage patterns regularly',
-                    'Plan for future scaling needs',
-                    'Set up billing notifications',
+                    'Estimate your usage to choose the most cost-effective plan.',
+                    'Check for annual billing options for potential discounts.',
                 ],
                 'bestPractices' => [
-                    'Document subscription requirements',
-                    'Regular plan optimization reviews',
-                    'Monitor usage trends',
+                    'Periodically review your subscription against your actual usage.',
+                    'Keep billing information up to date to avoid service interruptions.',
                 ],
             ],
             self::VIEWED_ANALYTICS => [
                 'imagePath' => 'images/onboarding/analytics.svg',
                 'features'  => [
-                    'Real-time analytics',
-                    'Custom reporting',
-                    'Performance metrics',
-                    'Export capabilities',
+                    'Track content playback counts and duration.',
+                    'Monitor device uptime and connectivity status.',
+                    'View bandwidth usage if applicable.',
+                    'Gain insights into user activity within the platform.',
                 ],
                 'tips' => [
-                    'Set up key performance indicators',
-                    'Schedule regular report reviews',
-                    'Use insights for content optimization',
+                    'Use date filters to narrow down analytics data.',
+                    'Look for trends in content popularity or device issues.',
                 ],
                 'bestPractices' => [
-                    'Regular analytics review sessions',
-                    'Document insights and actions',
-                    'Share reports with stakeholders',
+                    'Regularly check analytics to optimize content strategy.',
+                    'Use data to make informed decisions about network expansion or changes.',
                 ],
             ],
         };

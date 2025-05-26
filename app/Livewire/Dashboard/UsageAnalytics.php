@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Livewire\Dashboard;
 
+use App\Services\OnboardingProgressService;
 use App\Tenant\Models\Analytics\BandwidthLog;
 use App\Tenant\Models\Analytics\ContentPlayLog;
 use App\Tenant\Models\Analytics\DeviceUsageLog;
 use App\Tenant\Models\Analytics\UserActivityLog;
 use App\Tenant\Models\Device;
+use App\Tenant\Models\OnboardingProgress;
 use App\Tenant\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -67,6 +69,12 @@ final class UsageAnalytics extends Component
     public function mount(): void
     {
         // $this->authorize('viewAny', Auth::user());
+
+        // Mark onboarding step as complete
+        $onboardingProgress = OnboardingProgress::firstOrCreate(['tenant_id' => tenant('id')]);
+        if (!$onboardingProgress->viewed_analytics) {
+            app(OnboardingProgressService::class)->completeStep($onboardingProgress, 'viewed_analytics');
+        }
 
         // Initialize collections
         $this->devices = Device::all(['id', 'name', 'type']);

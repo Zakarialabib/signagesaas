@@ -1,4 +1,5 @@
 <div>
+    <livewire:dashboard.onboarding-widget :contextStepKey="App\Enums\OnboardingStep::FIRST_DEVICE_REGISTERED->value" />
     {{-- Add ContextualHelpWidget --}}
     @livewire('shared.contextual-help-widget', ['contextKey' => \App\Enums\OnboardingStep::FIRST_DEVICE_REGISTERED->value])
 

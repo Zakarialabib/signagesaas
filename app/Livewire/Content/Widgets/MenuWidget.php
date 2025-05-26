@@ -244,6 +244,43 @@ final class MenuWidget extends BaseWidget
     }
 
     /**
+     * Toggle all display options (prices, calories, allergens)
+     */
+    public function toggleAllDisplayOptions(): void
+    {
+        $newValue = !($this->showPrices && $this->showCalories && $this->showAllergens);
+
+        $this->showPrices = $newValue;
+        $this->showCalories = $newValue;
+        $this->showAllergens = $newValue;
+    }
+
+    /**
+     * Reset refresh interval to default value
+     */
+    public function resetRefreshInterval(): void
+    {
+        $this->refreshInterval = 300; // Default 5 minutes
+    }
+
+    /**
+     * Reload data manually
+     */
+    public function reloadData(): void
+    {
+        $this->loadData();
+    }
+
+    /**
+     * Clear error message
+     */
+    public function clearError(): void
+    {
+        $this->error = null;
+    }
+
+
+    /**
      * Prepare data to be passed to the Blade views.
      */
     protected function getViewData(): array
