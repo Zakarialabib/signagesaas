@@ -1,5 +1,7 @@
 <div>
-    <livewire:dashboard.onboarding-widget :contextStepKey="'first_widget_content_created'" />
+
+    <livewire:dashboard.onboarding-widget :contextStepKey="App\Enums\OnboardingStep::FIRST_CONTENT_UPLOADED->value" />
+
     {{-- Add ContextualHelpWidget --}}
     @livewire('shared.contextual-help-widget', ['contextKey' => \App\Enums\OnboardingStep::FIRST_CONTENT_UPLOADED->value])    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center mb-6">
@@ -362,7 +364,8 @@
                     </x-button>
                 </div>
             </div>
-        </x-modal>
+        </div>
+    </x-modal>
     @endif
 
     <!-- Add these components to handle their own modals -->

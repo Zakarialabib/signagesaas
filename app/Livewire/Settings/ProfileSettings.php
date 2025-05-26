@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Livewire\Settings;
 
+use App\Services\OnboardingProgressService;
+use App\Tenant\Models\OnboardingProgress;
 use App\Tenant\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -89,6 +91,12 @@ final class ProfileSettings extends Component
         }
 
         $user->save();
+
+        // Mark onboarding step as complete
+        $onboardingProgress = OnboardingProgress::firstOrCreate(['tenant_id' => $user->tenant_id]);
+        if (!$onboardingProgress->profile_completed) {
+            app(OnboardingProgressService::class)->completeStep($onboardingProgress, 'profile_completed');
+        }
 
         // Update session locale if language changed
         if ($validated['language'] !== app()->getLocale()) {

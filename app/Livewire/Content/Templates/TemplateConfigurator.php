@@ -7,6 +7,9 @@ namespace App\Livewire\Content\Templates;
 use App\Tenant\Models\Template;
 use App\Tenant\Models\Content;
 use App\Enums\ContentType;
+use App\Services\OnboardingProgressService;
+use App\Tenant\Models\OnboardingProgress;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\Attributes\On;
 
@@ -21,6 +24,10 @@ final class TemplateConfigurator extends Component
     // Properties for generic content selector modal
     public bool $showGenericContentSelectorModal = false;
     public ?string $currentZoneIdForGenericSelector = null;
+
+    // Properties for widget data info modal
+    public bool $showWidgetDataInfoModal = false;
+    public ?string $currentZoneIdForWidgetInfoModal = null;
 
     protected $listeners = [
         'content-assigned' => 'handleContentAssigned',
@@ -77,6 +84,19 @@ final class TemplateConfigurator extends Component
     {
         $this->showGenericContentSelectorModal = false;
         $this->currentZoneIdForGenericSelector = null;
+    }
+
+    // Methods for Widget Data Info Modal
+    public function openWidgetInfoModal(string $zoneId): void
+    {
+        $this->currentZoneIdForWidgetInfoModal = $zoneId;
+        $this->showWidgetDataInfoModal = true;
+    }
+
+    public function closeWidgetInfoModal(): void
+    {
+        $this->showWidgetDataInfoModal = false;
+        $this->currentZoneIdForWidgetInfoModal = null;
     }
 
     public function getZoneContentTypes(string $zoneId): array
@@ -168,6 +188,15 @@ final class TemplateConfigurator extends Component
         // This method simply calls handleContentAssigned,
         // as the logic for updating the layout is the same.
         $this->handleContentAssigned($data);
+
+        // Mark onboarding step as complete
+        $tenantId = Auth::user()?->tenant_id ?? $this->template->tenant_id; // Ensure we have tenant context
+        if ($tenantId) {
+            $onboardingProgress = OnboardingProgress::firstOrCreate(['tenant_id' => $tenantId]);
+            if (!$onboardingProgress->widget_content_assigned_to_template) {
+                app(OnboardingProgressService::class)->completeStep($onboardingProgress, 'widget_content_assigned_to_template');
+            }
+        }
     }
 
     public function updateZoneSettings(string $zoneId): void

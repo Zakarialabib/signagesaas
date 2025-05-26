@@ -16,11 +16,13 @@
                             {{ $step['title'] }}
                         </h3>
                         <p class="text-gray-700 dark:text-gray-300 mb-4">{{ $step['description'] }}</p>
-                        <ul class="list-disc pl-5 text-sm text-gray-600 dark:text-gray-400 mb-4">
-                            @foreach ($step['examples'] as $example)
-                                <li class="mb-2">{!! $example !!}</li>
-                            @endforeach
-                        </ul>
+                        @if(!empty($step['cardData']['features']))
+                            <ul class="list-disc pl-5 text-sm text-gray-600 dark:text-gray-400 mb-4 space-y-1">
+                                @foreach ($step['cardData']['features'] as $feature)
+                                    <li>{!! $feature !!}</li>
+                                @endforeach
+                            </ul>
+                        @endif
                         <a href="{{ route($step['route']) }}"
                             class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
                             Complete this step
@@ -54,19 +56,26 @@
 
         {{-- Progress Steps Grid --}}
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            @foreach ($steps as $step)
+            @forelse ($steps as $step)
                 <livewire:onboarding.step-card :step="App\Enums\OnboardingStep::from($step['key'])" :completed="$step['completed']" :route="$step['route']" />
-            @endforeach
+            @empty
+                <div class="text-gray-400">
+                    No steps available
+                </div>
+            @endforelse
         </div>
         {{-- Footer with Help Text --}}
         <div class="mt-8 flex justify-between items-center pt-6 border-t border-gray-800">
             <div class="text-sm text-gray-400">
                 Need help setting up your digital signage?
-            </div>            <div class="flex space-x-4">
-                <a href="#" class="text-sm text-indigo-400 hover:text-indigo-300 transition-colors inline-flex items-center">
+            </div>
+            <div class="flex space-x-4">
+                <a href="#"
+                    class="text-sm text-indigo-400 hover:text-indigo-300 transition-colors inline-flex items-center">
                     <x-heroicon-m-book-open class="w-4 h-4 mr-1" /> Read Documentation
                 </a>
-                <a href="#" class="text-sm text-indigo-400 hover:text-indigo-300 transition-colors inline-flex items-center">
+                <a href="#"
+                    class="text-sm text-indigo-400 hover:text-indigo-300 transition-colors inline-flex items-center">
                     <x-heroicon-m-chat-bubble-left-right class="w-4 h-4 mr-1" /> Contact Support
                 </a>
             </div>

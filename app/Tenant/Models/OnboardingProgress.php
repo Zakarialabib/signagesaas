@@ -26,6 +26,8 @@ final class OnboardingProgress extends Model
         'first_user_invited',
         'subscription_setup',
         'viewed_analytics',
+        'first_widget_content_created',
+        'widget_content_assigned_to_template',
         'custom_steps',
         'completed_at',
         'first_widget_content_created',
@@ -167,91 +169,107 @@ final class OnboardingProgress extends Model
         'first_user_invited'      => 'boolean',
         'subscription_setup'      => 'boolean',
         'viewed_analytics'        => 'boolean',
+        'first_widget_content_created' => 'boolean',
+        'widget_content_assigned_to_template' => 'boolean',
         'custom_steps'            => 'array',
         'completed_at'            => 'datetime',
         'first_widget_content_created' => 'boolean',
         'widget_content_assigned_to_template' => 'boolean',
     ];
 
-    // Completion methods
+    protected static function booted(): void
+    {
+        static::creating(function ($model) {
+            foreach (OnboardingStep::cases() as $step) {
+                if (!isset($model->{$step->value})) {
+                    $model->{$step->value} = false;
+                }
+            }
+            if (!isset($model->custom_steps)) {
+                $model->custom_steps = [];
+            }
+        });
+    }
+
+    public function markStepCompleted(string $stepKey, bool $completed = true): bool
+    {
+        if (property_exists($this, $stepKey) && is_bool($this->{$stepKey})) {
+            $this->{$stepKey} = $completed;
+            $this->checkForCompletion();
+            return $this->save();
+        }
+        return $this->markCustomStep($stepKey, $completed);
+    }
+
     public function markProfileCompleted(): bool
     {
-        $this->profile_completed = true;
-        $this->checkForCompletion();
-
-        return $this->save();
+        return $this->markStepCompleted(OnboardingStep::PROFILE_COMPLETED->value);
     }
 
     public function markFirstDeviceRegistered(): bool
     {
-        $this->first_device_registered = true;
-        $this->checkForCompletion();
-
-        return $this->save();
+        return $this->markStepCompleted(OnboardingStep::FIRST_DEVICE_REGISTERED->value);
     }
 
     public function markFirstContentUploaded(): bool
     {
-        $this->first_content_uploaded = true;
-        $this->checkForCompletion();
+        return $this->markStepCompleted(OnboardingStep::FIRST_CONTENT_UPLOADED->value);
+    }
 
-        return $this->save();
+    public function markFirstWidgetContentCreated(): bool
+    {
+        return $this->markStepCompleted(OnboardingStep::FIRST_WIDGET_CONTENT_CREATED->value);
     }
 
     public function markFirstScreenCreated(): bool
     {
-        $this->first_screen_created = true;
-        $this->checkForCompletion();
+        return $this->markStepCompleted(OnboardingStep::FIRST_SCREEN_CREATED->value);
+    }
 
-        return $this->save();
+    public function markWidgetContentAssignedToTemplate(): bool
+    {
+        return $this->markStepCompleted(OnboardingStep::WIDGET_CONTENT_ASSIGNED_TO_TEMPLATE->value);
     }
 
     public function markFirstScheduleCreated(): bool
     {
-        $this->first_schedule_created = true;
-        $this->checkForCompletion();
-
-        return $this->save();
+        return $this->markStepCompleted(OnboardingStep::FIRST_SCHEDULE_CREATED->value);
     }
 
     public function markFirstUserInvited(): bool
     {
-        $this->first_user_invited = true;
-        $this->checkForCompletion();
-
-        return $this->save();
+        return $this->markStepCompleted(OnboardingStep::FIRST_USER_INVITED->value);
     }
 
     public function markSubscriptionSetup(): bool
     {
-        $this->subscription_setup = true;
-        $this->checkForCompletion();
-
-        return $this->save();
+        return $this->markStepCompleted(OnboardingStep::SUBSCRIPTION_SETUP->value);
     }
 
     public function markViewedAnalytics(): bool
     {
-        $this->viewed_analytics = true;
-        $this->checkForCompletion();
-
-        return $this->save();
+        return $this->markStepCompleted(OnboardingStep::VIEWED_ANALYTICS->value);
     }
 
     public function markCustomStep(string $step, bool $value = true): bool
     {
-        $steps = $this->custom_steps ?? [];
-        $steps[$step] = $value;
-        $this->custom_steps = $steps;
+        $customSteps = $this->custom_steps ?? [];
+        $customSteps[$step] = $value;
+        $this->custom_steps = $customSteps;
         $this->checkForCompletion();
 
         return $this->save();
     }
 
-    // Status check methods
-    public function isComplete(): bool
+    public function isComplete(?array $requiredStepsOverride = null): bool
     {
-        return $this->completed_at !== null;
+        $requiredSteps = $requiredStepsOverride ?? OnboardingStep::getRequiredSteps();
+        foreach ($requiredSteps as $stepEnum) {
+            if (!$this->{$stepEnum->value}) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public function getRequiredSteps(): array
@@ -270,15 +288,16 @@ final class OnboardingProgress extends Model
             'first_widget_content_created',
             'widget_content_assigned_to_template',
         ];
+//         return OnboardingStep::getRequiredSteps();
     }
 
     public function getCompletedStepsCount(): int
     {
         $count = 0;
-        $steps = $this->getRequiredSteps();
+        $requiredSteps = OnboardingStep::getRequiredSteps();
 
-        foreach ($steps as $step) {
-            if ($this->$step) {
+        foreach ($requiredSteps as $stepEnum) {
+            if ($this->{$stepEnum->value}) {
                 $count++;
             }
         }
@@ -288,59 +307,39 @@ final class OnboardingProgress extends Model
 
     public function getCompletionPercentage(): float
     {
-        $total = count($this->getRequiredSteps());
-        $completed = $this->getCompletedStepsCount();
-
-        if ($total === 0) {
+        $totalSteps = count(OnboardingStep::getRequiredSteps());
+        if ($totalSteps === 0) {
             return 100.0;
         }
+        $completedSteps = $this->getCompletedStepsCount();
 
-        return round(($completed / $total) * 100, 2);
+        return round(($completedSteps / $totalSteps) * 100, 2);
     }
 
-    public function getNextStep(): ?string
+    public function getNextStep(): ?OnboardingStep
     {
-        $steps = $this->getRequiredSteps();
-
-        foreach ($steps as $step) {
-            if ( ! $this->$step) {
-                return $step;
+        foreach (OnboardingStep::getRequiredSteps() as $stepEnum) {
+            if ( ! $this->{$stepEnum->value}) {
+                return $stepEnum;
             }
         }
 
         return null;
     }
 
-    public function getNextStepDescription(): ?string
+    public function getNextStepTitle(): ?string
     {
-        $nextStep = $this->getNextStep();
-
-        if ( ! $nextStep) {
-            return null;
-        }
-
-        return OnboardingStep::from($nextStep)->getDescription();
+        return $this->getNextStep()?->getTitle();
     }
 
-    // Private methods
+    public function getNextStepDescription(): ?string
+    {
+        return $this->getNextStep()?->getDescription();
+    }
+
     private function checkForCompletion(): void
     {
-        if ($this->isComplete()) {
-            return;
-        }
-
-        $requiredSteps = $this->getRequiredSteps();
-        $allComplete = true;
-
-        foreach ($requiredSteps as $step) {
-            if ( ! $this->$step) {
-                $allComplete = false;
-
-                break;
-            }
-        }
-
-        if ($allComplete && ! $this->completed_at) {
+        if ( ! $this->completed_at && $this->isComplete()) {
             $this->completed_at = now();
         }
     }

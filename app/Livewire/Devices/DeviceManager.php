@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Livewire\Devices;
 
+use App\Services\OnboardingProgressService;
 use App\Tenant\Models\AuditLog;
 use App\Tenant\Models\Device;
+use App\Tenant\Models\OnboardingProgress;
 use App\Tenant\Models\Subscription;
 use App\Tenant\Models\UsageQuota;
 use Illuminate\Support\Facades\Auth;
@@ -151,6 +153,12 @@ final class DeviceManager extends Component
                     'name' => $device->name,
                     'type' => $device->type,
                 ]);
+
+                // Mark onboarding step as complete
+                $onboardingProgress = OnboardingProgress::firstOrCreate(['tenant_id' => tenant('id')]);
+                if (!$onboardingProgress->first_device_registered) {
+                    app(OnboardingProgressService::class)->completeStep($onboardingProgress, 'first_device_registered');
+                }
 
                 session()->flash('message', 'Device created successfully.');
             } else {

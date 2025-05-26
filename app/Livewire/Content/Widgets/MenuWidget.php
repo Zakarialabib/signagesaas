@@ -29,6 +29,28 @@ final class MenuWidget extends BaseWidget
     public bool $showAllergens = false; // Default to false
     public string $currency = '$';
 
+    // New properties for view/template management
+    #[Locked]
+    public array $availableViews = [
+        'default' => [
+            'name' => 'Classic View',
+            'view_path' => 'livewire.content.widgets.menu-templates.default'
+        ],
+        'modernDark' => [
+            'name' => 'Modern Dark',
+            'view_path' => 'livewire.content.widgets.menu-templates.modern-dark'
+        ],
+        'minimalist' => [
+            'name' => 'Minimalist',
+            'view_path' => 'livewire.content.widgets.menu-templates.minimalist'
+        ],
+        'vintage' => [
+            'name' => 'Vintage',
+            'view_path' => 'livewire.content.widgets.menu-templates.vintage'
+        ],
+    ];
+    public string $activeView = 'default'; // Default view key
+
     /**
      * Mount the component.
      *
@@ -50,6 +72,7 @@ final class MenuWidget extends BaseWidget
         parent::mount($settings, $title, $category, $icon); // Call BaseWidget's mount
 
         $this->contentId = $contentId;
+        $this->activeView = $settings['default_view'] ?? 'default'; // Allow overriding default view from settings
 
         if ($this->contentId) {
             $contentModel = Content::find($this->contentId);
@@ -68,6 +91,9 @@ final class MenuWidget extends BaseWidget
             $this->menu = $initialData['categories'] ?? [];
             $this->widgetTitle = $initialData['title'] ?? 'Menu Preview';
             $this->lastUpdated = now()->diffForHumans();
+            if (isset($initialData['active_view']) && array_key_exists($initialData['active_view'], $this->availableViews)) {
+                $this->activeView = $initialData['active_view'];
+            }
         } else {
             $this->loadPlaceholderData(); // Load placeholder if no data source
         }
@@ -75,7 +101,7 @@ final class MenuWidget extends BaseWidget
         // Apply settings from template zone or screen settings
         $this->applySettings($settings);
     }
-    
+
     protected function applySettings(array $settings): void
     {
         $this->menuType = $settings['menu_type'] ?? $this->menuType;
@@ -86,11 +112,14 @@ final class MenuWidget extends BaseWidget
         $this->refreshInterval = $settings['refresh_interval'] ?? $this->refreshInterval;
         // If BaseWidget's title wasn't overridden by content, use setting title
         if ($this->title === 'Menu Widget' && isset($settings['title'])) {
-             $this->title = $settings['title']; // This is BaseWidget's title
+            $this->title = $settings['title']; // This is BaseWidget's title
         }
         // If widgetTitle (specific to this class) wasn't set by content, use setting title
         if ($this->widgetTitle === 'Menu' && isset($settings['widget_title'])) {
             $this->widgetTitle = $settings['widget_title'];
+        }
+        if (isset($settings['active_view']) && array_key_exists($settings['active_view'], $this->availableViews)) {
+            $this->activeView = $settings['active_view'];
         }
     }
 
@@ -120,36 +149,148 @@ final class MenuWidget extends BaseWidget
             // or should use its placeholder/demo data logic if it were defined for non-contentId scenarios.
             // For now, if no contentId, we assume data was passed via initialData or it's a placeholder state.
             // If we want refresh to work for placeholder data, we'd call loadPlaceholderData here.
-             $this->loadPlaceholderData(); // Or decide if this should be an error state
+            $this->loadPlaceholderData(); // Or decide if this should be an error state
         }
     }
-    
+
     protected function loadPlaceholderData(): void
     {
-        $this->menu = [ /* Placeholder structure from original loadData */ 
+        $this->menu = [
             [
                 'name' => 'Appetizers',
                 'description' => 'Start your meal with these delicious options',
                 'items' => [
-                    [ 'name' => 'Bruschetta', 'description' => 'Toasted bread with tomatoes', 'price' => 8.99, 'calories' => 320, 'allergens' => ['gluten'], 'image' => '', 'special' => false ],
-                    [ 'name' => 'Calamari', 'description' => 'Fried squid rings', 'price' => 12.99, 'calories' => 450, 'allergens' => ['shellfish', 'gluten'], 'image' => '', 'special' => true ]
+                    [
+                        'name' => 'Bruschetta',
+                        'description' => 'Toasted bread with tomatoes',
+                        'price' => 8.99,
+                        'calories' => 320,
+                        'allergens' => ['gluten'],
+                        'image' => '',
+                        'special' => false
+                    ],
+                    [
+                        'name' => 'Calamari',
+                        'description' => 'Fried squid rings',
+                        'price' => 12.99,
+                        'calories' => 450,
+                        'allergens' => ['shellfish', 'gluten'],
+                        'image' => '',
+                        'special' => true
+                    ]
                 ]
             ],
+            [
+                'name' => 'Main Courses',
+                'description' => 'Our signature dishes',
+                'items' => [
+                    [
+                        'name' => 'Grilled Salmon',
+                        'description' => 'Fresh salmon with seasonal vegetables',
+                        'price' => 24.99,
+                        'calories' => 650,
+                        'allergens' => ['fish'],
+                        'image' => '',
+                        'special' => false
+                    ],
+                    [
+                        'name' => 'Beef Tenderloin',
+                        'description' => 'Tender beef with red wine sauce',
+                        'price' => 29.99,
+                        'calories' => 800,
+                        'allergens' => ['gluten'],
+                        'image' => '',
+                        'special' => true
+                    ]
+                ]
+            ],
+            [
+                'name' => 'Desserts',
+                'description' => 'Sweet treats to finish your meal',
+                'items' => [
+                    [
+                        'name' => 'Chocolate Cake',
+                        'description' => 'Rich chocolate cake with vanilla ice cream',
+                        'price' => 7.99,
+                        'calories' => 500,
+                        'allergens' => ['gluten', 'dairy'],
+                        'image' => '',
+                        'special' => false
+                    ],
+                    [
+                        'name' => 'Tiramisu',
+                        'description' => 'Classic Italian dessert',
+                        'price' => 8.99,
+                        'calories' => 450,
+                        'allergens' => ['gluten', 'dairy', 'eggs'],
+                        'image' => '',
+                        'special' => true
+                    ]
+                ]
+            ]
         ];
         $this->widgetTitle = 'Sample Menu';
         $this->lastUpdated = now()->diffForHumans();
     }
 
-
-    public function render(): \Illuminate\View\View
+    /**
+     * Switch the active view template.
+     */
+    public function setView(string $viewKey): void
     {
-        return view('livewire.content.widgets.menu-widget', [
-            // BaseWidget properties that might be used by placeholder or view
-            'title' => $this->title, // This is BaseWidget's title
+        if (array_key_exists($viewKey, $this->availableViews)) {
+            $this->activeView = $viewKey;
+        }
+    }
+
+    /**
+     * Toggle all display options (prices, calories, allergens)
+     */
+    public function toggleAllDisplayOptions(): void
+    {
+        $newValue = !($this->showPrices && $this->showCalories && $this->showAllergens);
+
+        $this->showPrices = $newValue;
+        $this->showCalories = $newValue;
+        $this->showAllergens = $newValue;
+    }
+
+    /**
+     * Reset refresh interval to default value
+     */
+    public function resetRefreshInterval(): void
+    {
+        $this->refreshInterval = 300; // Default 5 minutes
+    }
+
+    /**
+     * Reload data manually
+     */
+    public function reloadData(): void
+    {
+        $this->loadData();
+    }
+
+    /**
+     * Clear error message
+     */
+    public function clearError(): void
+    {
+        $this->error = null;
+    }
+
+
+    /**
+     * Prepare data to be passed to the Blade views.
+     */
+    protected function getViewData(): array
+    {
+        return [
+            'widgetId' => $this->getId(),
+            'title' => $this->title, // BaseWidget title
             'category' => $this->category,
             'icon' => $this->icon,
-            // MenuWidget specific properties
-            'widgetTitle' => $this->widgetTitle, // This is MenuWidget's own title for display
+            'widgetTitle' => $this->widgetTitle, // MenuWidget specific title
             'menu' => $this->menu,
             'lastUpdated' => $this->lastUpdated,
             'error' => $this->error,
@@ -158,6 +299,15 @@ final class MenuWidget extends BaseWidget
             'showCalories' => $this->showCalories,
             'showAllergens' => $this->showAllergens,
             'currency' => $this->currency,
-        ]);
+            // For the main wrapper view to manage tabs
+            'availableViews' => $this->availableViews,
+            'activeView' => $this->activeView,
+        ];
+    }
+
+    public function render(): \Illuminate\View\View
+    {
+        // The main view will act as a container for tabs and the active template
+        return view('livewire.content.widgets.menu-widget', $this->getViewData());
     }
 }

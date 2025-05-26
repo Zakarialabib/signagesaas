@@ -7,7 +7,9 @@ namespace App\Livewire\Screens;
 use App\Enums\ScreenOrientation;
 use App\Enums\ScreenResolution;
 use App\Enums\ScreenStatus;
+use App\Services\OnboardingProgressService;
 use App\Tenant\Models\Device;
+use App\Tenant\Models\OnboardingProgress;
 use App\Tenant\Models\Screen;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\DB;
@@ -187,6 +189,12 @@ final class ScreenCreateForm extends Component
                     ],
                 ]);
                 
+                // Mark onboarding step as complete
+                $onboardingProgress = OnboardingProgress::firstOrCreate(['tenant_id' => $screen->tenant_id]);
+                if (!$onboardingProgress->first_screen_created) {
+                    app(OnboardingProgressService::class)->completeStep($onboardingProgress, 'first_screen_created');
+                }
+
                 // Notify parent component
                 $this->dispatch('screen-created', id: $screen->id);
             });

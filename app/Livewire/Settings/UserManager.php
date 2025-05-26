@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Livewire\Settings;
 
+use App\Services\OnboardingProgressService;
 use App\Tenant\Models\AuditLog;
+use App\Tenant\Models\OnboardingProgress;
 use App\Tenant\Models\User;
 use App\Traits\HasPermissions;
 use App\Traits\WithDataTable;
@@ -36,6 +38,8 @@ final class UserManager extends Component
 
     #[Rule('required|string|in:admin,manager,editor,viewer')]
     public string $role = 'viewer';
+
+    public bool $showRoleModal = false;
 
     #[Rule('nullable|string|min:8|max:255')]
     public ?string $password = null;
@@ -89,6 +93,11 @@ final class UserManager extends Component
                 ],
             ],
         ]);
+    }
+
+    public function openRoleModal(): void
+    {
+        $this->showRoleModal = true;
     }
 
     // User CRUD methods
@@ -169,6 +178,12 @@ final class UserManager extends Component
                     'email' => $user->email,
                     'role'  => $user->role,
                 ]);
+
+                // Mark onboarding step as complete
+                $onboardingProgress = OnboardingProgress::firstOrCreate(['tenant_id' => tenant('id')]);
+                if (!$onboardingProgress->first_user_invited) {
+                    app(OnboardingProgressService::class)->completeStep($onboardingProgress, 'first_user_invited');
+                }
 
                 session()->flash('message', 'User created successfully.');
             } else {

@@ -137,7 +137,7 @@
     </div>
 
     <!-- Edit Roles Modal -->
-    <x-modal wire:model="showRoleModal">
+<x-modal wire:model="showRoleModal">
         <x-slot name="title">
             Edit User Roles
         </x-slot>

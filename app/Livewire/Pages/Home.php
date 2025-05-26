@@ -15,13 +15,17 @@ final class Home extends Component
     public string $billingCycle = 'monthly';
     public Collection $plans;
 
-    public function mount(): void
+    public function mount()
     {
+        if (auth()->check()) {
+            return redirect()->route('dashboard');
+        }
         // Fetch active and public plans
         $this->plans = Plan::where('is_active', true)
             ->where('is_public', true)
             ->orderBy('sort_order')
             ->get();
+        // unthorize to get to home if authenticated redirect to dashboard instead 
     }
 
     public function setBillingCycle(string $cycle): void

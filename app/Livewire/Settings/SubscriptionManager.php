@@ -7,6 +7,8 @@ namespace App\Livewire\Settings;
 use App\Tenant\Models\Plan;
 use App\Tenant\Models\Subscription;
 use App\Tenant\Models\UsageQuota;
+use App\Services\OnboardingProgressService;
+use App\Tenant\Models\OnboardingProgress;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -90,6 +92,12 @@ final class SubscriptionManager extends Component
                     ]);
 
                     DB::commit();
+
+                    // Mark onboarding step as complete
+                    $onboardingProgress = OnboardingProgress::firstOrCreate(['tenant_id' => tenant('id')]);
+                    if (!$onboardingProgress->subscription_setup) {
+                        app(OnboardingProgressService::class)->completeStep($onboardingProgress, 'subscription_setup');
+                    }
                 } catch (Exception $e) {
                     DB::rollBack();
                     // Log the error
@@ -186,6 +194,12 @@ final class SubscriptionManager extends Component
 
         // Log this action
         // AuditLog::recordAction('upgrade_plan', 'subscription', $this->subscription->id, ['old_plan_id' => $this->subscription->getOriginal('plan_id')], ['new_plan_id' => $selectedPlan->id]);
+
+        // Mark onboarding step as complete if upgrading from free or if not already completed
+        $onboardingProgress = OnboardingProgress::firstOrCreate(['tenant_id' => tenant('id')]);
+        if (!$onboardingProgress->subscription_setup || $this->subscription->getOriginal('plan_id') === Plan::where('slug', 'free')->first()?->id) {
+            app(OnboardingProgressService::class)->completeStep($onboardingProgress, 'subscription_setup');
+        }
 
         $this->closeModals();
         session()->flash('message', "Successfully upgraded to the {$selectedPlan->name} plan!");

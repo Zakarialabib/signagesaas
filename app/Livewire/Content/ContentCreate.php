@@ -6,7 +6,9 @@ namespace App\Livewire\Content;
 
 use App\Enums\ContentStatus;
 use App\Enums\ContentType;
+use App\Services\OnboardingProgressService;
 use App\Tenant\Models\Content;
+use App\Tenant\Models\OnboardingProgress;
 use App\Tenant\Models\Screen;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -193,6 +195,12 @@ final class ContentCreate extends Component
         ]);
 
         $content->save();
+
+        // Mark onboarding step as complete
+        $onboardingProgress = OnboardingProgress::firstOrCreate(['tenant_id' => $content->tenant_id]);
+        if (!$onboardingProgress->first_content_uploaded) {
+            app(OnboardingProgressService::class)->completeStep($onboardingProgress, \App\Enums\OnboardingStep::FIRST_CONTENT_UPLOADED->value);
+        }
 
         $this->dispatch('content-created');
 
