@@ -4,9 +4,9 @@ includes:
 parameters:
 
     paths:
-#        - app
+        - app
 #       - app/Models
-       - app/Livewire
+#       - app/Livewire
 #        - database/factories
 #        - database/seeders
 #        - routes
