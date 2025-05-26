@@ -22,47 +22,153 @@ class WidgetDataEditorModal extends Component
     public ?string $widgetType = null;
     public ?int $contentId = null; // Can be int or null
     public string $contentName = '';
-    public array $widgetData = [];
+    public array $widgetData = []; // This will store the ['data' => ..., 'widget_type' => ...] structure
+
+    public string $currentView = 'edit'; // 'edit' or 'select'
+    public $existingContents = [];
+    public ?string $searchTerm = '';
+
 
     protected $listeners = [
         'openWidgetDataEditor' => 'handleOpenWidgetDataEditor',
     ];
 
     #[On('openWidgetDataEditor')]
-    public function handleOpenWidgetDataEditor(string $zoneId, string $widgetType, ?int $contentId = null): void
+    public function handleOpenWidgetDataEditor(?string $zoneId, string $widgetType, ?int $contentId = null): void
     {
+        $this->resetErrorBag();
+        $this->resetValidation();
         $this->zoneId = $zoneId;
         $this->widgetType = $widgetType;
         $this->contentId = $contentId;
         $this->showModal = true;
-        $this->contentName = ''; // Reset
-        $this->widgetData = [];  // Reset
+        $this->contentName = ''; 
+        $this->widgetData = [];  
+        $this->searchTerm = '';
+        $this->existingContents = [];
 
-        if ($this->contentId) {
+        if ($this->contentId) { // Editing existing content
             $content = Content::find($this->contentId);
             if ($content) {
                 $this->contentName = $content->name;
-                $this->widgetData = $content->content_data ?? [];
+                $this->widgetData = $content->content_data ?? []; // Expects ['widget_type' => ..., 'data' => ...]
             }
+            $this->currentView = 'edit';
+        } else { // Creating new content or assigning to zone
+            $this->currentView = $this->zoneId ? 'select' : 'edit'; // Default to select if for a zone, else edit for direct creation
+        }
+        
+        // Always load existing contents if a widgetType is specified, for the 'select' view
+        if ($this->widgetType) {
+            $this->loadExistingContents();
         }
 
-        if ($this->widgetType === 'MenuWidget' && empty($this->widgetData)) {
-            $this->widgetData = ['categories' => []];
-        } elseif ($this->widgetType === 'RetailProductWidget' && empty($this->widgetData)) {
+        // Initialize widgetData for 'edit' view if it's empty (either new or problematic load)
+        if ($this->currentView === 'edit' && (empty($this->widgetData) || empty($this->widgetData['data']))) {
+            $this->initializeWidgetDataForEdit();
+        }
+    }
+
+    private function initializeWidgetDataForEdit(): void
+    {
+        $initialData = [];
+        if ($this->widgetType === 'MenuWidget') {
+            $initialData = ['categories' => []];
+        } elseif ($this->widgetType === 'RetailProductWidget') {
             $this->widgetData = [
+                'data' => [
+                    'title' => 'Featured Products',
+                    'products' => [],
+                    'footer_promo_text' => 'Special offers end soon!'
+                ],
+            $initialData = [
                 'title' => 'Featured Products',
                 'products' => [],
                 'footer_promo_text' => 'Special offers end soon!'
             ];
+        } elseif ($this->widgetType === 'WeatherWidget') {
+            $initialData = ['location' => '', 'apiKey' => '', 'title' => 'Weather Forecast'];
+        } elseif ($this->widgetType === 'ClockWidget') {
+            $initialData = [
+                'timezone' => 'Europe/London',
+                'showSeconds' => true,
+                'format' => 'H:i:s',
+                'showDate' => true,
+                'dateFormat' => 'l, F jS, Y',
+                'title' => 'Current Time'
+            ];
+        } elseif ($this->widgetType === 'AnnouncementWidget') {
+            $initialData = [
+                'title' => 'Important Announcement',
+                'message' => 'Please be advised...',
+                'backgroundColor' => '#E0F2FE',
+                'textColor' => '#0C4A6E',
+                'titleColor' => '#075985'
+            ];
+        } elseif ($this->widgetType === 'RssFeedWidget') {
+            $initialData = ['feedUrl' => '', 'itemCount' => 5, 'title' => 'Latest News'];
+        } elseif ($this->widgetType === 'CalendarWidget') {
+            $initialData = ['calendarUrl' => '', 'title' => 'Upcoming Events'];
         }
-        // Add other widgetType initializations here if loading existing content and widgetData is empty
-        // This part should be covered by the $content->content_data['data'] assignment.
-        // However, if $content->content_data['data'] could be null or missing keys,
-        // you might want to merge with defaults here as well.
-        // For example:
-        // if ($this->widgetType === 'RetailProductWidget' && $this->contentId && empty($this->widgetData['products'])) {
-        //     $this->widgetData['products'] = []; // Ensure products array exists
-        // }
+        
+        // Ensure the overall widgetData structure is correct
+        $this->widgetData = [
+            'widget_type' => $this->widgetType,
+            'data' => $initialData
+        ];
+    }
+    
+    public function updatedSearchTerm(): void
+    {
+        $this->loadExistingContents();
+    }
+
+    private function loadExistingContents(): void
+    {
+        if (!$this->widgetType) return;
+
+        $this->existingContents = Content::where('content_data->widget_type', $this->widgetType)
+            ->when($this->searchTerm, function ($query) {
+                $query->where('name', 'like', '%' . $this->searchTerm . '%');
+            })
+            ->orderBy('updated_at', 'desc')
+            ->limit(50) // Prevent loading too much data
+            ->get();
+    }
+
+    public function switchToEditView(): void
+    {
+        $this->currentView = 'edit';
+        if (empty($this->widgetData) || empty($this->widgetData['data'])) {
+            $this->initializeWidgetDataForEdit();
+        }
+    }
+
+    public function switchToSelectView(): void
+    {
+        $this->currentView = 'select';
+        $this->loadExistingContents(); // Ensure it's loaded if not already
+    }
+
+    public function selectExistingContent(int $selectedContentId): void
+    {
+        $this->contentId = $selectedContentId;
+        // If a zoneId is present, we are assigning this existing content to the zone.
+        if ($this->zoneId) {
+            $this->dispatch('widgetContentSaved', zoneId: $this->zoneId, contentId: $this->contentId)
+                 ->to('App.Livewire.Content.Templates.TemplateConfigurator');
+            $this->closeModal();
+        } else {
+            // If no zoneId, it means we're just viewing/editing an existing content.
+            // Load its data and switch to edit view.
+            $content = Content::find($this->contentId);
+            if ($content) {
+                $this->contentName = $content->name;
+                $this->widgetData = $content->content_data ?? [];
+                $this->widgetType = $this->widgetData['widget_type'] ?? null; // Ensure widgetType is set from loaded content
+            }
+            $this->currentView = 'edit';
+        }
     }
 
     public function save(): void
@@ -89,10 +195,15 @@ class WidgetDataEditorModal extends Component
             return;
         }
 
-        $contentDataPrepared = [
-            'widget_type' => $this->widgetType, // Store widget type for rendering
-            'data' => $validatedData['widgetData'], // The actual structured data
-        ];
+        // $contentDataPrepared should contain the full structure including 'widget_type' and 'data'
+        // The $validatedData['widgetData'] already holds this structure if initialized and bound correctly.
+        $contentDataPrepared = $validatedData['widgetData'];
+        
+        // Ensure widget_type is set if it's missing from widgetData (e.g. if data was manually edited)
+        if (!isset($contentDataPrepared['widget_type'])) {
+            $contentDataPrepared['widget_type'] = $this->widgetType;
+        }
+
 
         $contentDetails = [
             'tenant_id'    => $currentTenant->id,
@@ -115,10 +226,12 @@ class WidgetDataEditorModal extends Component
         } else {
             $content = Content::create($contentDetails);
 
-            // Mark onboarding step as complete
-            $onboardingProgress = OnboardingProgress::firstOrCreate(['tenant_id' => $currentTenant->id]);
-            if (!$onboardingProgress->first_widget_content_created) {
-                app(OnboardingProgressService::class)->completeStep($onboardingProgress, 'first_widget_content_created');
+          // NEW: Check and mark onboarding step
+            if ($content && ($content->content_data['widget_type'] ?? null)) { // Ensure it's widget content
+                $onboardingProgress = \App\Tenant\Models\OnboardingProgress::firstOrCreate(['tenant_id' => $content->tenant_id]);
+                if (!$onboardingProgress->first_widget_content_created) {
+                    $onboardingProgress->markFirstWidgetContentCreatedCompleted();
+                }
             }
         }
 
@@ -132,40 +245,46 @@ class WidgetDataEditorModal extends Component
     public function addCategory(): void
     {
         if ($this->widgetType === 'MenuWidget') {
-            $this->widgetData['categories'][] = ['name' => '', 'items' => []];
+            if (!isset($this->widgetData['data']['categories']) || !is_array($this->widgetData['data']['categories'])) {
+                $this->widgetData['data']['categories'] = [];
+            }
+            $this->widgetData['data']['categories'][] = ['name' => '', 'items' => []];
         }
     }
 
     public function removeCategory(int $categoryIndex): void
     {
-        if ($this->widgetType === 'MenuWidget' && isset($this->widgetData['categories'][$categoryIndex])) {
-            unset($this->widgetData['categories'][$categoryIndex]);
-            $this->widgetData['categories'] = array_values($this->widgetData['categories']); // Re-index
+        if ($this->widgetType === 'MenuWidget' && isset($this->widgetData['data']['categories'][$categoryIndex])) {
+            unset($this->widgetData['data']['categories'][$categoryIndex]);
+            $this->widgetData['data']['categories'] = array_values($this->widgetData['data']['categories']); // Re-index
         }
     }
 
     public function addItem(int $categoryIndex): void
     {
-        if ($this->widgetType === 'MenuWidget' && isset($this->widgetData['categories'][$categoryIndex])) {
-            $this->widgetData['categories'][$categoryIndex]['items'][] = ['name' => '', 'price' => '', 'description' => ''];
+        if ($this->widgetType === 'MenuWidget' && isset($this->widgetData['data']['categories'][$categoryIndex])) {
+            if (!isset($this->widgetData['data']['categories'][$categoryIndex]['items']) || !is_array($this->widgetData['data']['categories'][$categoryIndex]['items'])) {
+                $this->widgetData['data']['categories'][$categoryIndex]['items'] = [];
+            }
+            $this->widgetData['data']['categories'][$categoryIndex]['items'][] = ['name' => '', 'price' => '', 'description' => '', 'calories' => ''];
         }
     }
 
     public function removeItem(int $categoryIndex, int $itemIndex): void
     {
-        if ($this->widgetType === 'MenuWidget' && isset($this->widgetData['categories'][$categoryIndex]['items'][$itemIndex])) {
-            unset($this->widgetData['categories'][$categoryIndex]['items'][$itemIndex]);
-            $this->widgetData['categories'][$categoryIndex]['items'] = array_values($this->widgetData['categories'][$categoryIndex]['items']); // Re-index
+        if ($this->widgetType === 'MenuWidget' && isset($this->widgetData['data']['categories'][$categoryIndex]['items'][$itemIndex])) {
+            unset($this->widgetData['data']['categories'][$categoryIndex]['items'][$itemIndex]);
+            $this->widgetData['data']['categories'][$categoryIndex]['items'] = array_values($this->widgetData['data']['categories'][$categoryIndex]['items']); // Re-index
         }
     }
 
     public function addProduct(): void
     {
         if ($this->widgetType === 'RetailProductWidget') {
-            if (!isset($this->widgetData['products']) || !is_array($this->widgetData['products'])) {
-                $this->widgetData['products'] = [];
+            if (!isset($this->widgetData['data']['products']) || !is_array($this->widgetData['data']['products'])) {
+                $this->widgetData['data']['products'] = [];
             }
-            $this->widgetData['products'][] = [
+            $this->widgetData['data']['products'][] = [
                 'name' => '',
                 'price' => '',
                 'sale_price' => '',
@@ -178,9 +297,9 @@ class WidgetDataEditorModal extends Component
 
     public function removeProduct(int $productIndex): void
     {
-        if ($this->widgetType === 'RetailProductWidget' && isset($this->widgetData['products'][$productIndex])) {
-            unset($this->widgetData['products'][$productIndex]);
-            $this->widgetData['products'] = array_values($this->widgetData['products']); // Re-index
+        if ($this->widgetType === 'RetailProductWidget' && isset($this->widgetData['data']['products'][$productIndex])) {
+            unset($this->widgetData['data']['products'][$productIndex]);
+            $this->widgetData['data']['products'] = array_values($this->widgetData['data']['products']); // Re-index
         }
     }
 
@@ -192,14 +311,29 @@ class WidgetDataEditorModal extends Component
 
     public function render()
     {
-        // Ensure widgetData has a 'products' key if the type is RetailProductWidget
-        if ($this->widgetType === 'RetailProductWidget' && !isset($this->widgetData['products'])) {
-            $this->widgetData['products'] = [];
+        // Ensure widgetData['data'] exists and has expected keys for reactive properties in Blade
+        if ($this->widgetType === 'MenuWidget' && (!isset($this->widgetData['data']['categories']) || !is_array($this->widgetData['data']['categories']))) {
+            $this->widgetData['data']['categories'] = [];
         }
-        // Ensure widgetData has a 'categories' key if the type is MenuWidget
-        if ($this->widgetType === 'MenuWidget' && !isset($this->widgetData['categories'])) {
-            $this->widgetData['categories'] = [];
+        if ($this->widgetType === 'RetailProductWidget' && (!isset($this->widgetData['data']['products']) || !is_array($this->widgetData['data']['products']))) {
+            $this->widgetData['data']['products'] = [];
         }
+        if ($this->widgetType === 'WeatherWidget' && (!isset($this->widgetData['data']) || !is_array($this->widgetData['data']))) {
+            $this->widgetData['data'] = ['location' => '', 'apiKey' => '', 'title' => 'Weather Forecast'];
+        }
+        if ($this->widgetType === 'ClockWidget' && (!isset($this->widgetData['data']) || !is_array($this->widgetData['data']))) {
+            $this->widgetData['data'] = ['timezone' => 'Europe/London', 'showSeconds' => true, 'format' => 'H:i:s', 'showDate' => true, 'dateFormat' => 'l, F jS, Y', 'title' => 'Current Time'];
+        }
+        if ($this->widgetType === 'AnnouncementWidget' && (!isset($this->widgetData['data']) || !is_array($this->widgetData['data']))) {
+            $this->widgetData['data'] = ['title' => 'Important Announcement', 'message' => 'Please be advised...', 'backgroundColor' => '#E0F2FE', 'textColor' => '#0C4A6E', 'titleColor' => '#075985'];
+        }
+        if ($this->widgetType === 'RssFeedWidget' && (!isset($this->widgetData['data']) || !is_array($this->widgetData['data']))) {
+            $this->widgetData['data'] = ['feedUrl' => '', 'itemCount' => 5, 'title' => 'Latest News'];
+        }
+        if ($this->widgetType === 'CalendarWidget' && (!isset($this->widgetData['data']) || !is_array($this->widgetData['data']))) {
+            $this->widgetData['data'] = ['calendarUrl' => '', 'title' => 'Upcoming Events'];
+        }
+        
         return view('livewire.content.widgets.widget-data-editor-modal');
     }
 }

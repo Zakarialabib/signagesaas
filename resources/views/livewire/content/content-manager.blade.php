@@ -1,17 +1,27 @@
 <div>
+
     <livewire:dashboard.onboarding-widget :contextStepKey="App\Enums\OnboardingStep::FIRST_CONTENT_UPLOADED->value" />
+
     {{-- Add ContextualHelpWidget --}}
     @livewire('shared.contextual-help-widget', ['contextKey' => \App\Enums\OnboardingStep::FIRST_CONTENT_UPLOADED->value])    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-2xl font-semibold text-gray-900 dark:text-gray-100">Content Library</h1>
-            <x-button color="primary" wire:click="$dispatch('createContentModal')">
-                <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg>
-                Add Content
-            </x-button>
+            <div class="flex space-x-2">
+                <x-button color="primary" wire:click="$dispatch('createContentModal')">
+                    <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    Add Standard Content
+                </x-button>
+                <x-button color="secondary" wire:click="openWidgetTypeSelector">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="-ml-1 mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                    </svg>
+                    Add Widget Content
+                </x-button>
+            </div>
         </div>
 
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
@@ -363,4 +373,10 @@
     <livewire:content.content-edit />
     <livewire:content.content-create />
     <livewire:content.content-preview />
+
+    <x-modal wire:model="showWidgetTypeSelectorModal" id="widget-type-selector-modal" title="Select Widget Type" maxWidth="4xl">
+        @if($showWidgetTypeSelectorModal)
+            <livewire:tenant.content.widget-type-selector />
+        @endif
+    </x-modal>
 </div>

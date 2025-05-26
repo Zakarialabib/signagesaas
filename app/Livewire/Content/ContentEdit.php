@@ -92,6 +92,34 @@ final class ContentEdit extends Component
         $this->content = Content::with('screen')->findOrFail($id);
         $this->authorize('update', $this->content);
 
+        // Check if this content is a specialized widget type handled by WidgetDataEditorModal
+        if (isset($this->content->content_data['widget_type']) &&
+            in_array($this->content->content_data['widget_type'], [
+                'MenuWidget', 
+                'RetailProductWidget', 
+                'WeatherWidget', 
+                'ClockWidget', 
+                'AnnouncementWidget',
+                'RssFeedWidget',
+                'CalendarWidget'
+                // Add other recognized widget types here
+            ])) {
+            
+            $this->dispatch('openWidgetDataEditor', 
+                zoneId: null, // zoneId is null as we are editing content directly
+                widgetType: $this->content->content_data['widget_type'], 
+                contentId: $this->content->id
+            )->to('App.Livewire.Content.Widgets.WidgetDataEditorModal');
+
+            $this->editContentModal = false; // Prevent this modal from showing fully
+            // Reset is important if the modal was already open with different content
+            // However, openModal is typically called on a fresh instance or when modal is closed.
+            // If issues arise with stale data, uncomment the reset.
+            // $this->reset(); 
+            return; 
+        }
+
+        // Proceed with loading data for standard content types if not delegated
         $this->rules['type'] = 'required|string|in:' . implode(',', ContentType::values());
 
         $this->loadContentData();
