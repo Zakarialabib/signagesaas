@@ -26,21 +26,6 @@ A multi-tenant SaaS platform for digital signage management, built with Laravel 
 
 ---
 
-## 📁 Directory Structure
-
-- `app/Livewire` — Livewire components (by feature: Devices, Screens, Content, etc.)
-- `app/Models` — Core Eloquent models
-- `app/Services` — Business logic service classes
-- `app/Actions` — Single-responsibility action classes
-- `app/Tenant` — Tenant-specific models, middleware, scopes
-- `resources/views/livewire` — Blade templates for Livewire components
-- `tests/` — Unit, feature, and Livewire tests
-- `.cursor/rules/` — Project standards and architecture rules
-
-See [Cursor rules](.cursor/rules/) for detailed standards.
-
----
-
 ## ⚡ Getting Started
 
 ### Prerequisites
@@ -90,7 +75,7 @@ php artisan serve
 
 - All code is covered by unit and feature tests (`tests/Unit`, `tests/Feature`)
 - Livewire components have dedicated feature tests
-- Accessibility is a first-class concern (see [02-ui-standards-tailwind.mdc](.cursor/rules/02-ui-standards-tailwind.mdc))
+- Accessibility is a first-class concern
 - Run all tests before submitting PRs
 
 ---
@@ -111,7 +96,6 @@ See [`resources/views/livewire/devices/device-manager.blade.php`](resources/view
 
 ## 📚 Contributing & Standards
 
-- Follow [Cursor rules](.cursor/rules/) for architecture, UI, testing, and onboarding
 - Use PSR-12 code style and strict typing
 - Document all classes and methods with PHPDoc
 - Submit PRs with passing tests and code review
@@ -123,5 +107,3 @@ See [`resources/views/livewire/devices/device-manager.blade.php`](resources/view
 MIT
 
 ---
-
-For more details, see the documentation in [README.md](README.md) and the standards in `.cursor/rules/`.
