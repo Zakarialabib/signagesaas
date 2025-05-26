@@ -2,31 +2,35 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Api\DeviceController;
+use App\Http\Controllers\Api\ContentController;
+use App\Http\Controllers\Api\ScreenController;
 use App\Http\Controllers\Api\SettingController;
 use Illuminate\Support\Facades\Route;
 
-// Tenant-specific API routes
-Route::middleware(['auth:sanctum'])->group(function () {
-    // Device API endpoints
-    // Route::apiResource('devices', App\Http\Controllers\Api\DeviceController::class);
+// Public device authentication endpoint
+Route::post('authenticate', [DeviceController::class, 'authenticate']);
 
-    /* Placeholder API endpoints - implement controllers as needed
+// Protected device API endpoints
+Route::middleware(['auth:sanctum', 'device'])->group(function () {
+    // Device endpoints
+    Route::prefix('device')->group(function () {
+        Route::post('heartbeat/{device}', [DeviceController::class, 'heartbeat']);
+        Route::get('sync/{device}', [DeviceController::class, 'sync']);
+        Route::get('download/{device}', [DeviceController::class, 'downloadUpdate'])
+            ->middleware('signed');
+        Route::get('media/{device}/{content}', [DeviceController::class, 'downloadMedia'])
+            ->middleware('signed');
+    });
 
-    // Content API endpoints
-    Route::apiResource('content', \App\Http\Controllers\Api\ContentController::class);
-
-    // Screen API endpoints
-    Route::apiResource('screens', \App\Http\Controllers\Api\ScreenController::class);
-
-    // Schedule API endpoints
-    Route::apiResource('schedules', \App\Http\Controllers\Api\ScheduleController::class);
-
-    // User management endpoints
-    Route::apiResource('users', \App\Http\Controllers\Api\UserController::class);
-    */
-
+    // Content management
+    Route::apiResource('content', ContentController::class);
+    
+    // Screen management
+    Route::apiResource('screens', ScreenController::class);
+    
     // Settings API endpoints
-    // Route::get('settings', [SettingController::class, 'index']);
-    // Route::get('settings/{key}', [SettingController::class, 'show']);
-    // Route::patch('settings', [SettingController::class, 'update']);
+    Route::get('settings', [SettingController::class, 'index']);
+    Route::get('settings/{key}', [SettingController::class, 'show']);
+    Route::patch('settings', [SettingController::class, 'update']);
 });
