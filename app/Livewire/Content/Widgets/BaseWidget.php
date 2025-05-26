@@ -29,20 +29,31 @@ abstract class BaseWidget extends Component
     #[Locked]
     public ?string $error = null;
 
+    public ?array $previewContentData = null; // Added for preview functionality
+
     public int $refreshInterval = 0;
 
-    public function mount(array $settings = [], string $title = '', string $category = '', string $icon = ''): void
+    public function mount(array $settings = [], string $title = '', string $category = '', string $icon = '', ?array $previewContentData = null): void
     {
         $this->settings = $settings;
         $this->title = $title;
         $this->category = $category;
         $this->icon = $icon;
+        $this->previewContentData = $previewContentData; // Store preview data
 
         $this->initialize();
     }
 
     protected function initialize(): void
     {
+        if ($this->previewContentData !== null) {
+            // If preview data is provided, use it directly
+            $this->error = null;
+            $this->loadData(); // Concrete widgets will use this to populate from previewContentData
+            $this->isLoading = false; // Data is from preview, so not loading
+            return;
+        }
+
         try {
             $this->isLoading = true;
             $this->error = null;

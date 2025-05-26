@@ -236,9 +236,12 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
-                                                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                                                {{ ucfirst($content->type->value) }}
+                                                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-700 dark:text-blue-100">
+                                                {{ $content->type->label() }}
                                             </span>
+                                            @if ($content->type == \App\Enums\ContentType::WIDGET && isset($content->content_data['widget_type']))
+                                                <span class="block text-xs text-gray-500 dark:text-gray-400">({{ $content->content_data['widget_type'] }})</span>
+                                            @endif
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             <span

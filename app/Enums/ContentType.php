@@ -24,6 +24,7 @@ enum ContentType: string
     case TEXT = 'text';
     case PRODUCT_LIST = 'product_list';
     case MENU = 'menu';
+    case WIDGET = 'widget'; // Added WIDGET case
 
     public function label(): string
     {
@@ -33,7 +34,7 @@ enum ContentType: string
             self::HTML         => 'HTML',
             self::URL          => 'URL/Website',
             self::RSS          => 'RSS Feed',
-            self::WEATHER      => 'Weather Widget',
+            self::WEATHER      => 'Weather Widget', // This existing one is specific, WIDGET is generic
             self::SOCIAL       => 'Social Media Feed',
             self::CALENDAR     => 'Calendar/Events',
             self::CUSTOM       => 'Custom Content',
@@ -44,8 +45,9 @@ enum ContentType: string
             self::EXCEL        => 'Excel Spreadsheet',
             self::POWERPOINT   => 'PowerPoint Presentation',
             self::TEXT         => 'Plain Text',
-            self::PRODUCT_LIST => 'Product List',
-            self::MENU         => 'Menu/Service List',
+            self::PRODUCT_LIST => 'Product List', // This is specific, WIDGET is generic
+            self::MENU         => 'Menu/Service List', // This is specific, WIDGET is generic
+            self::WIDGET       => 'Widget', // Added WIDGET label
         };
     }
 
@@ -70,6 +72,7 @@ enum ContentType: string
             self::TEXT         => 'Simple plain text content',
             self::PRODUCT_LIST => 'Structured list of products with details like name, price, description.',
             self::MENU         => 'Structured list for menus, services, or offers with name, price, description.',
+            self::WIDGET       => 'Content that functions as a dynamic widget (e.g., menu, product display)', // Added WIDGET description
         };
     }
 
@@ -94,6 +97,7 @@ enum ContentType: string
             self::TEXT         => 'bars-3-bottom-left',
             self::PRODUCT_LIST => 'list-bullet',
             self::MENU         => 'bars-4', // Or 'clipboard-document-list'
+            self::WIDGET       => 'puzzle-piece', // Added WIDGET icon, same as CUSTOM for now
         };
     }
 
@@ -110,7 +114,7 @@ enum ContentType: string
             self::POWERPOINT => ['application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/vnd.oasis.opendocument.presentation'],
             self::TEXT       => ['text/plain'],
             // For JSON-based types, file upload isn't the primary input method, but we can allow .json
-            self::PRODUCT_LIST, self::MENU, self::CUSTOM, self::WEATHER, self::SOCIAL, self::CALENDAR, self::URL, self::RSS, self::SLIDESHOW => ['application/json'],
+            self::PRODUCT_LIST, self::MENU, self::CUSTOM, self::WEATHER, self::SOCIAL, self::CALENDAR, self::URL, self::RSS, self::SLIDESHOW, self::WIDGET => ['application/json'], // Added WIDGET
             default => [],
         };
     }
@@ -125,7 +129,7 @@ enum ContentType: string
             self::DOCUMENT, self::EXCEL, self::POWERPOINT => 25 * 1024 * 1024, // 25MB
             self::TEXT => 1 * 1024 * 1024, // 1MB
             // For JSON-based types, file size is less critical if entered via UI, but for uploads:
-            self::PRODUCT_LIST, self::MENU, self::CUSTOM => 5 * 1024 * 1024, // 5MB for JSON data
+            self::PRODUCT_LIST, self::MENU, self::CUSTOM, self::WIDGET => 5 * 1024 * 1024, // Added WIDGET, 5MB for JSON data
             default => 2 * 1024 * 1024, // 2MB for others like URL, RSS (config data)
         };
     }

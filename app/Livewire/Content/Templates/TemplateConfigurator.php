@@ -29,6 +29,10 @@ final class TemplateConfigurator extends Component
     public bool $showWidgetDataInfoModal = false;
     public ?string $currentZoneIdForWidgetInfoModal = null;
 
+    // Properties for widget preview functionality
+    public array $zonePreviewContentData = []; // Stores content_data['data'] for preview
+    public array $availablePreviewContent = []; // Temporarily stores list of compatible Content items for preview selection
+
     protected $listeners = [
         'content-assigned'   => 'handleContentAssigned',
         'zone-updated'       => 'handleZoneUpdated',
@@ -400,44 +404,78 @@ final class TemplateConfigurator extends Component
 
         return view('livewire.content.templates.template-configurator', [
             'zones' => $zones,
+            // zonePreviewContentData and availablePreviewContent are public, so automatically available
         ]);
     }
 
-    public function updateZoneTypeProperties(string $zoneId, string $newType, ?string $newWidgetType): void
+    public function loadAvailablePreviewContent(string $zoneId): void
     {
-        $layout = $this->template->layout;
+        $zone = $this->template->layout['zones'][$zoneId] ?? null;
+        if ( ! $zone || empty($zone['widget_type'])) {
+            $this->dispatch('notify', ['type' => 'error', 'message' => 'Cannot load preview content: Zone or widget type not defined.']);
+            $this->availablePreviewContent[$zoneId] = []; // Clear previous results
+            return;
+        }
 
-        if (isset($layout['zones'][$zoneId])) {
-            $layout['zones'][$zoneId]['type'] = $newType;
-            $layout['zones'][$zoneId]['widget_type'] = ($newType === 'widget' && $newWidgetType) ? $newWidgetType : null;
+        $widgetType = $zone['widget_type'];
 
-            // If changing to a non-widget type, or widget_type is cleared, also clear content_id if it's widget-specific
-            if ($newType !== 'widget' || ! $newWidgetType) {
-                // Optionally clear content_id if it was widget-specific.
-                // $layout['zones'][$zoneId]['content_id'] = null;
-                // $this->zoneContent[$zoneId] = null;
+        // Fetch Content items matching the widget_type.
+        // We are looking for content_data.widget_type to match.
+        // This requires a JSON query if content_data is a JSON column.
+        // Assuming content_data is a JSON column or cast to array by Laravel.
+        // Using whereJsonContains for PostgreSQL or MySQL 5.7+
+        // For other DBs, a raw query or different approach might be needed.
+        // Storing only id and name for the dropdown.
+        try {
+            $contents = Content::where('content_data->widget_type', $widgetType)
+                ->where('tenant_id', $this->template->tenant_id) // Ensure multi-tenancy
+                ->orderBy('name')
+                ->get(['id', 'name'])
+                ->toArray();
+
+            $this->availablePreviewContent[$zoneId] = $contents;
+
+            if (empty($contents)) {
+                $this->dispatch('notify', ['type' => 'info', 'message' => "No existing content found for widget type '{$widgetType}'. You can create new content via the 'Assign/Edit Content' button."]);
             }
-
-            $this->template->update(['layout' => $layout]);
-            $this->loadZoneSettings(); // Reload zone settings to reflect potential changes
-            $this->dispatch('notify', ['type' => 'success', 'message' => "Zone '{$layout['zones'][$zoneId]['name']}' type updated."]);
-            $this->dispatch('zone-type-updated', ['zoneId' => $zoneId, 'newType' => $newType, 'newWidgetType' => $newWidgetType]);
+        } catch (\Exception $e) {
+            $this->dispatch('notify', ['type' => 'error', 'message' => 'Error loading preview content: '.$e->getMessage()]);
+            $this->availablePreviewContent[$zoneId] = [];
         }
     }
 
-    public function getAvailableWidgetTypesForZonesProperty(): array
+    public function setPreviewData(string $zoneId, ?string $contentId): void
     {
-        // This could be fetched from a service, config, or defined directly
-        // For now, let's mirror what WidgetTypeSelector might use (simplified)
-        return [
-            'MenuWidget'          => 'Menu Board',
-            'RetailProductWidget' => 'Retail Products',
-            'WeatherWidget'       => 'Weather Display',
-            'ClockWidget'         => 'Clock Display',
-            'AnnouncementWidget'  => 'Announcements',
-            'RssFeedWidget'       => 'RSS Feed',
-            'CalendarWidget'      => 'Calendar & Events',
-            // Add other widget identifiers and their friendly names
-        ];
+        if (empty($contentId)) {
+            unset($this->zonePreviewContentData[$zoneId]);
+            // Optionally clear available list when clearing selection
+            // unset($this->availablePreviewContent[$zoneId]);
+            return;
+        }
+
+        $content = Content::find($contentId);
+
+        if ($content && isset($content->content_data['data'])) {
+            // Ensure it's the correct widget type for sanity, though loadAvailablePreviewContent should handle this
+            $zoneWidgetType = $this->template->layout['zones'][$zoneId]['widget_type'] ?? null;
+            if ($zoneWidgetType && ($content->content_data['widget_type'] ?? null) === $zoneWidgetType) {
+                $this->zonePreviewContentData[$zoneId] = $content->content_data['data'];
+            } else {
+                $this->dispatch('notify', ['type' => 'error', 'message' => 'Preview content type mismatch or zone widget type not found.']);
+                unset($this->zonePreviewContentData[$zoneId]);
+            }
+        } else {
+            // Content not found or data structure is not as expected
+            $this->dispatch('notify', ['type' => 'error', 'message' => 'Selected content not found or has no previewable data.']);
+            unset($this->zonePreviewContentData[$zoneId]);
+        }
+
+        // Clear the selection list after choosing or if an error occurred with the choice
+        // This forces the user to click "Live Preview With..." again if they want to change.
+        // If you want the list to persist until "Clear Preview" or a different zone is selected, comment this out.
+        unset($this->availablePreviewContent[$zoneId]);
     }
+
+    // Duplicated method `updateZoneTypeProperties` and `getAvailableWidgetTypesForZonesProperty` removed as they are identical to the ones above.
+    // Make sure to place the new methods before the final closing brace of the class.
 }

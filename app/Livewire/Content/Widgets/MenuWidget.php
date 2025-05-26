@@ -63,44 +63,37 @@ final class MenuWidget extends BaseWidget
      */
     public function mount(
         array $settings = [],
-        string $title = 'Menu Widget', // Default BaseWidget title
-        string $category = 'MENU',    // Default BaseWidget category
+        string $title = 'Menu Widget',             // Default BaseWidget title
+        string $category = 'MENU',                // Default BaseWidget category
         string $icon = 'heroicon-o-list-bullet', // Default BaseWidget icon
-        array $initialData = [],      // Fallback data
-        ?string $contentId = null
+        array $initialData = [],                  // Fallback data for non-preview, non-contentId scenarios
+        ?string $contentId = null,
+        ?array $previewContentData = null        // Added for preview functionality
     ): void {
-        parent::mount($settings, $title, $category, $icon); // Call BaseWidget's mount
+        parent::mount($settings, $title, $category, $icon, $previewContentData); // Pass preview data to BaseWidget
 
         $this->contentId = $contentId;
-        $this->activeView = $settings['default_view'] ?? 'default'; // Allow overriding default view from settings
+        $this->activeView = $settings['default_view'] ?? $initialData['active_view'] ?? 'default'; // Prioritize settings, then initialData for view
 
-        if ($this->contentId) {
-            $contentModel = Content::find($this->contentId);
-
-            if ($contentModel && isset($contentModel->content_data['widget_type']) && $contentModel->content_data['widget_type'] === 'MenuWidget') {
-                $widgetDataSource = $contentModel->content_data['data'] ?? []; // Data is under 'data' key
-                $this->menu = $widgetDataSource['categories'] ?? []; // Assuming 'categories' is the key for menu structure
-                $this->widgetTitle = $widgetDataSource['title'] ?? $contentModel->name; // Use widget's specific title or content name
-                $this->lastUpdated = $contentModel->updated_at?->diffForHumans() ?? now()->diffForHumans();
+        // Initial data loading if not preview and no contentId.
+        // If previewContentData is set, BaseWidget::initialize() -> loadData() will handle it.
+        // If not preview, and contentId IS set, BaseWidget::initialize() -> loadData() will handle it.
+        // This block now primarily handles $initialData if no contentId and no preview.
+        if ($this->previewContentData === null && $this->contentId === null) {
+            if (!empty($initialData)) {
+                // Fallback to initialData if contentId is not provided and no preview
+                $this->menu = $initialData['categories'] ?? [];
+                $this->widgetTitle = $initialData['title'] ?? 'Menu Preview';
+                $this->lastUpdated = now()->diffForHumans();
+                // activeView already handled above
             } else {
-                // Content not found or not a MenuWidget, load placeholder/default
+                // If no preview, no contentId, and no initialData, then load placeholders.
+                // This path will also be hit by loadData() if called without preview/contentId.
                 $this->loadPlaceholderData();
-                $this->error ??= "Content ID {$this->contentId} not found or not a MenuWidget.";
             }
-        } elseif ( ! empty($initialData)) {
-            // Fallback to initialData if contentId is not provided (e.g., preview during configuration)
-            $this->menu = $initialData['categories'] ?? [];
-            $this->widgetTitle = $initialData['title'] ?? 'Menu Preview';
-            $this->lastUpdated = now()->diffForHumans();
-
-            if (isset($initialData['active_view']) && array_key_exists($initialData['active_view'], $this->availableViews)) {
-                $this->activeView = $initialData['active_view'];
-            }
-        } else {
-            $this->loadPlaceholderData(); // Load placeholder if no data source
         }
-
-        // Apply settings from template zone or screen settings
+        // Note: applySettings is called *after* data loading methods (initialize->loadData)
+        // or after initialData population here.
         $this->applySettings($settings);
     }
 
@@ -131,10 +124,25 @@ final class MenuWidget extends BaseWidget
     /**
      * Load data for the widget.
      * This is called by BaseWidget's initialize method.
-     * If contentId is set, data is already loaded in mount. This can be used for refresh logic.
+     * It now prioritizes previewContentData.
      */
     protected function loadData(): void
     {
+        if ($this->previewContentData !== null) {
+            // Populate from previewContentData
+            // Expected structure: ['title' => '...', 'categories' => [...], 'active_view' (optional)]
+            $this->menu = $this->previewContentData['categories'] ?? [];
+            $this->widgetTitle = $this->previewContentData['title'] ?? $this->widgetTitle; // Use existing as fallback
+            $this->lastUpdated = now()->diffForHumans(); // For preview, "last updated" is now
+
+            // Optionally allow preview data to set the active view
+            if (isset($this->previewContentData['active_view']) && array_key_exists($this->previewContentData['active_view'], $this->availableViews)) {
+                $this->activeView = $this->previewContentData['active_view'];
+            }
+            // $this->isLoading is already false, $this->error is already null (set in BaseWidget)
+            return;
+        }
+
         if ($this->contentId) {
             $contentModel = Content::find($this->contentId);
 
@@ -143,19 +151,16 @@ final class MenuWidget extends BaseWidget
                 $this->menu = $widgetDataSource['categories'] ?? [];
                 $this->widgetTitle = $widgetDataSource['title'] ?? $contentModel->name;
                 $this->lastUpdated = $contentModel->updated_at?->diffForHumans() ?? now()->diffForHumans();
+                // activeView would be set from settings in applySettings if not from preview.
             } else {
                 // Handle error or set to empty state if content disappeared
-                $this->menu = [];
-                $this->widgetTitle = 'Menu Data Unavailable';
-                $this->lastUpdated = now()->diffForHumans();
-                $this->error = "Failed to refresh menu data for content ID {$this->contentId}.";
+                $this->loadPlaceholderData(); // Fallback to placeholder on error
+                $this->error = $this->error ?? "Failed to load menu data for content ID {$this->contentId}. Content not found or wrong type.";
             }
         } else {
-            // If no contentId, this implies it's either using initialData (already set in mount)
-            // or should use its placeholder/demo data logic if it were defined for non-contentId scenarios.
-            // For now, if no contentId, we assume data was passed via initialData or it's a placeholder state.
-            // If we want refresh to work for placeholder data, we'd call loadPlaceholderData here.
-            $this->loadPlaceholderData(); // Or decide if this should be an error state
+            // If no contentId and no previewContentData, load placeholder data.
+            // This also covers the case where initialData might have been expected but this is a refresh.
+            $this->loadPlaceholderData();
         }
     }
 

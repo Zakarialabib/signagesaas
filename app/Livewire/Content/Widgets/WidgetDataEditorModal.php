@@ -208,7 +208,7 @@ class WidgetDataEditorModal extends Component
         $contentDetails = [
             'tenant_id'    => $currentTenant->id,
             'name'         => $validatedData['contentName'],
-            'type'         => ContentType::CUSTOM->value, // Or a new WIDGET_CONTENT type
+            'type'         => ContentType::WIDGET->value, // Changed to WIDGET
             'status'       => ContentStatus::ACTIVE->value,
             'content_data' => $contentDataPrepared,
             'template_id'  => null, // Explicitly null as per instructions

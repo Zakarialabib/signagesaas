@@ -146,6 +146,80 @@
                                         @endif
                                     </button>
                                 </div>
+
+                                {{-- Widget Preview Section --}}
+                                @if (!empty($zone['widget_type']))
+                                    <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                                        <h5 class="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2">Widget Live Preview</h5>
+                                        <div class="mb-2">
+                                            <button type="button" wire:click="loadAvailablePreviewContent('{{ $zoneId }}')"
+                                                class="inline-flex items-center px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-xs font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                                <x-heroicon-o-eye class="h-4 w-4 mr-1.5" />
+                                                Select Content for Preview
+                                            </button>
+                                            @if (!empty($availablePreviewContent[$zoneId]))
+                                                <button type="button" wire:click="setPreviewData('{{ $zoneId }}', null)"
+                                                    class="ml-2 inline-flex items-center px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-xs font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                                    <x-heroicon-o-x-circle class="h-4 w-4 mr-1.5" />
+                                                    Clear Preview
+                                                </button>
+                                            @endif
+                                        </div>
+
+                                        @if (!empty($availablePreviewContent[$zoneId]))
+                                            <div class="mt-2 mb-3">
+                                                <label for="preview_content_{{ $zoneId }}" class="sr-only">Select content for preview</label>
+                                                <select id="preview_content_{{ $zoneId }}" wire:change="setPreviewData('{{ $zoneId }}', $event.target.value)"
+                                                    class="block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-xs dark:bg-gray-700 dark:text-gray-200">
+                                                    <option value="">-- Choose Content --</option>
+                                                    @foreach ($availablePreviewContent[$zoneId] as $contentItem)
+                                                        <option value="{{ $contentItem['id'] }}">{{ $contentItem['name'] }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        @endif
+                                        
+                                        {{-- Actual Widget Rendering for Preview --}}
+                                        <div class="mt-2 p-2 border border-dashed border-gray-300 dark:border-gray-600 rounded-md min-h-[100px] bg-gray-50 dark:bg-gray-700/30">
+                                            @php
+                                                // Attempt to resolve widget component name.
+                                                // This mapping should ideally be more robust, e.g., from a config file or service.
+                                                $widgetComponentMap = [
+                                                    'RetailProductWidget' => 'App.Livewire.Content.Widgets.RetailProductWidget',
+                                                    'MenuWidget' => 'App.Livewire.Content.Widgets.MenuWidget',
+                                                    // Add other mappings here as needed
+                                                ];
+                                                $widgetToRender = $widgetComponentMap[$zone['widget_type']] ?? null;
+                                                
+                                                $currentPreviewData = $zonePreviewContentData[$zoneId] ?? null;
+                                                $assignedContentId = $zone['content_id'] ?? null;
+                                                // Unique key incorporating preview status and content ID
+                                                $widgetKey = 'widget-preview-' . $zoneId . '-' . ($currentPreviewData ? 'preview-' . md5(json_encode($currentPreviewData)) : 'assigned-' . $assignedContentId);
+                                            @endphp
+
+                                            @if ($widgetToRender)
+                                                @livewire($widgetToRender, [
+                                                    'settings' => $zone['settings'] ?? [],
+                                                    'title' => $zone['name'] ?? $zone['widget_type'], // BaseWidget title
+                                                    'category' => $zone['widget_type'],             // BaseWidget category
+                                                    'icon' => 'heroicon-o-puzzle-piece',        // BaseWidget icon
+                                                    'contentId' => $assignedContentId,              // Assigned content for fallback or if no preview
+                                                    'previewContentData' => $currentPreviewData,    // The actual preview data
+                                                    // Ensure all required parameters for BaseWidget's mount are present
+                                                    // 'initialData' might be needed if previewContentData is null and contentId is also null
+                                                ], key($widgetKey))
+                                            @else
+                                                <p class="text-xs text-gray-500 dark:text-gray-400 text-center py-4">
+                                                    @if(empty($zone['widget_type']))
+                                                        No widget type selected for this zone.
+                                                    @else
+                                                        Preview for '{{ $zone['widget_type'] }}' not available here or component not mapped.
+                                                    @endif
+                                                </p>
+                                            @endif
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
 
                             <div>

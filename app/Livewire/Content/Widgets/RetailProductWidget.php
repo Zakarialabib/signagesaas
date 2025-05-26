@@ -34,35 +34,32 @@ class RetailProductWidget extends BaseWidget
         string $title = 'Retail Product Showcase', // Default BaseWidget title
         string $category = 'RETAIL',              // Default BaseWidget category
         string $icon = 'heroicon-o-shopping-bag', // Default BaseWidget icon
-        array $initialData = [],                  // Fallback data
-        ?string $contentId = null
+        array $initialData = [],                  // Fallback data for non-preview, non-contentId scenarios
+        ?string $contentId = null,
+        ?array $previewContentData = null        // Added for preview functionality
     ): void {
-        parent::mount($settings, $title, $category, $icon); // Call BaseWidget's mount
+        parent::mount($settings, $title, $category, $icon, $previewContentData); // Pass preview data to BaseWidget
 
         $this->contentId = $contentId;
 
-        if ($this->contentId) {
-            $contentModel = Content::find($this->contentId);
-
-            if ($contentModel && isset($contentModel->content_data['widget_type']) && $contentModel->content_data['widget_type'] === 'RetailProductWidget') {
-                $widgetDataSource = $contentModel->content_data['data'] ?? []; // Data is under 'data' key
-                $this->widgetTitle = $widgetDataSource['title'] ?? $this->widgetTitle;
-                $this->products = $widgetDataSource['products'] ?? [];
-                $this->footerPromoText = $widgetDataSource['footer_promo_text'] ?? '';
+        // Initial data loading if not preview and no contentId, or if previewContentData is NOT set.
+        // If previewContentData is set, BaseWidget::initialize() -> loadData() will handle it.
+        // If not preview, and contentId IS set, BaseWidget::initialize() -> loadData() will handle it.
+        // This block now primarily handles $initialData if no contentId and no preview.
+        if ($this->previewContentData === null && $this->contentId === null) {
+            if (!empty($initialData)) {
+                // Fallback to initialData if contentId is not provided and no preview
+                $this->widgetTitle = $initialData['title'] ?? $this->widgetTitle;
+                $this->products = $initialData['products'] ?? [];
+                $this->footerPromoText = $initialData['footer_promo_text'] ?? '';
             } else {
+                // If no preview, no contentId, and no initialData, then load placeholders.
+                // This path will also be hit by loadData() if called without preview/contentId.
                 $this->loadPlaceholderData();
-                $this->error ??= "Content ID {$this->contentId} not found or not a RetailProductWidget.";
             }
-        } elseif ( ! empty($initialData)) {
-            // Fallback to initialData if contentId is not provided
-            $this->widgetTitle = $initialData['title'] ?? $this->widgetTitle;
-            $this->products = $initialData['products'] ?? [];
-            $this->footerPromoText = $initialData['footer_promo_text'] ?? '';
-        } else {
-            $this->loadPlaceholderData(); // Load placeholder if no data source
         }
-
-        // Apply settings from template zone or screen settings
+        // Note: applySettings is called *after* data loading methods (initialize->loadData)
+        // or after initialData population here.
         $this->applySettings($settings);
     }
 
@@ -154,10 +151,25 @@ class RetailProductWidget extends BaseWidget
     /**
      * Load data for the widget.
      * This is called by BaseWidget's initialize method.
-     * If contentId is set, data is already loaded in mount. This can be used for refresh logic.
+     * It now prioritizes previewContentData.
      */
     protected function loadData(): void
     {
+        if ($this->previewContentData !== null) {
+            // Populate from previewContentData
+            $this->widgetTitle = $this->previewContentData['title'] ?? $this->widgetTitle;
+            $this->products = $this->previewContentData['products'] ?? [];
+            $this->footerPromoText = $this->previewContentData['footer_promo_text'] ?? '';
+            // Ensure defaultProductImage is used if a specific image is missing in preview
+            foreach ($this->products as &$product) {
+                if (empty($product['image'])) {
+                    $product['image'] = $this->defaultProductImage;
+                }
+            }
+            // $this->isLoading is already false, $this->error is already null (set in BaseWidget)
+            return;
+        }
+
         if ($this->contentId) {
             $contentModel = Content::find($this->contentId);
 
@@ -166,16 +178,20 @@ class RetailProductWidget extends BaseWidget
                 $this->widgetTitle = $widgetDataSource['title'] ?? $this->widgetTitle;
                 $this->products = $widgetDataSource['products'] ?? [];
                 $this->footerPromoText = $widgetDataSource['footer_promo_text'] ?? '';
+                // Ensure defaultProductImage is used if a specific image is missing
+                foreach ($this->products as &$product) {
+                    if (empty($product['image'])) {
+                        $product['image'] = $this->defaultProductImage;
+                    }
+                }
             } else {
                 // Handle error or set to empty state if content disappeared
-                $this->products = [];
-                $this->widgetTitle = 'Product Data Unavailable';
-                $this->footerPromoText = '';
-                $this->error = "Failed to refresh product data for content ID {$this->contentId}.";
+                $this->loadPlaceholderData(); // Fallback to placeholder on error
+                $this->error = $this->error ?? "Failed to load product data for content ID {$this->contentId}. Content not found or wrong type.";
             }
         } else {
-            // If no contentId, implies using initialData (already set) or placeholder.
-            // For refresh, we might reload placeholder or initial data if that's the desired behavior.
+            // If no contentId and no previewContentData, load placeholder data.
+            // This also covers the case where initialData might have been expected but this is a refresh.
             $this->loadPlaceholderData();
         }
     }
