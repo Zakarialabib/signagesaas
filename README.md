@@ -3,7 +3,6 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PHP Version Require](http://poser.pugx.org/laravel/framework/require/php)](https://packagist.org/packages/laravel/framework)
-[![Tests](https://github.com/your-org/signagesaas/actions/workflows/run-tests.yml/badge.svg)](https://github.com/your-org/signagesaas/actions/workflows/run-tests.yml)
 
 A robust multi-tenant SaaS platform for managing digital signage, built with Laravel 12, PHP 8.3+, Livewire 3, and Tailwind CSS. Leveraging `stancl/tenancy` for seamless tenant isolation, SignageSaaS provides a scalable, secure, and customizable solution for businesses to manage their digital signage networks efficiently.
 
@@ -32,18 +31,6 @@ Powered by `stancl/tenancy`, SignageSaaS offers multi-tenancy at the following l
 - **Database Layer**: Each tenant has their own database, ensuring complete data isolation.
 - **Application Layer**: Tenant-specific configurations and settings are managed separately, allowing for customization without affecting other tenants.
 - **Storage Layer**: Dedicated storage buckets or directories for each tenant, preventing unauthorized access to assets.
-
-```mermaid
-graph LR
-    subgraph Shared Infrastructure
-        A[Load Balancer] --> B(Application Servers)
-        B --> C{Router (stancl/tenancy)}
-        C -- Tenant 1 --> D1[Tenant 1 Database]
-        C -- Tenant 2 --> D2[Tenant 2 Database]
-        C -- Tenant N --> DN[Tenant N Database]
-        B --> S(Shared Storage - Tenant Specific Folders);
-    end
-```
 
 ### Scalability
 
