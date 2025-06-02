@@ -103,7 +103,7 @@ final class TemplateConfigurator extends Component
     {
         $zone = $this->template->layout['zones'][$zoneId] ?? null;
 
-        if ( ! $zone) {
+        if (! $zone) {
             return ContentType::cases();
         }
 
@@ -139,7 +139,7 @@ final class TemplateConfigurator extends Component
         $zoneId = $data['zoneId'] ?? null; // Use null coalescing for safety
         $contentId = $data['contentId'] ?? null;
 
-        if ( ! $zoneId || ! $contentId) {
+        if (! $zoneId || ! $contentId) {
             $this->dispatch('notify', [
                 'type'    => 'error',
                 'message' => 'Invalid data received for content assignment.',
@@ -163,7 +163,7 @@ final class TemplateConfigurator extends Component
             if ($assignedContent) { // Check if content was successfully assigned
                 $onboardingProgress = OnboardingProgress::firstOrCreate(['tenant_id' => $this->template->tenant_id]); // Assuming template has tenant_id
 
-                if ( ! $onboardingProgress->widget_content_assigned_to_template) {
+                if (! $onboardingProgress->widget_content_assigned_to_template) {
                     // Optional: Check if $assignedContent is specifically widget content if desired
                     // if (isset($assignedContent->content_data['widget_type'])) {
                     $onboardingProgress->markWidgetContentAssignedToTemplateCompleted();
@@ -200,7 +200,7 @@ final class TemplateConfigurator extends Component
         if ($tenantId) {
             $onboardingProgress = OnboardingProgress::firstOrCreate(['tenant_id' => $tenantId]);
 
-            if ( ! $onboardingProgress->widget_content_assigned_to_template) {
+            if (! $onboardingProgress->widget_content_assigned_to_template) {
                 app(OnboardingProgressService::class)->completeStep($onboardingProgress, 'widget_content_assigned_to_template');
             }
         }
@@ -231,9 +231,9 @@ final class TemplateConfigurator extends Component
     public function addZone(): void
     {
         $layout = $this->template->layout;
-        $newZoneId = 'zone_'.(isset($layout['zones']) && is_array($layout['zones']) ? count($layout['zones']) : 0 + 1).'_'.time(); // Ensure unique ID
+        $newZoneId = 'zone_' . (isset($layout['zones']) && is_array($layout['zones']) ? count($layout['zones']) : 0 + 1) . '_' . time(); // Ensure unique ID
 
-        if ( ! isset($layout['zones']) || ! is_array($layout['zones'])) {
+        if (! isset($layout['zones']) || ! is_array($layout['zones'])) {
             $layout['zones'] = [];
         }
 
@@ -247,7 +247,7 @@ final class TemplateConfigurator extends Component
 
         $newZoneData = [
             'id'                => $newZoneId,
-            'name'              => 'New Zone '.((isset($layout['zones']) && is_array($layout['zones']) ? count($layout['zones']) : 0) + 1),
+            'name'              => 'New Zone ' . ((isset($layout['zones']) && is_array($layout['zones']) ? count($layout['zones']) : 0) + 1),
             'type'              => 'content',
             'x_percentage'      => 0,
             'y_percentage'      => 0,
@@ -289,22 +289,6 @@ final class TemplateConfigurator extends Component
             $this->dispatch('notify', ['type' => 'success', 'message' => "Zone '{$layout['zones'][$zoneId]['name']}' type updated."]);
             $this->dispatch('zone-type-updated', ['zoneId' => $zoneId, 'newType' => $newType, 'newWidgetType' => $newWidgetType]);
         }
-    }
-
-    public function getAvailableWidgetTypesForZonesProperty(): array
-    {
-        // This could be fetched from a service, config, or defined directly
-        // For now, let's mirror what WidgetTypeSelector might use (simplified)
-        return [
-            'MenuWidget'          => 'Menu Board',
-            'RetailProductWidget' => 'Retail Products',
-            'WeatherWidget'       => 'Weather Display',
-            'ClockWidget'         => 'Clock Display',
-            'AnnouncementWidget'  => 'Announcements',
-            'RssFeedWidget'       => 'RSS Feed',
-            'CalendarWidget'      => 'Calendar & Events',
-            // Add other widget identifiers and their friendly names
-        ];
     }
 
     public function deleteZone(string $zoneId): void
@@ -384,7 +368,7 @@ final class TemplateConfigurator extends Component
         // Ensure zones is always an array
         $zones = $this->template->layout['zones'] ?? [];
 
-        if ( ! is_array($zones)) {
+        if (! is_array($zones)) {
             $zones = [];
         }
 
@@ -403,27 +387,7 @@ final class TemplateConfigurator extends Component
         ]);
     }
 
-    public function updateZoneTypeProperties(string $zoneId, string $newType, ?string $newWidgetType): void
-    {
-        $layout = $this->template->layout;
 
-        if (isset($layout['zones'][$zoneId])) {
-            $layout['zones'][$zoneId]['type'] = $newType;
-            $layout['zones'][$zoneId]['widget_type'] = ($newType === 'widget' && $newWidgetType) ? $newWidgetType : null;
-
-            // If changing to a non-widget type, or widget_type is cleared, also clear content_id if it's widget-specific
-            if ($newType !== 'widget' || ! $newWidgetType) {
-                // Optionally clear content_id if it was widget-specific.
-                // $layout['zones'][$zoneId]['content_id'] = null;
-                // $this->zoneContent[$zoneId] = null;
-            }
-
-            $this->template->update(['layout' => $layout]);
-            $this->loadZoneSettings(); // Reload zone settings to reflect potential changes
-            $this->dispatch('notify', ['type' => 'success', 'message' => "Zone '{$layout['zones'][$zoneId]['name']}' type updated."]);
-            $this->dispatch('zone-type-updated', ['zoneId' => $zoneId, 'newType' => $newType, 'newWidgetType' => $newWidgetType]);
-        }
-    }
 
     public function getAvailableWidgetTypesForZonesProperty(): array
     {

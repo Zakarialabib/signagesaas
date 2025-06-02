@@ -22,6 +22,8 @@ return new class () extends Migration {
             $table->boolean('first_user_invited')->default(false);
             $table->boolean('subscription_setup')->default(false);
             $table->boolean('viewed_analytics')->default(false);
+            $table->boolean('first_widget_content_created')->default(false);
+            $table->boolean('widget_content_assigned_to_template')->default(false);
             $table->json('custom_steps')->nullable();
             $table->timestamp('completed_at')->nullable();
             $table->timestamps();

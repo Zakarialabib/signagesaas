@@ -66,7 +66,10 @@ class TemplateSeeder extends Seeder
                             'id'                      => 'header',
                             'name'                    => 'Header Area',
                             'type'                    => 'content',
-                            'x_percentage'            => 0, 'y_percentage' => 0, 'width_percentage' => 100, 'height_percentage' => 15,
+                            'x_percentage'            => 0,
+                            'y_percentage' => 0,
+                            'width_percentage' => 100,
+                            'height_percentage' => 15,
                             'content_type_suggestion' => 'image',
                             'settings'                => ['background_color' => '#2d3748', 'padding' => '1rem'],
                         ],
@@ -75,22 +78,47 @@ class TemplateSeeder extends Seeder
                             'name'         => 'Menu (Left Column)',
                             'type'         => 'widget',
                             'widget_type'  => 'MenuWidget',
-                            'x_percentage' => 5, 'y_percentage' => 18, 'width_percentage' => 43, 'height_percentage' => 70,
+                            'x_percentage' => 5,
+                            'y_percentage' => 18,
+                            'width_percentage' => 43,
+                            'height_percentage' => 70,
                             'settings'     => ['background_color' => '#ffffff', 'padding' => '1rem', 'border-radius' => '0.5rem'],
+                            'widget_config' => [
+                                'display_mode' => 'categories',
+                                'show_prices' => true,
+                                'show_descriptions' => true,
+                                'show_allergens' => true,
+                                'show_calories' => true,
+                                'max_items_per_category' => 8,
+                            ],
                         ],
                         [
                             'id'           => 'menu_right',
                             'name'         => 'Menu (Right Column)',
                             'type'         => 'widget',
                             'widget_type'  => 'MenuWidget',
-                            'x_percentage' => 52, 'y_percentage' => 18, 'width_percentage' => 43, 'height_percentage' => 70,
+                            'x_percentage' => 52,
+                            'y_percentage' => 18,
+                            'width_percentage' => 43,
+                            'height_percentage' => 70,
                             'settings'     => ['background_color' => '#ffffff', 'padding' => '1rem', 'border-radius' => '0.5rem'],
+                            'widget_config' => [
+                                'display_mode' => 'categories',
+                                'show_prices' => true,
+                                'show_descriptions' => true,
+                                'show_allergens' => true,
+                                'show_calories' => true,
+                                'max_items_per_category' => 8,
+                            ],
                         ],
                         [
                             'id'                      => 'footer',
                             'name'                    => 'Footer Area',
                             'type'                    => 'content',
-                            'x_percentage'            => 0, 'y_percentage' => 90, 'width_percentage' => 100, 'height_percentage' => 10,
+                            'x_percentage'            => 0,
+                            'y_percentage' => 90,
+                            'width_percentage' => 100,
+                            'height_percentage' => 10,
                             'content_type_suggestion' => 'text',
                             'settings'                => ['background_color' => '#2d3748', 'text_align' => 'center', 'padding' => '0.5rem'],
                         ],
@@ -100,7 +128,6 @@ class TemplateSeeder extends Seeder
                     'font-family'      => 'Poppins, sans-serif',
                     'background-color' => '#1a1a1a', // Dark background for the overall page
                     'color'            => '#ffffff', // White text for overall page
-                    // Specific zone styles can be handled within layout.zones[n].settings or here if needed globally
                 ],
                 'default_duration' => 45,
                 'settings'         => [
@@ -122,7 +149,10 @@ class TemplateSeeder extends Seeder
                             'id'                      => 'promo_header',
                             'name'                    => 'Promotion Header',
                             'type'                    => 'content',
-                            'x_percentage'            => 0, 'y_percentage' => 0, 'width_percentage' => 100, 'height_percentage' => 20,
+                            'x_percentage'            => 0,
+                            'y_percentage' => 0,
+                            'width_percentage' => 100,
+                            'height_percentage' => 20,
                             'content_type_suggestion' => 'image',
                             'settings'                => ['background_color' => '#e0e0e0', 'padding' => '1rem'],
                         ],
@@ -131,23 +161,49 @@ class TemplateSeeder extends Seeder
                             'name'         => 'Main Product Grid',
                             'type'         => 'widget',
                             'widget_type'  => 'ProductGridWidget',
-                            'x_percentage' => 5, 'y_percentage' => 22, 'width_percentage' => 65, 'height_percentage' => 73,
+                            'x_percentage' => 5,
+                            'y_percentage' => 22,
+                            'width_percentage' => 65,
+                            'height_percentage' => 73,
                             'settings'     => ['background_color' => '#ffffff', 'padding' => '1rem'],
+                            'widget_config' => [
+                                'columns' => 3,
+                                'show_prices' => true,
+                                'show_sale_prices' => true,
+                                'show_promotion_badges' => true,
+                                'show_descriptions' => true,
+                                'max_products' => 9,
+                                'image_aspect_ratio' => '1:1',
+                            ],
                         ],
                         [
                             'id'                      => 'sidebar_featured_item',
                             'name'                    => 'Featured Item Sidebar',
                             'type'                    => 'widget',
                             'widget_type'             => 'FeaturedProductWidget',
-                            'x_percentage'            => 75, 'y_percentage' => 22, 'width_percentage' => 20, 'height_percentage' => 73,
+                            'x_percentage'            => 75,
+                            'y_percentage' => 22,
+                            'width_percentage' => 20,
+                            'height_percentage' => 73,
                             'content_type_suggestion' => 'image',
                             'settings'                => ['background_color' => '#f0f0f0', 'padding' => '1rem'],
+                            'widget_config' => [
+                                'display_mode' => 'featured',
+                                'show_large_image' => true,
+                                'show_price' => true,
+                                'show_promotion_badge' => true,
+                                'auto_rotate' => true,
+                                'rotation_interval' => 10,
+                            ],
                         ],
                         [
                             'id'                      => 'footer_banner',
                             'name'                    => 'Footer Banner',
                             'type'                    => 'content',
-                            'x_percentage'            => 0, 'y_percentage' => 95, 'width_percentage' => 100, 'height_percentage' => 5,
+                            'x_percentage'            => 0,
+                            'y_percentage' => 95,
+                            'width_percentage' => 100,
+                            'height_percentage' => 5,
                             'content_type_suggestion' => 'text',
                             'settings'                => ['background_color' => '#333333', 'color' => '#ffffff', 'text_align' => 'center', 'padding' => '0.5rem'],
                         ],
@@ -191,6 +247,33 @@ class TemplateSeeder extends Seeder
                         'padding'          => '2rem',
                     ],
                 ],
+                'data' => [
+                    'building_facilities' => [
+                        'conference_rooms' => [
+                            [
+                                'name' => 'Innovation Hub',
+                                'location' => 'Floor 3, West Wing',
+                                'availability' => 'Available until 4 PM',
+                                'next_booking' => '4:30 PM - Sales Meeting'
+                            ]
+                        ],
+                        'amenities' => [
+                            'Café: Open until 6 PM',
+                            'Gym: 24/7 access with badge'
+                        ]
+                    ],
+                    'employee_spotlight' => [
+                        'name' => 'Alex Johnson',
+                        'role' => 'Senior Developer',
+                        'achievement' => 'Employee of the Month',
+                        'quote' => 'Focus on solving real user problems'
+                    ],
+                    'kpi_dashboard' => [
+                        'current_month_sales' => '$1.2M',
+                        'customer_satisfaction' => '94%',
+                        'quarterly_target' => '78% achieved'
+                    ],
+                ],
                 'default_duration' => 60,
                 'settings'         => [
                     'transition'          => 'slide',
@@ -222,6 +305,49 @@ class TemplateSeeder extends Seeder
                 ],
             ],
             [
+                'name'        => 'Event Display',
+                'description' => 'A dynamic template for showcasing upcoming events with details and registration.',
+                'category'    => TemplateCategory::EVENTS,
+                'status'      => TemplateStatus::PUBLISHED,
+                'layout'      => [
+                    'type'    => 'grid',
+                    'columns' => 1,
+                    'rows'    => 2,
+                    'gap'     => '2rem',
+                ],
+                'styles' => [
+                    'font-family'      => 'Lato, sans-serif',
+                    'background-color' => '#f8f9fa',
+                    'color'            => '#343a40',
+                ],
+                'default_duration' => 45,
+                'data' => [
+                    [
+                        'title' => 'Black Friday Sale',
+                        'description' => 'Up to 70% off all items!',
+                        'startDate' => '2023-11-24T00:00:00',
+                        'endDate' => '2023-11-27T23:59:59',
+                        'location' => 'Main Store',
+                        'countdown' => true,
+                        'visual' => 'event_images/black_friday.jpg',
+                    ],
+                    [
+                        'title' => 'Summer Festival',
+                        'description' => 'Enjoy the best of the season!',
+                        'startDate' => '2023-07-01T00:00:00',
+                        'endDate' => '2023-07-05T23:59:59',
+                        'location' => 'Central Park',
+                        'countdown' => true,
+                        'visual' => 'event_images/summer_festival.jpg',
+                    ]
+                ],
+                'settings' => [
+                    'transition'          => 'fade',
+                    'transition_duration' => 600,
+                    'refresh_interval'    => 300,
+                ],
+            ],
+            [
                 'name'        => 'Transportation Schedule',
                 'description' => 'Real-time transportation schedule display with departure times and platform information.',
                 'category'    => TemplateCategory::TRANSPORTATION,
@@ -231,6 +357,10 @@ class TemplateSeeder extends Seeder
                     'columns' => 1,
                     'rows'    => 'auto',
                     'gap'     => '0',
+                    'zones' => [
+                        ['id' => 'departure_board', 'type' => 'widget', 'widget_type' => 'DepartureWidget'],
+                        ['id' => 'service_alerts', 'type' => 'alert_bar', 'position' => 'top']
+                    ]
                 ],
                 'styles' => [
                     'font-family'      => 'IBM Plex Mono, monospace',
@@ -238,6 +368,19 @@ class TemplateSeeder extends Seeder
                     'color'            => '#ffffff',
                 ],
                 'default_duration' => 20,
+                'data' => [
+                    [
+                        'type' => 'Train', // or 'Flight', 'Bus', 'Subway'
+                        'route' => 'Line 5',
+                        'destination' => 'Downtown',
+                        'scheduled_time' => '10:15 AM',
+                        'estimated_time' => '10:18 AM', // if delayed
+                        'status' => 'On Time', // or 'Delayed', 'Cancelled'
+                        'platform' => 'Platform B',
+                        'delay_reason' => null, // optional
+                    ],
+                    // ... more schedule entries
+                ],
                 'settings'         => [
                     'transition'       => 'none',
                     'refresh_interval' => 60,
@@ -265,7 +408,7 @@ class TemplateSeeder extends Seeder
             ->count(3)
             ->state(function (array $attributes) {
                 return [
-                    'name' => 'Dynamic Display Template '.fake()->unique()->numberBetween(1, 100),
+                    'name' => 'Dynamic Display Template ' . fake()->unique()->numberBetween(1, 100),
                 ];
             })
             ->withVersionHistory(4)  // Create 4 versions for each template

@@ -72,7 +72,7 @@
                             <div class="mt-1">
                                 <select wire:model="status" id="status"
                                     class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md">
-                                    @foreach ($contentStatuses as $value => $label)
+                                    @foreach ($statuses as $value => $label)
                                         <option value="{{ $value }}">{{ $label }}</option>
                                     @endforeach
                                 </select>

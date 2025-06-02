@@ -79,18 +79,6 @@
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-1 truncate"
                                 title="{{ $product['name'] }}">{{ Str::limit($product['name'], 50) }}</h3>
 
-                            @if ($showRating && isset($product['rating']))
-                                <div class="flex items-center mb-2">
-                                    @for ($i = 1; $i <= 5; $i++)
-                                        <i
-                                            class="fas fa-star {{ $i <= round($product['rating']) ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600' }}"></i>
-                                    @endfor
-                                    <span
-                                        class="ml-2 text-xs text-gray-500 dark:text-gray-400">({{ $product['review_count'] ?? 0 }}
-                                        reviews)</span>
-                                </div>
-                            @endif
-
                             <p class="text-sm text-gray-600 dark:text-gray-400 mb-3 flex-grow min-h-[60px]">
                                 {{ Str::limit($product['description'], 80) }}</p>
 
@@ -166,18 +154,6 @@
                                                     <li>{{ $feature }}</li>
                                                 @endforeach
                                             </ul>
-                                        </div>
-                                    @endif
-                                    @if ($showRating && isset($product['rating']))
-                                        <div class="flex items-center text-sm">
-                                            <span class="mr-1 text-gray-700 dark:text-gray-300">Rating:</span>
-                                            @for ($i = 1; $i <= 5; $i++)
-                                                <i
-                                                    class="fas fa-star {{ $i <= round($product['rating']) ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600' }}"></i>
-                                            @endfor
-                                            <span
-                                                class="ml-2 text-gray-500 dark:text-gray-400">({{ $product['rating'] }}/5
-                                                from {{ $product['review_count'] ?? 0 }} reviews)</span>
                                         </div>
                                     @endif
                                     <p class="text-sm text-gray-500 dark:text-gray-400">Stock Status: <span

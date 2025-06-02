@@ -62,7 +62,6 @@
                     'products' => $products,
                     'lastUpdated' => $lastUpdated,
                     'showPrice' => $showPrice,
-                    'showRating' => $showRating,
                     'showAddToCartButton' => $showAddToCartButton,
                     'currency' => $currency,
                     'gridColumns' => $gridColumns,
@@ -84,28 +83,6 @@
         <div class="w-72 bg-gray-50 dark:bg-gray-850 p-4 border-l dark:border-gray-700 overflow-y-auto shrink-0">
             <h4 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Retail Settings</h4>
             <div class="space-y-4">
-                <div>
-                    <label for="retailWidgetActiveViewSelector-{{ $widgetId }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Active Template</label>
-                    <select id="retailWidgetActiveViewSelector-{{ $widgetId }}" wire:model.live="activeView"
-                        class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
-                        @foreach($availableViews as $key => $details)
-                            <option value="{{ $key }}">{{ $details['name'] }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div>
-                    <label for="retailDefaultSort-{{ $widgetId }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Default Sort Order</label>
-                    <select id="retailDefaultSort-{{ $widgetId }}" wire:model.live="defaultSort"
-                        class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
-                        <option value="popularity">Popularity</option>
-                        <option value="price_asc">Price: Low to High</option>
-                        <option value="price_desc">Price: High to Low</option>
-                        <option value="newest">Newest Arrivals</option>
-                        <option value="rating">Highest Rating</option>
-                    </select>
-                </div>
-
                  <div>
                     <label for="retailGridColumns-{{ $widgetId }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Grid Columns (for grid views)</label>
                     <select id="retailGridColumns-{{ $widgetId }}" wire:model.live="gridColumns"
@@ -124,11 +101,6 @@
                         <input type="checkbox" wire:model.live="showPrice"
                             class="rounded border-gray-300 dark:border-gray-600 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Show Prices</span>
-                    </label>
-                    <label class="inline-flex items-center w-full">
-                        <input type="checkbox" wire:model.live="showRating"
-                            class="rounded border-gray-300 dark:border-gray-600 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                        <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Show Ratings</span>
                     </label>
                     <label class="inline-flex items-center w-full">
                         <input type="checkbox" wire:model.live="showAddToCartButton"

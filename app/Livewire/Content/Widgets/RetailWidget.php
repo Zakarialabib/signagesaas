@@ -24,9 +24,7 @@ final class RetailWidget extends BaseWidget
 
     // Configurable settings
     public int $refreshInterval = 300; // 5 minutes, for potentially live stock/price updates
-    public string $defaultSort = 'popularity'; // E.g., 'popularity', 'price_asc', 'price_desc', 'newest'
     public bool $showPrice = true;
-    public bool $showRating = true;
     public bool $showAddToCartButton = false; // For display purposes in a signage context
     public string $currency = '$';
     public int $gridColumns = 3; // Default for grid views (e.g., 2, 3, 4)
@@ -92,9 +90,7 @@ final class RetailWidget extends BaseWidget
 
     protected function applySettings(array $settings): void
     {
-        $this->defaultSort = $settings['default_sort'] ?? $this->defaultSort;
         $this->showPrice = $settings['show_price'] ?? $this->showPrice;
-        $this->showRating = $settings['show_rating'] ?? $this->showRating;
         $this->showAddToCartButton = $settings['show_add_to_cart_button'] ?? $this->showAddToCartButton;
         $this->currency = $settings['currency'] ?? $this->currency;
         $this->gridColumns = (int) ($settings['grid_columns'] ?? $this->gridColumns);
@@ -121,7 +117,6 @@ final class RetailWidget extends BaseWidget
             if ($contentModel && isset($contentModel->content_data['widget_type']) && $contentModel->content_data['widget_type'] === 'RetailWidget') {
                 $widgetDataSource = $contentModel->content_data['data'] ?? [];
                 $this->products = $widgetDataSource['products'] ?? [];
-                // Potentially re-sort products based on $this->defaultSort here
                 $this->widgetTitle = $widgetDataSource['title'] ?? $contentModel->name;
                 $this->lastUpdated = $contentModel->updated_at?->diffForHumans() ?? now()->diffForHumans();
             } else {
@@ -194,13 +189,6 @@ final class RetailWidget extends BaseWidget
         $this->lastUpdated = now()->diffForHumans();
     }
 
-    // Placeholder for sorting logic - implement as needed
-    // protected function sortProducts(array $products): array
-    // {
-    //     // switch ($this->defaultSort) { ... }
-    //     return $products;
-    // }
-
     public function setView(string $viewKey): void
     {
         if (array_key_exists($viewKey, $this->availableViews)) {
@@ -222,11 +210,9 @@ final class RetailWidget extends BaseWidget
             'isLoading'   => $this->isLoading,
             // Retail specific settings
             'showPrice'           => $this->showPrice,
-            'showRating'          => $this->showRating,
             'showAddToCartButton' => $this->showAddToCartButton,
             'currency'            => $this->currency,
             'gridColumns'         => $this->gridColumns,
-            'defaultSort'         => $this->defaultSort,
             // For the main wrapper view to manage tabs
             'availableViews' => $this->availableViews,
             'activeView'     => $this->activeView,

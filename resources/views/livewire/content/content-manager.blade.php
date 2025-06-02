@@ -3,7 +3,7 @@
     <livewire:dashboard.onboarding-widget :contextStepKey="App\Enums\OnboardingStep::FIRST_CONTENT_UPLOADED->value" />
 
     {{-- Add ContextualHelpWidget --}}
-    @livewire('shared.contextual-help-widget', ['contextKey' => \App\Enums\OnboardingStep::FIRST_CONTENT_UPLOADED->value])    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+    @livewire('shared.contextual-help-widget', ['contextKey' => \App\Enums\OnboardingStep::FIRST_CONTENT_UPLOADED->value]) <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-2xl font-semibold text-gray-900 dark:text-gray-100">Content Library</h1>
             <div class="flex space-x-2">
@@ -16,8 +16,10 @@
                     Add Standard Content
                 </x-button>
                 <x-button color="secondary" wire:click="openWidgetTypeSelector">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="-ml-1 mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                    <svg xmlns="http://www.w3.org/2000/svg" class="-ml-1 mr-2 h-5 w-5" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
                     </svg>
                     Add Widget Content
                 </x-button>
@@ -36,7 +38,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                 </svg>
-                            </div>                            <input wire:model.live="search" type="text" id="search"
+                            </div> <input wire:model.live="search" type="text" id="search"
                                 class="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md leading-5 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:placeholder-gray-400 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                 placeholder="Search content...">
                         </div>
@@ -119,7 +121,8 @@
                         @endif
                     </div>
 
-                    <div class="flex items-center space-x-2">                        <span class="text-sm text-gray-700 dark:text-gray-300">Show</span>
+                    <div class="flex items-center space-x-2"> <span
+                            class="text-sm text-gray-700 dark:text-gray-300">Show</span>
                         <select wire:model.live="perPage"
                             class="block w-full pl-3 pr-10 py-1 text-base border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                             <option value="10">10</option>
@@ -132,7 +135,8 @@
                 </div>
 
                 @if ($contents->count() > 0)
-                    <div class="overflow-x-auto">                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                             <thead class="bg-gray-50 dark:bg-gray-700">
                                 <tr>
                                     <th scope="col" class="w-12 px-6 py-3">
@@ -221,7 +225,8 @@
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Actions</th>
                                 </tr>
-                            </thead>                            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                            </thead>
+                            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                                 @foreach ($contents as $content)
                                     <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
                                         <td class="px-6 py-4 whitespace-nowrap">
@@ -230,7 +235,8 @@
                                                 class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 dark:border-gray-600 rounded dark:bg-gray-700">
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ $content->name }}</div>
+                                            <div class="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                                {{ $content->name }}</div>
                                             <div class="text-sm text-gray-500 dark:text-gray-400">
                                                 {{ Str::limit($content->description, 50) }}</div>
                                         </td>
@@ -283,14 +289,16 @@
                     <div class="mt-4">
                         {{ $contents->links() }}
                     </div>
-                @else                    <div class="text-center py-12">
-                        <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
+                @else
+                    <div class="text-center py-12">
+                        <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
                         <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-gray-100">No content found</h3>
-                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Get started by creating new content.</p>
+                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Get started by creating new content.
+                        </p>
                         <div class="mt-6">
                             <x-button color="primary" wire:click="createContent">
                                 <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -335,16 +343,17 @@
 
     @if ($selectedContent)
         <!-- Delete Confirmation Modal -->
-    <x-modal id="delete-content-modal" title="Delete Content" wire:model="deleteContentModal" x-on:keydown.escape.window="$wire.closeModal()">
-        <div class="p-6">
-            <div class="flex items-center">
-                <div class="shrink-0">
-                    <svg class="h-6 w-6 text-red-600 dark:text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                    </svg>
-                </div>
+        <x-modal id="delete-content-modal" title="Delete Content" wire:model="deleteContentModal"
+            x-on:keydown.escape.window="$wire.closeModal()">
+            <div class="p-6">
+                <div class="flex items-center">
+                    <div class="shrink-0">
+                        <svg class="h-6 w-6 text-red-600 dark:text-red-500" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                    </div>
                     <div class="ml-3">
                         <h3 class="text-lg leading-6 font-medium text-gray-900">Delete Content</h3>
                         <div class="mt-2">
@@ -364,19 +373,20 @@
                     </x-button>
                 </div>
             </div>
-        </div>
-    </x-modal>
+</div>
+</x-modal>
+@endif
+
+<!-- Add these components to handle their own modals -->
+<livewire:content.content-show />
+<livewire:content.content-edit />
+<livewire:content.content-create />
+<livewire:content.content-preview />
+
+<x-modal wire:model="showWidgetTypeSelectorModal" id="widget-type-selector-modal" title="Select Widget Type"
+    maxWidth="4xl">
+    @if ($showWidgetTypeSelectorModal)
+        <livewire:tenant.content.widget-type-selector />
     @endif
-
-    <!-- Add these components to handle their own modals -->
-    <livewire:content.content-show />
-    <livewire:content.content-edit />
-    <livewire:content.content-create />
-    <livewire:content.content-preview />
-
-    <x-modal wire:model="showWidgetTypeSelectorModal" id="widget-type-selector-modal" title="Select Widget Type" maxWidth="4xl">
-        @if($showWidgetTypeSelectorModal)
-            <livewire:tenant.content.widget-type-selector />
-        @endif
-    </x-modal>
+</x-modal>
 </div>

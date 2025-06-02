@@ -54,7 +54,7 @@ Route::middleware(['auth'])->prefix('screens')->group(function () {
 
 // Content management routes
 Route::middleware(['auth'])->prefix('content')->group(function () {
-    Route::get('/', ContentManager::class)->name('content.index');
+    Route::get('/manager', ContentManager::class)->name('content.index');
     Route::get('/templates', TemplateManager::class)->name('content.template.index');
     Route::get('/templates/gallery', TemplateGallery::class)->name('content.templates.gallery');
 });

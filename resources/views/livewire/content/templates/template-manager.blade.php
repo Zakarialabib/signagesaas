@@ -5,7 +5,7 @@
     <!-- Header -->
     <div class="sm:flex sm:items-center mb-8">
         <div class="sm:flex-auto">
-            <h1 class="text-2xl font-semibold text-gray-900 dark:text-gray-100">Templates</h1>
+            <h1 class="text-2xl font-semibold text-gray-900 dark:text-gray-100">Template Gallery & Manager</h1>
             <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">
                 Create and manage templates for your digital signage content.
             </p>
@@ -15,6 +15,11 @@
                 class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
                 <x-heroicon-s-plus class="h-4 w-4 mr-2" />
                 New Template
+            </button>
+            <button wire:click="$dispatch('use-base-template')"
+                class="inline-flex items-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500">
+                <x-heroicon-s-sparkles class="h-4 w-4 mr-2" />
+                Use Base Template
             </button>
         </div>
     </div>
@@ -67,7 +72,36 @@
         </div>
     </div>
 
-    <!-- Templates Grid -->
+    <!-- Base Case Templates Section -->
+    <div class="py-6">
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Base Case Templates</h3>
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            @foreach ($baseTemplates as $key => $baseTemplate)
+                <div class="group relative bg-white dark:bg-gray-800 rounded-lg shadow-sm ring-1 ring-gray-900/5 dark:ring-gray-700">
+                    <div class="aspect-h-9 aspect-w-16 relative overflow-hidden rounded-t-lg bg-gray-100 dark:bg-gray-900">
+                        <img src="{{ asset('images/templates/default.png') }}" 
+                            alt="{{ $baseTemplate['name'] }}"
+                            class="object-cover transition-transform duration-300 group-hover:scale-105">
+
+                        <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-4">
+                            <button wire:click="useBaseTemplate('{{ $key }}')"
+                                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                Use as Base
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ $baseTemplate['name'] }}</h3>
+                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ $baseTemplate['description'] }}</p>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+
+    <!-- User Templates Grid -->
+    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Your Templates</h3>
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         @forelse ($templates as $template)
             <div

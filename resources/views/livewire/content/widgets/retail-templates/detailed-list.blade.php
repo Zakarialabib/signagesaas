@@ -64,17 +64,6 @@
                                 @endif
                             </div>
 
-                            @if ($showRating && isset($product['rating']))
-                                <div class="flex items-center mb-2 text-sm">
-                                    @for ($i = 1; $i <= 5; $i++)
-                                        <i
-                                            class="fas fa-star {{ $i <= round($product['rating']) ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600' }}"></i>
-                                    @endfor
-                                    <span class="ml-2 text-gray-500 dark:text-gray-400">{{ $product['rating'] }}
-                                        ({{ $product['review_count'] ?? 0 }} reviews)</span>
-                                </div>
-                            @endif
-
                             <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">{{ $product['description'] }}</p>
 
                             @if (!empty($product['features']))

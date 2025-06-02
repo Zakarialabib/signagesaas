@@ -21,6 +21,65 @@ final class TemplateManager extends Component
 {
     use WithPagination;
 
+    protected array $baseTemplates = [
+        'retail_promotion' => [
+            'name'        => 'Retail Promotion',
+            'description' => 'Promote products and sales in retail environments.',
+            'category'    => TemplateCategory::RETAIL->value,
+            'layout'      => [
+                'type'  => 'grid',
+                'zones' => [
+                    [
+                        'id'     => 'main',
+                        'name'   => 'Main Content',
+                        'type'   => 'content',
+                        'x'      => 0,
+                        'y'      => 0,
+                        'width'  => 100,
+                        'height' => 70,
+                    ],
+                    [
+                        'id'     => 'sidebar',
+                        'name'   => 'Sidebar',
+                        'type'   => 'content',
+                        'x'      => 0,
+                        'y'      => 70,
+                        'width'  => 100,
+                        'height' => 30,
+                    ],
+                ],
+            ],
+        ],
+        'transport_timetable' => [
+            'name'        => 'Transport Timetable',
+            'description' => 'Display schedules for buses, trains, or flights.',
+            'category'    => TemplateCategory::TRANSPORTATION->value,
+            'layout'      => [
+                'type'  => 'grid',
+                'zones' => [
+                    [
+                        'id'     => 'header',
+                        'name'   => 'Header',
+                        'type'   => 'content',
+                        'x'      => 0,
+                        'y'      => 0,
+                        'width'  => 100,
+                        'height' => 20,
+                    ],
+                    [
+                        'id'     => 'timetable',
+                        'name'   => 'Timetable',
+                        'type'   => 'content',
+                        'x'      => 0,
+                        'y'      => 20,
+                        'width'  => 100,
+                        'height' => 80,
+                    ],
+                ],
+            ],
+        ],
+    ];
+
     public string $search = '';
     public string $categoryFilter = 'all';
     public string $statusFilter = 'all';
@@ -168,11 +227,43 @@ final class TemplateManager extends Component
         ]);
     }
 
+    public function useBaseTemplate(string $baseKey): void
+    {
+        if ( ! array_key_exists($baseKey, $this->baseTemplates)) {
+            $this->dispatch('notify', [
+                'type'    => 'error',
+                'message' => 'Base template not found.',
+            ]);
+
+            return;
+        }
+
+        $base = $this->baseTemplates[$baseKey];
+        $template = Template::create([
+            'name'        => $base['name'],
+            'description' => $base['description'],
+            'category'    => $base['category'],
+            'layout'      => $base['layout'],
+            'status'      => TemplateStatus::DRAFT,
+        ]);
+
+        $this->selectedTemplate = $template;
+        $this->selectedTemplateId = $template->id;
+        $this->showConfigurator = true;
+
+        $this->dispatch('notify', [
+            'type'    => 'success',
+            'message' => 'Base template created. You can now configure it.',
+        ]);
+    }
+
     public function render()
     {
         return view('livewire.content.templates.template-manager', [
             'templates'        => $this->templates,
             'selectedTemplate' => $this->selectedTemplateId ? Template::find($this->selectedTemplateId) : null,
+            'baseTemplates'    => $this->baseTemplates,
+            'categories'       => $this->categories,
         ]);
     }
 }

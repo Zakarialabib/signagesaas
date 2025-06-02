@@ -43,14 +43,14 @@ enum OnboardingStep: string
         return match ($this) {
             self::PROFILE_COMPLETED                   => 'Set up your organization profile with logo and contact information.',
             self::FIRST_DEVICE_REGISTERED             => 'Add a digital signage device to your account.',
-            self::FIRST_CONTENT_UPLOADED              => 'Add images, videos, or create content using our editor.',
+            self::FIRST_CONTENT_UPLOADED              => 'Add images, videos, or create content using our unified content editor.',
             self::FIRST_SCREEN_CREATED                => 'Define a screen layout with zones for your content.',
             self::FIRST_SCHEDULE_CREATED              => 'Schedule when your content should play on your screens.',
             self::FIRST_USER_INVITED                  => 'Add colleagues who will help manage your digital signage.',
             self::SUBSCRIPTION_SETUP                  => 'Make sure your plan meets your digital signage needs.',
             self::VIEWED_ANALYTICS                    => 'Check out how your digital signage is performing.',
-            self::FIRST_WIDGET_CONTENT_CREATED        => 'Design reusable content blocks for your templates.',
-            self::WIDGET_CONTENT_ASSIGNED_TO_TEMPLATE => 'Incorporate your widget content into a screen template.',
+            self::FIRST_WIDGET_CONTENT_CREATED        => 'Create dynamic, reusable content blocks like menus, product lists, or weather widgets.',
+            self::WIDGET_CONTENT_ASSIGNED_TO_TEMPLATE => 'Integrate your widget content into screen templates for dynamic displays.',
         };
     }
 
@@ -155,18 +155,22 @@ enum OnboardingStep: string
             self::FIRST_WIDGET_CONTENT_CREATED => [
                 'imagePath' => 'images/onboarding/widget-content.svg',
                 'features'  => [
-                    'Create reusable blocks of content like menus, product lists, or custom HTML modules.',
-                    'Define the structure and data for your widget.',
-                    'Save widget content to be used across multiple templates and screens.',
-                    'Update widget content once, and it reflects everywhere it\'s used.',
+                    'Create dynamic widgets like menus, product lists, weather, news, and more.',
+                    'Configure widget settings and data sources in real-time.',
+                    'Preview widget appearance with live data updates.',
+                    'Save widget configurations for reuse across templates.',
+                    'Set refresh intervals for dynamic content updates.',
                 ],
                 'tips' => [
-                    'Think modularly: what content pieces can be reused?',
-                    'Keep widget data focused and well-structured.',
+                    'Use the widget preview to ensure correct display before saving.',
+                    'Configure appropriate refresh intervals based on content type.',
+                    'Test widget data sources to ensure reliable updates.',
                 ],
                 'bestPractices' => [
-                    'Use consistent naming conventions for widget content.',
-                    'Preview widgets in templates to ensure correct display.',
+                    'Create a library of reusable widget configurations.',
+                    'Document widget settings for team reference.',
+                    'Regularly review and update widget data sources.',
+                    'Test widgets across different screen resolutions.',
                 ],
             ],
             self::FIRST_SCREEN_CREATED => [
@@ -189,18 +193,22 @@ enum OnboardingStep: string
             self::WIDGET_CONTENT_ASSIGNED_TO_TEMPLATE => [
                 'imagePath' => 'images/onboarding/template-assign.svg',
                 'features'  => [
-                    'Open a template in the Template Configurator.',
-                    'Add or select a zone designated for widget content.',
-                    'Choose your previously created widget content to assign to the zone.',
-                    'Preview the template to see the widget in action.',
+                    'Drag and drop widgets into template zones.',
+                    'Configure widget-specific settings for each placement.',
+                    'Preview how widgets interact with other content.',
+                    'Set widget refresh rates and display durations.',
+                    'Test widget functionality within the template context.',
                 ],
                 'tips' => [
-                    'Ensure the zone dimensions are appropriate for the widget content.',
-                    'Some widgets might have specific zone type requirements.',
+                    'Ensure widget zones have appropriate dimensions.',
+                    'Consider widget refresh rates when planning content flow.',
+                    'Test widget interactions with other template elements.',
                 ],
                 'bestPractices' => [
-                    'Use templates to maintain consistency across multiple screens.',
-                    'Test widget assignments on different screen resolutions if applicable.',
+                    'Create template variations for different screen sizes.',
+                    'Document widget placement and settings.',
+                    'Regularly verify widget data sources and connections.',
+                    'Monitor widget performance and update as needed.',
                 ],
             ],
             self::FIRST_SCHEDULE_CREATED => [

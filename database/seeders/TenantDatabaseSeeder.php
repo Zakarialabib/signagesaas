@@ -17,7 +17,7 @@ use App\Tenant\Models\Tenant;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Str;
+use Illuminate\Support\Str;
 use Stancl\Tenancy\Facades\Tenancy;
 
 final class TenantDatabaseSeeder extends Seeder
@@ -193,7 +193,7 @@ final class TenantDatabaseSeeder extends Seeder
                 $screenOrientationValue = ($orientationSetting === 'landscape') ? ScreenOrientation::LANDSCAPE->value : ScreenOrientation::PORTRAIT->value;
                 $screenStatusValue = ($device->status === DeviceStatus::ONLINE->value) ? ScreenStatus::ACTIVE->value : ScreenStatus::INACTIVE->value;
 
-                \App\Tenant\Models\Screen::firstOrCreate(
+               $screen =  \App\Tenant\Models\Screen::firstOrCreate(
                     ['tenant_id' => $tenant->id, 'device_id' => $device->id, 'name' => $device->name.' Screen'],
                     [
                         'description' => 'Main screen for '.$device->name,
@@ -250,12 +250,12 @@ final class TenantDatabaseSeeder extends Seeder
                         ['tenant_id' => $tenant->id, 'name' => 'Welcome Content'],
                         [
                             'type'         => ContentType::HTML->value,
-                            'status'       => ContentStatus::PUBLISHED->value,
+                            'status'       => ContentStatus::ACTIVE->value,
+                            'screen_id'     => $screen->id,
                             'description'  => 'Default welcome content for tenant '.$tenant->name,
-                            'category'     => 'General',
-                            'html_content' => $this->getHtmlExample(),
                             'settings'     => ['is_fullscreen' => true, 'refresh_on_update' => true],
                             'metadata'     => ['author' => 'System'],
+                            'content_data' => '<h1>Welcome to '.$tenant->name.'</h1><p>This is the default content for your tenant.</p>',
                             'template_id'  => $template->id,
                         ]
                     );

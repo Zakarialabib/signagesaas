@@ -69,49 +69,49 @@ class WidgetDataEditorModal extends Component
         }
     }
 
-    private function initializeWidgetDataForEdit(): void
+    public function initializeWidgetDataForEdit(): void
     {
-        $initialData = [];
-        if ($this->widgetType === 'MenuWidget') {
-            $initialData = ['categories' => []];
-        } elseif ($this->widgetType === 'RetailProductWidget') {
-            $this->widgetData = [
-                'data' => [
-                    'title' => 'Featured Products',
-                    'products' => [],
-                    'footer_promo_text' => 'Special offers end soon!'
-                ],
-            $initialData = [
+        $initialData = match($this->widgetType) {
+            'MenuWidget' => [
+                'categories' => [],
+                'settings' => [
+                    'template_style' => 'grid',
+                    'show_descriptions' => true,
+                    'show_prices' => true,
+                    'show_calories' => false,
+                    'show_allergens' => false
+                ]
+            ],
+            'RetailProductWidget' => [
                 'title' => 'Featured Products',
                 'products' => [],
-                'footer_promo_text' => 'Special offers end soon!'
-            ];
-        } elseif ($this->widgetType === 'WeatherWidget') {
-            $initialData = ['location' => '', 'apiKey' => '', 'title' => 'Weather Forecast'];
-        } elseif ($this->widgetType === 'ClockWidget') {
-            $initialData = [
-                'timezone' => 'Europe/London',
-                'showSeconds' => true,
-                'format' => 'H:i:s',
-                'showDate' => true,
-                'dateFormat' => 'l, F jS, Y',
-                'title' => 'Current Time'
-            ];
-        } elseif ($this->widgetType === 'AnnouncementWidget') {
-            $initialData = [
-                'title' => 'Important Announcement',
-                'message' => 'Please be advised...',
-                'backgroundColor' => '#E0F2FE',
-                'textColor' => '#0C4A6E',
-                'titleColor' => '#075985'
-            ];
-        } elseif ($this->widgetType === 'RssFeedWidget') {
-            $initialData = ['feedUrl' => '', 'itemCount' => 5, 'title' => 'Latest News'];
-        } elseif ($this->widgetType === 'CalendarWidget') {
-            $initialData = ['calendarUrl' => '', 'title' => 'Upcoming Events'];
-        }
+                'settings' => [
+                    'columns' => 2,
+                    'show_images' => true,
+                    'show_prices' => true,
+                    'currency' => 'USD'
+                ]
+            ],
+            'WeatherWidget' => [
+                'location' => '',
+                'settings' => [
+                    'units' => 'metric',
+                    'show_forecast' => true,
+                    'refresh_interval' => 300
+                ]
+            ],
+            'NewsWidget' => [
+                'articles' => [],
+                'settings' => [
+                    'max_articles' => 5,
+                    'source' => 'general',
+                    'category' => 'general',
+                    'refresh_interval' => 300
+                ]
+            ],
+            default => []
+        };
         
-        // Ensure the overall widgetData structure is correct
         $this->widgetData = [
             'widget_type' => $this->widgetType,
             'data' => $initialData
@@ -180,38 +180,41 @@ class WidgetDataEditorModal extends Component
             ],
             [
                 'contentName' => 'required|string|max:255',
-                'widgetData' => 'present|array', // Basic validation, can be more specific per widgetType
+                'widgetData' => 'required|array',
+                'widgetData.widget_type' => 'required|string',
+                'widgetData.data' => 'required|array',
             ]
         )->validate();
 
-        $currentTenant = Auth::user()->tenant; // Assuming user is authenticated and has a tenant relationship
-        if (!$currentTenant && class_exists(Tenant::class)) { // Fallback for single DB or if tenant comes from elsewhere
-            $currentTenant = Tenant::current() ?? Tenant::first(); // Example: Get current tenant
+        $currentTenant = Auth::user()->tenant;
+        if (!$currentTenant && class_exists(Tenant::class)) {
+            $currentTenant = Tenant::current() ?? Tenant::first();
         }
 
         if (!$currentTenant) {
-            // Handle error: tenant not found
             $this->dispatch('notify', ['type' => 'error', 'message' => 'Current tenant could not be determined.']);
             return;
         }
 
-        // $contentDataPrepared should contain the full structure including 'widget_type' and 'data'
-        // The $validatedData['widgetData'] already holds this structure if initialized and bound correctly.
         $contentDataPrepared = $validatedData['widgetData'];
         
-        // Ensure widget_type is set if it's missing from widgetData (e.g. if data was manually edited)
+        // Ensure widget_type is set
         if (!isset($contentDataPrepared['widget_type'])) {
             $contentDataPrepared['widget_type'] = $this->widgetType;
         }
 
+        // Ensure settings are present in the data
+        if (!isset($contentDataPrepared['data']['settings'])) {
+            $contentDataPrepared['data']['settings'] = [];
+        }
 
         $contentDetails = [
             'tenant_id'    => $currentTenant->id,
             'name'         => $validatedData['contentName'],
-            'type'         => ContentType::CUSTOM->value, // Or a new WIDGET_CONTENT type
+            'type'         => ContentType::CUSTOM->value,
             'status'       => ContentStatus::ACTIVE->value,
             'content_data' => $contentDataPrepared,
-            'template_id'  => null, // Explicitly null as per instructions
+            'template_id'  => null,
         ];
 
         if ($this->contentId) {
@@ -219,23 +222,22 @@ class WidgetDataEditorModal extends Component
             if ($content) {
                 $content->update($contentDetails);
             } else {
-                // Handle error: content to update not found
                 $this->dispatch('notify', ['type' => 'error', 'message' => 'Content to update not found.']);
                 return;
             }
         } else {
             $content = Content::create($contentDetails);
 
-          // NEW: Check and mark onboarding step
-            if ($content && ($content->content_data['widget_type'] ?? null)) { // Ensure it's widget content
-                $onboardingProgress = \App\Tenant\Models\OnboardingProgress::firstOrCreate(['tenant_id' => $content->tenant_id]);
+            // Mark onboarding progress
+            if ($content) {
+                $onboardingProgress = OnboardingProgress::firstOrCreate(['tenant_id' => $content->tenant_id]);
                 if (!$onboardingProgress->first_widget_content_created) {
                     $onboardingProgress->markFirstWidgetContentCreatedCompleted();
                 }
             }
         }
 
-        // Dispatch to TemplateConfigurator or any other listener
+        // Dispatch to TemplateConfigurator
         $this->dispatch('widgetContentSaved', zoneId: $this->zoneId, contentId: $content->id)
             ->to('App.Livewire.Content.Templates.TemplateConfigurator');
 

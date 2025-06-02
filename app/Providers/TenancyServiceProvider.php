@@ -60,11 +60,7 @@ final class TenancyServiceProvider extends ServiceProvider
         // Register tenant initialization events
         $this->registerTenantEvents();
 
-        // Register device API routes - these run on all domains
-        Route::middleware([
-            'api',
-        ])->prefix('api/device')
-            ->group(base_path('routes/device-api.php'));
+        // Device API routes are now consolidated into tenant-api for better organization
     }
 
     protected function mapTenantRoutes(): void

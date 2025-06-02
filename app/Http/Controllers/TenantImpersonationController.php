@@ -17,7 +17,7 @@ final class TenantImpersonationController extends Controller
         // Find the tenant first (use explicit find since route model binding might not work)
         $tenant = Tenant::find($tenantId);
 
-        if ( ! $tenant) {
+        if (! $tenant) {
             Log::error('Impersonation failed: Tenant not found', ['tenant_id' => $tenantId]);
 
             return redirect()->back()->with('error', 'Tenant not found');
@@ -26,7 +26,7 @@ final class TenantImpersonationController extends Controller
         // Verify the signature to ensure security
         $expectedSignature = hash_hmac('sha256', $tenant->id, config('app.key'));
 
-        if ( ! hash_equals($expectedSignature, $signature)) {
+        if (! hash_equals($expectedSignature, $signature)) {
             Log::error('Impersonation failed: Invalid signature', ['tenant_id' => $tenant->id]);
             abort(403, 'Invalid signature');
         }
@@ -37,7 +37,7 @@ final class TenantImpersonationController extends Controller
         // Get the primary domain for this tenant
         $domain = $tenant->domains()->first();
 
-        if ( ! $domain) {
+        if (! $domain) {
             Log::error('Impersonation failed: No domain configured', ['tenant_id' => $tenant->id]);
 
             return redirect()->back()->with('error', 'Tenant has no domains configured');
@@ -68,5 +68,25 @@ final class TenantImpersonationController extends Controller
 
         return redirect()->route('superadmin.dashboard')
             ->with('success', 'Tenant impersonation ended');
+    }
+
+    public function impersonationCheck()
+    {
+        $impersonationToken = request()->cookie('impersonation_token');
+
+        if ($impersonationToken) {
+            [$tenantId, $userId] = explode('|', $impersonationToken);
+
+            // Store in session for use by tenant middleware
+            session(['impersonated_tenant' => $tenantId, 'impersonated_user_id' => $userId]);
+
+            // Clear the cookie
+            cookie()->queue(cookie()->forget('impersonation_token'));
+
+            // Redirect to the dashboard
+            return redirect()->route('dashboard');
+        }
+
+        return redirect()->route('login');
     }
 }

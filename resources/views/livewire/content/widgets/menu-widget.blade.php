@@ -91,18 +91,6 @@
             </h4>
 
             <div class="space-y-5">
-                <!-- Template Selection -->
-                <div class="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm">
-                    <label for="widgetActiveViewSelector-{{ $widgetId }}"
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Active Template</label>
-                    <select id="widgetActiveViewSelector-{{ $widgetId }}" wire:model.live="activeView"
-                        class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-purple-500 focus:ring-purple-500 text-sm">
-                        @foreach ($availableViews as $key => $details)
-                            <option value="{{ $key }}">{{ $details['name'] }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
                 <!-- Menu Type Selection -->
                 <div class="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm">
                     <label for="menuType-{{ $widgetId }}"

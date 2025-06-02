@@ -77,11 +77,46 @@ class ContentSeeder extends Seeder
     {
         return match ($category) {
             'menu' => [
-                'title' => 'Daily Specials',
-                'items' => [
-                    ['name' => 'Soup of the Day', 'price' => '5.99', 'description' => 'Fresh homemade soup'],
-                    ['name' => 'Chef\'s Special', 'price' => '15.99', 'description' => 'Ask your server'],
-                    ['name' => 'Catch of the Day', 'price' => '24.99', 'description' => 'Fresh seafood'],
+                'menuData' => [
+                    [
+                        'name'        => 'Breakfast Specials',
+                        'description' => 'Served until 11 AM',
+                        'items'       => [
+                            [
+                                'name'        => 'Classic Pancakes',
+                                'description' => 'Fluffy pancakes served with syrup and butter.',
+                                'price'       => 7.99,
+                                'calories'    => 450,
+                                'allergens'   => ['gluten', 'dairy'],
+                                'image'       => 'pancakes.jpg',
+                                'special'     => true,
+                            ],
+                            [
+                                'name'        => 'Avocado Toast',
+                                'description' => 'Smashed avocado on artisan bread with cherry tomatoes.',
+                                'price'       => 9.50,
+                                'calories'    => 320,
+                                'allergens'   => ['gluten'],
+                                'image'       => 'avocado_toast.jpg',
+                                'special'     => false,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name'        => 'Lunch Menu',
+                        'description' => 'Available from 11 AM to 3 PM',
+                        'items'       => [
+                            [
+                                'name'        => 'Club Sandwich',
+                                'description' => 'Triple decker with turkey, bacon, lettuce, and tomato.',
+                                'price'       => 12.75,
+                                'calories'    => 750,
+                                'allergens'   => ['gluten', 'dairy'],
+                                'image'       => 'club_sandwich.jpg',
+                                'special'     => false,
+                            ],
+                        ],
+                    ],
                 ],
             ],
             'announcement' => [
@@ -97,57 +132,103 @@ class ContentSeeder extends Seeder
                 ],
             ],
             'calendar' => [
-                'title'  => 'Today\'s Events',
-                'events' => [
-                    ['time' => '09:00', 'title' => 'Morning Meeting', 'location' => 'Room 101'],
-                    ['time' => '14:00', 'title' => 'Team Workshop', 'location' => 'Conference Room A'],
+                'calendarEventData' => [
+                    [
+                        'id'          => 'event_001',
+                        'title'       => 'Team Meeting',
+                        'description' => 'Weekly team sync and project updates',
+                        'start_time'  => '09:00',
+                        'end_time'    => '10:00',
+                        'date'        => now()->format('Y-m-d'),
+                        'location'    => 'Conference Room A',
+                        'organizer'   => 'Sarah Johnson',
+                        'attendees'   => 12,
+                        'type'        => 'meeting',
+                        'priority'    => 'high',
+                        'color'       => '#3b82f6',
+                    ],
+                    [
+                        'id'          => 'event_002',
+                        'title'       => 'Product Launch',
+                        'description' => 'Introducing our latest product line',
+                        'start_time'  => '14:00',
+                        'end_time'    => '16:00',
+                        'date'        => now()->addDay()->format('Y-m-d'),
+                        'location'    => 'Main Auditorium',
+                        'organizer'   => 'Marketing Team',
+                        'attendees'   => 150,
+                        'type'        => 'presentation',
+                        'priority'    => 'high',
+                        'color'       => '#10b981',
+                    ],
                 ],
             ],
             'retail' => [
-                'title'    => 'Grand Opening Sale!', // Example title
-                'products' => [
+                'productData' => [
                     [
-                        'name'            => 'Comfy Cotton T-Shirt',
-                        'price'           => '24.99',
-                        'sale_price'      => '19.99',
-                        'image'           => 'images/retail/tshirt_blue.jpg', // Example path
-                        'description'     => 'Soft, breathable 100% cotton t-shirt available in various colors.',
-                        'promotion_badge' => '20% OFF',
+                        'id'             => 'prod_101',
+                        'name'           => 'Wireless Bluetooth Headphones',
+                        'description'    => 'Premium noise-cancelling headphones with 30-hour battery life and crystal-clear sound quality.',
+                        'price'          => 199.99,
+                        'original_price' => 249.99,
+                        'image'          => 'https://placehold.co/600x400/2563EB/FFFFFF?text=Headphones',
+                        'rating'         => 4.5,
+                        'review_count'   => 324,
+                        'tags'           => ['Electronics', 'Audio', 'Wireless', 'Sale'],
+                        'stock_status'   => 'In Stock',
+                        'features'       => ['Noise Cancelling', '30hr Battery', 'Quick Charge', 'Wireless'],
                     ],
                     [
-                        'name'            => 'Wireless Noise-Cancelling Headphones',
-                        'price'           => '199.00',
-                        'sale_price'      => '149.00',
-                        'image'           => 'images/retail/headphones_noise_cancelling.jpg',
-                        'description'     => 'Immersive sound experience with active noise cancellation and 20-hour battery life.',
-                        'promotion_badge' => 'SAVE $50',
-                    ],
-                    [
-                        'name'            => 'Smart Fitness Tracker Watch',
-                        'price'           => '120.00',
-                        'sale_price'      => null, // Not on sale
-                        'image'           => 'images/retail/fitness_tracker_watch.jpg',
-                        'description'     => 'Track your steps, heart rate, and sleep patterns. Multiple sport modes.',
-                        'promotion_badge' => null,
-                    ],
-                    [
-                        'name'            => 'Organic Blend Coffee Beans',
-                        'price'           => '18.50',
-                        'sale_price'      => '15.00',
-                        'image'           => 'images/retail/coffee_beans_organic.jpg',
-                        'description'     => 'Premium Arabica beans, ethically sourced and locally roasted.',
-                        'promotion_badge' => 'SPECIAL OFFER',
-                    ],
-                    [
-                        'name'            => 'Yoga Mat Premium',
-                        'price'           => '45.00',
-                        'sale_price'      => null,
-                        'image'           => 'images/retail/yoga_mat_premium.jpg',
-                        'description'     => 'Eco-friendly, non-slip yoga mat for all your fitness needs.',
-                        'promotion_badge' => 'NEW ARRIVAL',
+                        'id'             => 'prod_102',
+                        'name'           => 'Smart Fitness Watch',
+                        'description'    => 'Track your health and fitness goals with this advanced smartwatch featuring GPS, heart rate monitoring, and sleep tracking.',
+                        'price'          => 299.99,
+                        'original_price' => null,
+                        'image'          => 'https://placehold.co/600x400/059669/FFFFFF?text=Watch',
+                        'rating'         => 4.7,
+                        'review_count'   => 156,
+                        'tags'           => ['Electronics', 'Fitness', 'Health', 'Smart'],
+                        'stock_status'   => 'In Stock',
+                        'features'       => ['GPS Tracking', 'Heart Rate Monitor', 'Sleep Analysis', 'Waterproof'],
                     ],
                 ],
-                'footer_promo_text' => 'All offers valid while supplies last. Visit us at City Center Mall!', // Example footer
+            ],
+            'weather' => [
+                'location'    => 'New York, NY',
+                'api_key'     => 'demo_weather_api_key',
+                'units'       => 'metric',
+                'widget_type' => 'weather',
+            ],
+            'social_media' => [
+                'sources'     => ['twitter', 'instagram'],
+                'hashtags'    => ['#digitalsignage', '#technology'],
+                'posts_count' => 10,
+            ],
+            'corporate' => [
+                'title' => 'Corporate Updates',
+                'items' => [
+                    ['title' => 'Quarterly Results', 'content' => 'Strong performance across all divisions.'],
+                    ['title' => 'New Partnership', 'content' => 'Exciting collaboration announced today.'],
+                ],
+            ],
+            'restaurant' => [
+                'menuData' => [
+                    [
+                        'name'        => 'Today\'s Specials',
+                        'description' => 'Chef\'s recommendations',
+                        'items'       => [
+                            [
+                                'name'        => 'Grilled Salmon',
+                                'description' => 'Fresh Atlantic salmon with seasonal vegetables.',
+                                'price'       => 24.99,
+                                'calories'    => 420,
+                                'allergens'   => ['fish'],
+                                'image'       => 'salmon.jpg',
+                                'special'     => true,
+                            ],
+                        ],
+                    ],
+                ],
             ],
             default => [
                 'title'   => 'Welcome',

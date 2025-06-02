@@ -63,18 +63,6 @@
                             <h3 class="text-3xl font-light text-gray-800 dark:text-gray-100 mb-3 tracking-tight">
                                 {{ $product['name'] }}</h3>
 
-                            @if ($showRating && isset($product['rating']))
-                                <div class="flex items-center mb-3">
-                                    @for ($i = 1; $i <= 5; $i++)
-                                        <i
-                                            class="fas fa-star text-lg {{ $i <= round($product['rating']) ? 'text-amber-400' : 'text-gray-300 dark:text-gray-600' }}"></i>
-                                    @endfor
-                                    <span
-                                        class="ml-3 text-xs text-gray-500 dark:text-gray-400">{{ $product['rating'] }}
-                                        stars ({{ $product['review_count'] ?? 0 }})</span>
-                                </div>
-                            @endif
-
                             <p class="text-gray-600 dark:text-gray-400 mb-5 leading-relaxed text-sm">
                                 {{ Str::limit($product['description'], 150) }}</p>
 

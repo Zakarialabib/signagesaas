@@ -24,6 +24,10 @@ enum ContentType: string
     case TEXT = 'text';
     case PRODUCT_LIST = 'product_list';
     case MENU = 'menu';
+    case NEWS = 'news';
+    case CLOCK = 'clock';
+    case ANNOUNCEMENT = 'announcement';
+    case RSS_FEED = 'rss_feed';
 
     public function label(): string
     {
@@ -46,6 +50,10 @@ enum ContentType: string
             self::TEXT         => 'Plain Text',
             self::PRODUCT_LIST => 'Product List',
             self::MENU         => 'Menu/Service List',
+            self::NEWS         => 'News',
+            self::CLOCK        => 'Clock',
+            self::ANNOUNCEMENT => 'Announcement',
+            self::RSS_FEED     => 'RSS Feed',
         };
     }
 
@@ -70,6 +78,10 @@ enum ContentType: string
             self::TEXT         => 'Simple plain text content',
             self::PRODUCT_LIST => 'Structured list of products with details like name, price, description.',
             self::MENU         => 'Structured list for menus, services, or offers with name, price, description.',
+            self::NEWS         => 'News content',
+            self::CLOCK        => 'Clock content',
+            self::ANNOUNCEMENT => 'Announcement content',
+            self::RSS_FEED     => 'RSS feed content',
         };
     }
 
@@ -94,6 +106,10 @@ enum ContentType: string
             self::TEXT         => 'bars-3-bottom-left',
             self::PRODUCT_LIST => 'list-bullet',
             self::MENU         => 'bars-4', // Or 'clipboard-document-list'
+            self::NEWS         => 'newspaper',
+            self::CLOCK        => 'clock',
+            self::ANNOUNCEMENT => 'megaphone',
+            self::RSS_FEED     => 'rss',
         };
     }
 

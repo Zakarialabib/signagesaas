@@ -9,10 +9,17 @@
 
     <!-- SEO Meta Tags -->
     <title>{{ config('app.name', 'SignageSaaS') }} - Digital Signage Made Simple</title>
+  
     <meta name="description"
         content="Transform your screens into powerful communication tools with SignageSaaS. Perfect for retail, hospitality, education, and corporate environments in Morocco and beyond.">
     <meta name="keywords"
         content="digital signage, digital displays, digital menu boards, retail displays, Morocco, Casablanca">
+
+    <meta name="theme-color" content="#4f46e5">
+    {{-- <link rel="manifest" href="manifest.json" /> --}}
+    <link rel="apple-touch-icon" href="/images/icon-192x192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="{{ config('app.name', 'SignageSaaS') }} - Digital Signage Made Simple">
@@ -31,7 +38,12 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
-   
+
+    {{-- font awesome  --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <!-- RTL Styles -->
     @if (app()->getLocale() === 'ar')
         <style>
