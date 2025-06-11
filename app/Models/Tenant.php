@@ -99,4 +99,22 @@ class Tenant extends BaseTenant implements TenantWithDatabase
         $this->settings = array_merge($this->settings ?? [], $settings);
         $this->save();
     }
+
+    public static function isInitiated()
+    {
+        $hostParts = explode('.', request()->getHost());
+        
+        // Check if we have more than one part (subdomain exists) and it's not 'www' and not empty
+        if (count($hostParts) > 2 && $hostParts[0] !== 'www' && !empty($hostParts[0])) {
+            // Further check to ensure it's a valid tenant subdomain, not just any subdomain like 'test.localhost'
+            // This assumes your main domain is something like 'signagesaas.test' and subdomains are 'tenant1.signagesaas.test'
+            // Adjust the count if your domain structure is different (e.g., if you use .localhost or other TLDs for local dev)
+            // For 'tenant1.signagesaas.test', count($hostParts) would be 3.
+            // For 'signagesaas.test', count($hostParts) would be 2.
+            return true;
+        }
+        return false;
+    }
+
+
 }

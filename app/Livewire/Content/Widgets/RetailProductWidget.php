@@ -87,61 +87,10 @@ class RetailProductWidget extends BaseWidget
 
     protected function loadPlaceholderData(): void
     {
-        $this->widgetTitle = 'Grand Opening Specials';
-        $this->products = [
-            [
-                'name'                => 'Smart Home Hub X1',
-                'price'               => '129.99',
-                'sale_price'          => '99.99',
-                'image'               => 'images/products/smart_hub_x1.png',
-                'description'         => 'Control your entire smart home with this intuitive and powerful hub. Voice assistant compatible.',
-                'promotion_badge'     => 'NEW!',
-                'discount_percentage' => '23',
-            ],
-            [
-                'name'                => 'Wireless Noise-Cancelling Headphones',
-                'price'               => '199.50',
-                'sale_price'          => '149.00',
-                'image'               => 'images/products/headphones_noise_cancelling.png',
-                'description'         => 'Immerse yourself in pure audio bliss with these premium noise-cancelling headphones. 30-hour battery life.',
-                'promotion_badge'     => '25% OFF',
-                'discount_percentage' => '25',
-            ],
-            [
-                'name'            => 'Organic Arabica Coffee Beans (1kg)',
-                'price'           => '25.00',
-                'sale_price'      => '', // No sale price for this one
-                'image'           => 'images/products/coffee_beans_arabica.png',
-                'description'     => 'Start your day right with our ethically sourced, freshly roasted organic Arabica coffee beans.',
-                'promotion_badge' => 'BESTSELLER',
-            ],
-            [
-                'name'                => 'Ultra-Slim 4K OLED TV (55-inch)',
-                'price'               => '1499.00',
-                'sale_price'          => '1199.00',
-                'image'               => 'images/products/oled_tv_55inch.png',
-                'description'         => 'Experience breathtaking visuals with perfect blacks and vibrant colors on this stunning 4K OLED TV.',
-                'promotion_badge'     => 'SAVE $300',
-                'discount_percentage' => '20',
-            ],
-            [
-                'name'            => 'Professional DSLR Camera Kit',
-                'price'           => '899.99',
-                'sale_price'      => '749.99',
-                'image'           => 'images/products/dslr_camera_kit.png',
-                'description'     => 'Capture life\'s moments in stunning detail with this comprehensive DSLR camera kit, including two lenses.',
-                'promotion_badge' => 'LIMITED STOCK',
-            ],
-            [
-                'name'            => 'Ergonomic Office Chair Pro',
-                'price'           => '349.00',
-                'sale_price'      => '',
-                'image'           => 'images/products/office_chair_pro.png',
-                'description'     => 'Work in comfort and style with our top-rated ergonomic office chair. Fully adjustable lumbar support.',
-                'promotion_badge' => 'STAFF PICK',
-            ],
-        ];
-        $this->footerPromoText = 'All offers valid while supplies last. Visit us in-store or online!';
+        $placeholderData = \App\Services\PlaceholderDataService::getRetailProductPlaceholderData();
+        $this->widgetTitle = $placeholderData['widgetTitle'];
+        $this->products = $placeholderData['products'];
+        $this->footerPromoText = $placeholderData['footerPromoText'];
 
         // Ensure defaultProductImage is used if a specific image is missing
         foreach ($this->products as &$product) {

@@ -30,6 +30,7 @@ final class Content extends Model
         'status',
         'content_data',
         'template_id',
+        'zone_id',
         'duration',
         'start_date',
         'end_date',
@@ -51,6 +52,11 @@ final class Content extends Model
     public function template(): BelongsTo
     {
         return $this->belongsTo(Template::class);
+    }
+
+    public function zone(): BelongsTo
+    {
+        return $this->belongsTo(Zone::class);
     }
 
     public function screens(): BelongsToMany

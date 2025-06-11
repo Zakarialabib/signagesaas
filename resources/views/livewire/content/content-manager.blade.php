@@ -184,6 +184,9 @@
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Screen</th>
                                     <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Zone</th>
+                                    <th scope="col"
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
                                         wire:click="sortBy('status')">
                                         <div class="flex items-center">
@@ -252,6 +255,15 @@
                                                 class="text-indigo-600 hover:text-indigo-900 cursor-pointer">
                                                 {{ $content->screen->name }}
                                             </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            @if ($content->zone)
+                                                <span class="text-purple-600 hover:text-purple-900">
+                                                    {{ $content->zone->name }}
+                                                </span>
+                                            @else
+                                                <span class="text-gray-400">No Zone</span>
+                                            @endif
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
@@ -373,20 +385,19 @@
                     </x-button>
                 </div>
             </div>
-</div>
-</x-modal>
-@endif
-
-<!-- Add these components to handle their own modals -->
-<livewire:content.content-show />
-<livewire:content.content-edit />
-<livewire:content.content-create />
-<livewire:content.content-preview />
-
-<x-modal wire:model="showWidgetTypeSelectorModal" id="widget-type-selector-modal" title="Select Widget Type"
-    maxWidth="4xl">
-    @if ($showWidgetTypeSelectorModal)
-        <livewire:tenant.content.widget-type-selector />
+        </x-modal>
     @endif
-</x-modal>
+
+    <!-- Add these components to handle their own modals -->
+    <livewire:content.content-show />
+    <livewire:content.content-edit />
+    <livewire:content.content-create />
+    <livewire:content.content-preview />
+
+    <x-modal wire:model="showWidgetTypeSelectorModal" id="widget-type-selector-modal" title="Select Widget Type"
+        maxWidth="4xl">
+        @if ($showWidgetTypeSelectorModal)
+            <livewire:content.widget-type-selector />
+        @endif
+    </x-modal>
 </div>

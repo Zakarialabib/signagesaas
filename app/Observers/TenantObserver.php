@@ -23,6 +23,46 @@ class TenantObserver
         }
     }
 
+    /** Handle the Tenant "deleted" event. */
+    public function deleted(Tenant $tenant): void
+    {
+        // Clean up associated data when a tenant is deleted
+        // This includes domains, users, content, and storage
+
+        // Delete tenant domains
+        $tenant->domains()->delete();
+
+        // Delete tenant-specific users (if not handled by foreign keys with cascade delete)
+        // User::where('tenant_id', $tenant->id)->delete(); // Example if users are tenant-scoped
+
+        // Clean up tenant-specific storage
+        \Illuminate\Support\Facades\Storage::disk('tenant_media')->deleteDirectory($tenant->id);
+
+        // You might also want to delete tenant-specific database records
+        // For example, if you have tenant-scoped models that don't cascade delete automatically
+        // tenancy()->initialize($tenant);
+        // \App\Tenant\Models\Content::query()->delete();
+        // \App\Tenant\Models\Device::query()->delete();
+        // etc.
+        // tenancy()->end();
+    }
+
+    /** Handle the Tenant "updated" event. */
+    public function updated(Tenant $tenant): void
+    {
+        // Potentially handle changes to tenant plans or status that might trigger specific actions
+        // For example, adjusting resource limits or sending notifications
+        if ($tenant->isDirty('plan')) {
+            // Log or trigger action for plan change
+            // \App\Actions\HandleTenantPlanChange::dispatch($tenant);
+        }
+
+        if ($tenant->isDirty('status')) {
+            // Log or trigger action for status change (e.g., suspended, active)
+            // \App\Actions\HandleTenantStatusChange::dispatch($tenant);
+        }
+    }
+
     /** Get default tenant settings. */
     private function getDefaultSettings(): array
     {

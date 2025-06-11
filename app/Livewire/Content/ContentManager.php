@@ -8,6 +8,8 @@ use App\Enums\ContentStatus;
 use App\Enums\ContentType;
 use App\Tenant\Models\Content;
 use App\Tenant\Models\Screen;
+use App\Tenant\Models\Zone;
+use Illuminate\Database\Eloquent\Collection;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Layout;
@@ -40,8 +42,17 @@ final class ContentManager extends Component
     #[Validate('nullable|string|in:asc,desc')]
     public string $sortDirection = 'desc';
 
+    #[Validate('nullable|uuid')] // Add validation for zone_id
+    public ?string $zone_id = null;
+
     #[Locked]
     public ?Content $selectedContent = null;
+
+    public Collection $screens;
+    public Collection $zones;
+
+    public array $contentTypes;
+    public array $statuses;
 
     public bool $deleteContentModal = false;
 
@@ -73,7 +84,7 @@ final class ContentManager extends Component
         'show_images' => true,
         'refresh_interval' => 30,
     ];
-    
+
     public array $menuSettings = [
         'show_prices' => true,
         'show_descriptions' => true,
@@ -82,14 +93,14 @@ final class ContentManager extends Component
         'template_style' => 'default',
         'refresh_interval' => 60,
     ];
-    
+
     public array $weatherSettings = [
         'location' => '',
         'units' => 'metric',
         'show_forecast' => true,
         'refresh_interval' => 300,
     ];
-    
+
     public array $newsSettings = [
         'source' => 'general',
         'category' => 'general',
@@ -97,19 +108,16 @@ final class ContentManager extends Component
         'refresh_interval' => 600,
     ];
 
-    protected $listeners = [
-        // 'close-widget-type-selector' => 'closeWidgetTypeSelectorModal', // Potentially add if needed
-    ];
-
     public function openWidgetTypeSelector(): void
     {
         $this->showWidgetTypeSelectorModal = true;
     }
 
-    // public function closeWidgetTypeSelectorModal(): void
-    // {
-    //     $this->showWidgetTypeSelectorModal = false;
-    // }
+    #[On('close-widget-type-selector')]
+    public function closeWidgetTypeSelectorModal()
+    {
+        $this->showWidgetTypeSelectorModal = false;
+    }
 
     public function updatedType($value): void
     {
@@ -230,7 +238,7 @@ final class ContentManager extends Component
             return [];
         }
 
-        return match($this->widgetData['widget_type']) {
+        return match ($this->widgetData['widget_type']) {
             'retail_product' => [
                 'products' => [
                     ['name' => 'Sample Product 1', 'price' => 29.99, 'original_price' => 35.00, 'image' => '/images/placeholder-product.jpg', 'description' => 'This is a great sample product.', 'stock_status' => 'in_stock', 'category' => 'Electronics'],
@@ -295,27 +303,27 @@ final class ContentManager extends Component
     public function render()
     {
         $query = Content::query()
-            ->with(['screen' => fn ($query) => $query->with('device')])
+            ->with(['screen' => fn($query) => $query->with('device'), 'zone'])
             ->when(
                 $this->search,
-                fn ($query) => $query->where('name', 'like', "%{$this->search}%")
+                fn($query) => $query->where('name', 'like', "%{$this->search}%")
                     ->orWhere('description', 'like', "%{$this->search}%")
                     ->orWhereHas(
                         'screen',
-                        fn ($q) => $q->where('name', 'like', "%{$this->search}%")
+                        fn($q) => $q->where('name', 'like', "%{$this->search}%")
                     )
             )
             ->when(
                 $this->statusFilter !== 'all',
-                fn ($query) => $query->where('status', $this->statusFilter)
+                fn($query) => $query->where('status', $this->statusFilter)
             )
             ->when(
                 $this->typeFilter !== 'all',
-                fn ($query) => $query->where('type', $this->typeFilter)
+                fn($query) => $query->where('type', $this->typeFilter)
             )
             ->when(
                 $this->screenFilter !== 'all',
-                fn ($query) => $query->where('screen_id', $this->screenFilter)
+                fn($query) => $query->where('screen_id', $this->screenFilter)
             )
             ->orderBy($this->sortField, $this->sortDirection);
 
@@ -323,7 +331,7 @@ final class ContentManager extends Component
 
         // Handle select all functionality
         if ($this->selectAll) {
-            $this->selected = $query->pluck('id')->map(fn ($id) => (string) $id)->toArray();
+            $this->selected = $query->pluck('id')->map(fn($id) => (string) $id)->toArray();
         }
 
         return view('livewire.content.content-manager', [
@@ -350,7 +358,7 @@ final class ContentManager extends Component
             ->with('device')
             ->get()
             ->mapWithKeys(function ($screen) {
-                return [$screen->id => $screen->name.' ('.$screen->device->name.')'];
+                return [$screen->id => $screen->name . ' (' . $screen->device->name . ')'];
             });
     }
 
@@ -423,7 +431,7 @@ final class ContentManager extends Component
 
     public function deleteContent(): void
     {
-        if ( ! $this->contentToDelete) {
+        if (! $this->contentToDelete) {
             return;
         }
 
@@ -442,7 +450,7 @@ final class ContentManager extends Component
     {
         $this->selectAll = ! $this->selectAll;
 
-        if ( ! $this->selectAll) {
+        if (! $this->selectAll) {
             $this->selected = [];
         }
     }
@@ -475,7 +483,7 @@ final class ContentManager extends Component
                         $content->save();
                     }
                 }
-                session()->flash('flash.banner', count($this->selected).' content items activated.');
+                session()->flash('flash.banner', count($this->selected) . ' content items activated.');
 
                 break;
 
@@ -486,7 +494,7 @@ final class ContentManager extends Component
                         $content->save();
                     }
                 }
-                session()->flash('flash.banner', count($this->selected).' content items deactivated.');
+                session()->flash('flash.banner', count($this->selected) . ' content items deactivated.');
 
                 break;
 
@@ -499,7 +507,7 @@ final class ContentManager extends Component
                         $deletedCount++;
                     }
                 }
-                session()->flash('flash.banner', $deletedCount.' content items deleted.');
+                session()->flash('flash.banner', $deletedCount . ' content items deleted.');
 
                 break;
         }
@@ -512,7 +520,16 @@ final class ContentManager extends Component
         $this->refreshContents();
     }
 
-    public function createContent(): void
+    public function mount(): void
+    {
+        $this->authorize('viewAny', Content::class);
+        $this->contentTypes = ContentType::cases();
+        $this->statuses = ContentStatus::cases();
+        $this->screens = Screen::all();
+        $this->zones = Zone::all();
+    }
+
+    public function create(): void
     {
         // $this->rules['type'] = 'required|string|in:'.implode(',', ContentType::values());
         $validated = $this->validate();
@@ -564,6 +581,7 @@ final class ContentManager extends Component
             'status' => $validated['status'],
             'duration' => $validated['duration'],
             'order' => $validated['order'],
+            'zone_id' => $validated['zone_id'] ?? null,
             'start_date' => $validated['start_date'],
             'end_date' => $validated['end_date'],
             'data' => $contentData,
@@ -632,6 +650,7 @@ final class ContentManager extends Component
             'status' => $validated['status'],
             'duration' => $validated['duration'],
             'order' => $validated['order'],
+            'zone_id' => $validated['zone_id'] ?? null,
             'start_date' => $validated['start_date'],
             'end_date' => $validated['end_date'],
             'data' => $contentDataForUpdate,

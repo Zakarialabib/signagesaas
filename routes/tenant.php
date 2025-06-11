@@ -82,3 +82,11 @@ Route::get('/screen/{screen}/preview', ScreenPreviewController::class)
 Route::get('/impersonate/stop', [TenantImpersonationController::class, 'endImpersonation'])
     ->middleware(['auth'])
     ->name('impersonate.stop');
+
+// Tenant impersonation routes
+Route::middleware(['web'])->group(function () {
+    // Start impersonation with signature verification - note this isn't under superadmin middleware
+    // to avoid 404 errors when not logged in
+    Route::get('/impersonate/{tenant}/{signature}', [TenantImpersonationController::class, 'impersonate'])
+        ->name('direct.impersonate');
+});

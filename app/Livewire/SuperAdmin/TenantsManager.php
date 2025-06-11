@@ -95,9 +95,7 @@ final class TenantsManager extends Component
     /** Open modal to create a new tenant */
     public function createTenant(): void
     {
-        $this->resetForm();
-        $this->editingTenant = false;
-        $this->showTenantModal = true;
+        $this->redirect(route('superadmin.tenants.create'));
     }
 
     /** Open modal to edit an existing tenant */
@@ -116,64 +114,8 @@ final class TenantsManager extends Component
     }
 
     /** Save tenant data (create or update) */
-    public function saveTenant(): void
-    {
-        $rules = [
-            'name'    => 'required|string|max:255',
-            'email'   => 'required|email|max:255',
-            'domain'  => 'required|string|max:255',
-            'plan_id' => 'required|string|max:50',
-        ];
-
-        if ( ! $this->editingTenant) {
-            // Add unique validation only for creation
-            $rules['domain'] = 'required|string|max:255|unique:domains,domain';
-        }
-
-        $this->validate($rules);
-
-        if ($this->editingTenant) {
-            // Update existing tenant
-            $tenant = Tenant::findOrFail($this->tenantId);
-            $tenant->update([
-                'name'  => $this->name,
-                'email' => $this->email,
-                'plan'  => $this->plan_id,
-            ]);
-
-            // Update domain if changed
-            $domain = $tenant->domains->first();
-
-            if ($domain && $domain->domain !== $this->domain) {
-                $domain->update(['domain' => $this->domain]);
-            } elseif ( ! $domain) {
-                $tenant->domains()->create(['domain' => $this->domain]);
-            }
-        } else {
-            // Create new tenant
-            $tenantId = Str::slug($this->name);
-
-            // Create the tenant
-            $tenant = Tenant::create([
-                'id'    => $tenantId,
-                'name'  => $this->name,
-                'email' => $this->email,
-                'plan'  => $this->plan_id,
-                'data'  => [
-                    'settings' => [
-                        'timezone' => 'UTC',
-                        'language' => 'en',
-                    ],
-                ],
-            ]);
-
-            // Create the domain
-            $tenant->domains()->create(['domain' => $this->domain]);
-        }
-
-        $this->resetForm();
-        $this->showTenantModal = false;
-    }
+    // The saveTenant method is no longer needed here as creation is moved to CreateTenant component.
+    // The edit functionality will remain, but the create part is removed.
 
     /** Show confirmation modal for tenant deletion */
     public function confirmDelete(string $tenantId): void
@@ -252,19 +194,40 @@ final class TenantsManager extends Component
     private function resetForm(): void
     {
         $this->tenantId = null;
-        $this->name = '';
-        $this->email = '';
-        $this->domain = '';
-        $this->plan_id = '';
         $this->selectedTenant = null;
         $this->editingTenant = false;
+        // Removed name, email, domain, plan_id as they are now handled by CreateTenant component
+    }
+
+    /** Update tenant status */
+    public function updateTenantStatus(string $tenantId, string $status): void
+    {
+        $tenant = Tenant::findOrFail($tenantId);
+        
+        $data = $tenant->data ?? [];
+        $data['status'] = $status;
+        
+        $tenant->update(['data' => $data]);
+        
+        $this->dispatch('notify', [
+            'type' => 'success',
+            'message' => "Tenant status updated to {$status}"
+        ]);
+    }
+
+    /** Get tenant health status */
+    protected function getTenantHealthStatus(Tenant $tenant): string
+    {
+        // Basic health check - can be expanded
+        $data = $tenant->data ?? [];
+        return $data['health_status'] ?? 'unknown';
     }
 
     /** Render the component */
     public function render()
     {
         $query = Tenant::with(['domains'])
-            ->withCount('users')
+            ->withCount(['users', 'devices', 'screens'])
             ->when($this->search, function ($query, $search) {
                 return $query->where(function ($query) use ($search) {
                     $query->where('name', 'like', "%{$search}%")
@@ -278,15 +241,7 @@ final class TenantsManager extends Component
                 return $query->where('plan', $plan);
             })
             ->when($this->statusFilter, function ($query, $status) {
-                // Implement status filtering based on your status attributes
-                if ($status === 'active') {
-                    return $query->where('is_active', true);
-                } elseif ($status === 'inactive') {
-                    return $query->where('is_active', false);
-                }
-
-                // Add other status filters as needed
-                return $query;
+                return $query->whereJsonContains('data->status', $status);
             })
             ->orderBy($this->sortField, $this->sortDirection);
 

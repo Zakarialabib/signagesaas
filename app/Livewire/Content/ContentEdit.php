@@ -45,6 +45,9 @@ final class ContentEdit extends Component
     #[Validate('nullable|integer|min:0')]
     public ?int $order = 0;
 
+    #[Validate('nullable|uuid')]
+    public ?string $zone_id = null;
+
     #[Validate('nullable|date')]
     public ?string $start_date = null;
 
@@ -97,7 +100,7 @@ final class ContentEdit extends Component
         'show_images' => true,
         'refresh_interval' => 30,
     ];
-    
+
     public array $menuSettings = [
         'show_prices' => true,
         'show_descriptions' => true,
@@ -106,14 +109,14 @@ final class ContentEdit extends Component
         'template_style' => 'default',
         'refresh_interval' => 60,
     ];
-    
+
     public array $weatherSettings = [
         'location' => '',
         'units' => 'metric',
         'show_forecast' => true,
         'refresh_interval' => 300,
     ];
-    
+
     public array $newsSettings = [
         'source' => 'general',
         'category' => 'general',
@@ -124,7 +127,7 @@ final class ContentEdit extends Component
     #[On('editContentModal')]
     public function openModal(string $id): void
     {
-        $this->content = Content::with('screen')->findOrFail($id);
+        $this->content = Content::with(['screen', 'zone'])->findOrFail($id);
         $this->authorize('update', $this->content);
 
         // $this->rules['type'] = 'required|string|in:'.implode(',', ContentType::values());
@@ -145,9 +148,10 @@ final class ContentEdit extends Component
         $this->status = $this->content->status->value;
         $this->duration = $this->content->duration;
         $this->order = $this->content->order;
+        $this->zone_id = $this->content->zone_id;
         $this->start_date = $this->content->start_date ? $this->content->start_date->format('Y-m-d') : null;
         $this->end_date = $this->content->end_date ? $this->content->end_date->format('Y-m-d') : null;
-        
+
         // Load widget data if present
         if ($this->content->data && isset($this->content->data['widget_type'])) {
             $this->widgetData = $this->content->data;
@@ -345,7 +349,7 @@ final class ContentEdit extends Component
             return [];
         }
 
-        return match($this->widgetData['widget_type']) {
+        return match ($this->widgetData['widget_type']) {
             'retail_product' => [
                 'products' => [
                     ['name' => 'Sample Product 1', 'price' => 29.99, 'original_price' => 35.00, 'image' => '/images/placeholder-product.jpg', 'description' => 'This is a great sample product.', 'stock_status' => 'in_stock', 'category' => 'Electronics'],
@@ -415,6 +419,7 @@ final class ContentEdit extends Component
             'screens'      => Screen::where('status', 'active')
                 ->with('device')
                 ->get(),
+            'zones'        => \App\Tenant\Models\Zone::all(),
             'templateStyleOptions' => [
                 'default' => 'Default',
                 'modern' => 'Modern',
@@ -483,6 +488,7 @@ final class ContentEdit extends Component
             'status' => $validated['status'],
             'duration' => $validated['duration'],
             'order' => $validated['order'],
+            'zone_id' => $validated['zone_id'] ?? null,
             'start_date' => $validated['start_date'],
             'end_date' => $validated['end_date'],
             'data' => $contentDataForUpdate,
@@ -496,9 +502,25 @@ final class ContentEdit extends Component
     private function resetFields(): void
     {
         $this->reset([
-            'name', 'description', 'type', 'screen_id', 'status', 'duration', 'order',
-            'start_date', 'end_date', 'image_file', 'url', 'html_content', 'feed_url',
-            'location', 'platform', 'handle', 'calendar_url', 'custom_html', 'settings',
+            'name',
+            'description',
+            'type',
+            'screen_id',
+            'status',
+            'duration',
+            'order',
+            'start_date',
+            'end_date',
+            'image_file',
+            'url',
+            'html_content',
+            'feed_url',
+            'location',
+            'platform',
+            'handle',
+            'calendar_url',
+            'custom_html',
+            'settings',
         ]);
         $this->content = null;
         $this->type = 'image';

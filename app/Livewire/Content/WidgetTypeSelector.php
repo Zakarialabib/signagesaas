@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Livewire\Tenant\Content;
+namespace App\Livewire\Content;
 
 use Livewire\Component;
 
@@ -115,6 +115,6 @@ class WidgetTypeSelector extends Component
 
     public function render()
     {
-        return view('livewire.tenant.content.widget-type-selector');
+        return view('livewire.content.widget-type-selector');
     }
 }

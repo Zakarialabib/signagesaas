@@ -40,6 +40,23 @@
                             @enderror
                         </div>
 
+                        <div class="sm:col-span-3">
+                            <label for="zone_id"
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-300">Zone (Optional)</label>
+                            <div class="mt-1">
+                                <select wire:model="zone_id" id="zone_id"
+                                    class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md">
+                                    <option value="">Select Zone</option>
+                                    @foreach ($zones as $zone)
+                                        <option value="{{ $zone->id }}">{{ $zone->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @error('zone_id')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
                         <div class="sm:col-span-6">
                             <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
                             <div class="mt-1">
