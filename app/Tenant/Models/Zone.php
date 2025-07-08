@@ -22,27 +22,28 @@ final class Zone extends Model
 
     protected $fillable = [
         'tenant_id',
-        'layout_id',
+        // 'layout_id', // Removed
         'name',
-        'type',
-        'x',
-        'y',
-        'width',
-        'height',
-        'order',
-        'settings',
-        'style_data',
-        'content_type',
-        'metadata',
+        'description', // Added
+        'type',        // Repurposed for place type
+        'x',           // Repurposed for map/floor plan
+        'y',           // Repurposed for map/floor plan
+        'width',       // Repurposed for map/floor plan
+        'height',      // Repurposed for map/floor plan
+        // 'order',    // Removed
+        // 'settings', // Removed (content display settings)
+        'style_data',  // For map representation
+        // 'content_type', // Removed
+        'metadata',    // For other place-specific structured data
     ];
 
     protected $casts = [
-        'x'          => 'float',
+        'x'          => 'float', // Casts for map coordinates
         'y'          => 'float',
         'width'      => 'float',
         'height'     => 'float',
-        'order'      => 'integer',
-        'settings'   => 'array',
+        // 'order'      => 'integer', // Removed
+        // 'settings'   => 'array', // Removed
         'style_data' => 'array',
         'metadata'   => 'array',
     ];
@@ -52,37 +53,24 @@ final class Zone extends Model
         return $this->belongsTo(Tenant::class);
     }
 
-    public function layout(): BelongsTo
-    {
-        return $this->belongsTo(Layout::class);
-    }
+    // public function layout(): BelongsTo // Removed
+    // {
+    //     return $this->belongsTo(Layout::class);
+    // }
 
     public function assets(): MorphMany
     {
+        // Assets might still be relevant for a "place" (e.g., a photo of the location)
         return $this->morphMany(Asset::class, 'assetable');
     }
 
-    public function getDefaultSettings(): array
-    {
-        return [
-            'transition_effect'   => 'fade',
-            'transition_duration' => 1000,
-            'content_fit'         => 'contain',
-            'background_color'    => 'transparent',
-            'border_style'        => 'none',
-            'border_width'        => '0px',
-            'border_color'        => '#000000',
-            'border_radius'       => '0px',
-            'padding'             => '0px',
-        ];
-    }
+    // public function getDefaultSettings(): array // Removed
+    // {
+    //     // ... old settings ...
+    // }
 
-    public function contents(): BelongsToMany
-    {
-        return $this->belongsToMany(Content::class)
-            ->using(ContentZone::class)
-            ->withPivot(['order', 'duration', 'settings'])
-            ->orderBy('order')
-            ->withTimestamps();
-    }
+    // public function contents(): BelongsToMany // Removed
+    // {
+    //     // ... old relationship ...
+    // }
 }

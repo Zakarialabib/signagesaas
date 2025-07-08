@@ -54,10 +54,10 @@ final class Layout extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    public function zones(): HasMany
-    {
-        return $this->hasMany(Zone::class)->orderBy('order');
-    }
+    // public function zones(): HasMany // Removed: Zones are now independent physical places, not parts of a layout.
+    // {
+    //     return $this->hasMany(Zone::class)->orderBy('order');
+    // }
 
     public function assets(): MorphMany
     {

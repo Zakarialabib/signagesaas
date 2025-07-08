@@ -13,6 +13,7 @@ return new class () extends Migration {
         Schema::create('screens', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('device_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('zone_id')->nullable()->constrained('zones')->onDelete('set null'); // Added
             $table->string('template_id')->nullable();
             $table->string('tenant_id');
             $table->string('name');
@@ -35,6 +36,8 @@ return new class () extends Migration {
                 ->references('id')
                 ->on('templates')
                 ->onDelete('cascade');
+
+            $table->index('zone_id'); // Added index for zone_id
         });
     }
 

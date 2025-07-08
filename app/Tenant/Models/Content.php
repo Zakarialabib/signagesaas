@@ -30,7 +30,7 @@ final class Content extends Model
         'status',
         'content_data',
         'template_id',
-        'zone_id',
+        // 'zone_id', // Removed
         'duration',
         'start_date',
         'end_date',

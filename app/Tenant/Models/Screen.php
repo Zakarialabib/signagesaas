@@ -29,6 +29,7 @@ final class Screen extends Model
         'resolution',
         'orientation',
         'device_id',
+        'zone_id', // Added
         'location',
         'settings',
         'tenant_id',
@@ -41,6 +42,12 @@ final class Screen extends Model
         'orientation' => ScreenOrientation::class,
         'resolution'  => ScreenResolution::class,
     ];
+
+    /** Get the zone where the screen is physically located. */
+    public function zone(): BelongsTo
+    {
+        return $this->belongsTo(Zone::class);
+    }
 
     /** Get the device that owns the screen. */
     public function device(): BelongsTo

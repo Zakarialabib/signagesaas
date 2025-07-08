@@ -10,6 +10,7 @@ use App\Enums\ScreenStatus;
 use App\Tenant\Models\Device;
 use App\Tenant\Models\Screen;
 use App\Tenant\Models\Tenant;
+use App\Tenant\Models\Zone; // Added
 use App\Tenant\Models\Content;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Collection;
@@ -20,7 +21,7 @@ final class ScreenFactory extends Factory
 
     public function definition(): array
     {
-        $device = Device::factory()->create();
+        $device = Device::factory()->create(); // This also creates a Tenant if one isn't provided to the Device factory
 
         // Determine orientation - match device if available
         $orientation = $device->orientation ?? fake()->randomElement(ScreenOrientation::cases());
@@ -28,19 +29,23 @@ final class ScreenFactory extends Factory
         // Select an appropriate resolution based on orientation
         $resolution = $this->getResolutionForOrientation($orientation);
 
-        // Default tenant_id from device, can be overridden by forTenant state
+        // Ensure the tenant_id is consistent
         $tenantId = $device->tenant_id;
 
+        // Create a Zone for this tenant, or use an existing one if passed via state.
+        // By default, each screen factory call will create a new Zone for its tenant.
+        $zoneId = $this->states['zone_id'] ?? Zone::factory()->state(['tenant_id' => $tenantId])->create()->id;
+
         return [
-            'tenant_id'   => $tenantId,
+            'tenant_id'   => $tenantId, // Explicitly use tenantId from device/zone
             'name'        => fake()->words(2, true).' Screen',
             'description' => fake()->optional()->sentence(),
             'status'      => fake()->randomElement(ScreenStatus::cases()),
             'resolution'  => $resolution,
             'orientation' => $orientation,
             'device_id'   => $device->id,
-            'location'    => [
-                'zone'     => fake()->word(),
+            'zone_id'     => $zoneId, // Assign the Place Zone ID
+            'location'    => [ // This is for additional descriptive location text, potentially redundant with Zone fields now
                 'floor'    => fake()->numberBetween(1, 10),
                 'building' => fake()->optional()->buildingNumber(),
                 'notes'    => fake()->optional()->sentence(),
