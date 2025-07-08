@@ -15,33 +15,28 @@ class ZoneFactory extends Factory
 
     public function definition(): array
     {
+        $placeTypes = ['WALL_MOUNT', 'KIOSK', 'ROOM_ENTRANCE', 'SHELF_EDGE', 'GENERAL_AREA', 'CEILING_DISPLAY'];
+
         return [
-            'tenant_id' => Tenant::factory(),
-            'layout_id' => Layout::factory(),
-            'name'      => fake()->words(2, true),
-            'type'      => fake()->randomElement(['image', 'video', 'text', 'html']),
-            'x'         => fake()->randomFloat(2, 0, 100),
-            'y'         => fake()->randomFloat(2, 0, 100),
-            'width'     => fake()->randomFloat(2, 10, 100),
-            'height'    => fake()->randomFloat(2, 10, 100),
-            'order'     => fake()->numberBetween(0, 10),
-            'settings'  => [
-                'transition_effect'   => fake()->randomElement(['fade', 'slide', 'zoom']),
-                'transition_duration' => fake()->numberBetween(500, 2000),
-                'content_fit'         => fake()->randomElement(['contain', 'cover', 'fill']),
-                'background_color'    => fake()->hexColor(),
-            ],
-            'style_data' => [
-                'border_style'  => fake()->randomElement(['none', 'solid', 'dashed']),
-                'border_width'  => fake()->numberBetween(0, 5).'px',
-                'border_color'  => fake()->hexColor(),
-                'border_radius' => fake()->numberBetween(0, 20).'px',
-            ],
-            'content_type' => fake()->randomElement(['image', 'video', 'text']),
-            'metadata'     => [
-                'created_by'    => fake()->name(),
-                'last_modified' => fake()->dateTimeThisMonth()->format('Y-m-d H:i:s'),
-            ],
+            'tenant_id'   => Tenant::factory(),
+            'name'        => fake()->unique()->words(3, true) . ' Place',
+            'description' => fake()->optional()->sentence(10),
+            'type'        => fake()->randomElement($placeTypes),
+            'x'           => fake()->optional(0.7)->randomFloat(2, 0, 1000), // Optional, up to 1000
+            'y'           => fake()->optional(0.7)->randomFloat(2, 0, 1000),
+            'width'       => fake()->optional(0.7)->randomFloat(2, 50, 500),
+            'height'      => fake()->optional(0.7)->randomFloat(2, 50, 300),
+            'style_data'  => fake()->optional(0.5)->randomElement([
+                                ['color' => fake()->hexColor(), 'icon' => 'pin'],
+                                ['shape' => 'rectangle', 'borderColor' => fake()->hexColor()],
+                                [],
+                            ]),
+            'metadata'    => fake()->optional(0.6)->randomElement([
+                                ['floor' => fake()->numberBetween(1, 10), 'building_wing' => fake()->randomElement(['North', 'South', 'East', 'West'])],
+                                ['gps_lat' => fake()->latitude(), 'gps_lon' => fake()->longitude()],
+                                ['capacity' => fake()->numberBetween(5, 50)],
+                                [],
+                            ]),
         ];
     }
 }

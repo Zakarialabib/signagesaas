@@ -26,8 +26,8 @@ return new class () extends Migration {
             $table->timestamp('end_date')->nullable(); // when to stop showing content
             $table->json('settings')->nullable(); // flexible settings in JSON format
             $table->json('metadata')->nullable(); // flexible metadata in JSON format
-            $table->uuid('zone_id')->nullable();
-            $table->foreign('zone_id')->references('id')->on('zones')->onDelete('set null');
+            // $table->uuid('zone_id')->nullable(); // Removed direct FK to zones
+            // $table->foreign('zone_id')->references('id')->on('zones')->onDelete('set null'); // Removed
             $table->timestamps();
             $table->softDeletes();
 
